@@ -21,7 +21,6 @@
     --green: #34483d;
     --accent: #824880;
     --line: rgba(145, 132, 111, .22);
-    --gold: #e7c978;
 }
 
 * {
@@ -39,50 +38,21 @@ body {
 
 body {
     position: relative;
-    background:
-        radial-gradient(
-            circle at 12% 17%,
-            rgba(255, 233, 151, .9) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 81% 10%,
-            rgba(255, 245, 196, .8) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 63% 26%,
-            rgba(255, 255, 228, .7) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 27% 44%,
-            rgba(255, 234, 145, .8) 0 1.5px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle at 91% 52%,
-            rgba(255, 247, 201, .85) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 8% 72%,
-            rgba(255, 248, 207, .8) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 74% 82%,
-            rgba(255, 232, 150, .8) 0 1px,
-            transparent 2px
-        ),
-        linear-gradient(
-            135deg,
-            #06152f,
-            #0a1d3e 48%,
-            #041027
-        );
     color: var(--text);
     font-family: 'Noto Serif SC', serif;
+    /* 页面背景图，星星完全固定在此，不放置在信纸中 */
+    background:
+        radial-gradient(circle at 12% 17%, rgba(255, 233, 151, .9) 0 1px, transparent 2px),
+        radial-gradient(circle at 81% 10%, rgba(255, 245, 196, .8) 0 1px, transparent 2px),
+        radial-gradient(circle at 63% 26%, rgba(255, 255, 228, .7) 0 1px, transparent 2px),
+        radial-gradient(circle at 27% 44%, rgba(255, 234, 145, .8) 0 1.5px, transparent 3px),
+        radial-gradient(circle at 91% 52%, rgba(255, 247, 201, .85) 0 1px, transparent 2px),
+        radial-gradient(circle at 8% 72%, rgba(255, 248, 207, .8) 0 1px, transparent 2px),
+        radial-gradient(circle at 74% 82%, rgba(255, 232, 150, .8) 0 1px, transparent 2px),
+        linear-gradient(135deg, #06152f, #0a1d3e 48%, #041027);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 body::before,
@@ -97,53 +67,21 @@ body::after {
 body::before {
     opacity: .9;
     background:
-        radial-gradient(
-            circle at 19% 29%,
-            rgba(255, 249, 202, .65) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 45% 11%,
-            rgba(255, 239, 169, .65) 0 1px,
-            transparent 2px
-        ),
-        radial-gradient(
-            circle at 54% 68%,
-            rgba(255, 250, 215, .7) 0 1.2px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle at 87% 76%,
-            rgba(255, 235, 160, .75) 0 1px,
-            transparent 2px
-        );
+        radial-gradient(circle at 19% 29%, rgba(255, 249, 202, .65) 0 1px, transparent 2px),
+        radial-gradient(circle at 45% 11%, rgba(255, 239, 169, .65) 0 1px, transparent 2px),
+        radial-gradient(circle at 54% 68%, rgba(255, 250, 215, .7) 0 1.2px, transparent 3px),
+        radial-gradient(circle at 87% 76%, rgba(255, 235, 160, .75) 0 1px, transparent 2px);
     animation: starGlow 4.8s ease-in-out infinite alternate;
 }
 
 body::after {
-    background:
-        radial-gradient(
-            ellipse at center,
-            transparent 42%,
-            rgba(0, 5, 20, .48) 100%
-        );
+    background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 5, 20, .48) 100%);
 }
 
 @keyframes starGlow {
-    0% {
-        opacity: .35;
-        filter: brightness(.8);
-    }
-
-    50% {
-        opacity: 1;
-        filter: brightness(1.35);
-    }
-
-    100% {
-        opacity: .55;
-        filter: brightness(1);
-    }
+    0% { opacity: .35; filter: brightness(.8); }
+    50% { opacity: 1; filter: brightness(1.35); }
+    100% { opacity: .55; filter: brightness(1); }
 }
 
 .vintage-overlay {
@@ -152,8 +90,7 @@ body::after {
     z-index: 20;
     pointer-events: none;
     opacity: .22;
-    background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.035'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.035'/%3E%3C/svg%3E");
 }
 
 /* ==================== 阅读区域 ==================== */
@@ -169,87 +106,20 @@ body::after {
     position: relative;
     padding: 85px 50px 145px;
     overflow: hidden;
-    background-color: var(--paper);
+    background-color: var(--paper); /* 保持米白色，不放星星 */
     border: 1px solid rgba(59, 42, 34, .1);
-    box-shadow:
-        0 5px 12px rgba(0, 0, 0, .08),
-        0 18px 46px rgba(0, 0, 0, .25);
-    clip-path: polygon(
-        0 0,
-        100% 0,
-        100% calc(100% - 90px),
-        calc(100% - 90px) 100%,
-        0 100%
-    );
-    background-image:
-        linear-gradient(
-            var(--line) 1px,
-            transparent 1px
-        );
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .08), 0 18px 46px rgba(0, 0, 0, .25);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 90px), calc(100% - 90px) 100%, 0 100%);
+    background-image: linear-gradient(var(--line) 1px, transparent 1px);
     background-size: 100% 2.3rem;
     background-position: 0 4.8rem;
-}
-
-.letter-paper::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: .65;
-    background:
-        radial-gradient(
-            circle at 12% 8%,
-            rgba(255, 210, 108, .85) 0 1px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle at 90% 12%,
-            rgba(255, 239, 174, .85) 0 1px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle at 8% 58%,
-            rgba(255, 247, 194, .8) 0 1px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle at 94% 72%,
-            rgba(255, 230, 135, .85) 0 1px,
-            transparent 3px
-        );
-    animation: paperStars 4s ease-in-out infinite alternate;
-}
-
-.letter-paper > * {
-    position: relative;
-    z-index: 1;
-}
-
-@keyframes paperStars {
-    0% {
-        opacity: .25;
-        filter: brightness(.8);
-    }
-
-    50% {
-        opacity: .85;
-        filter: brightness(1.3);
-    }
-
-    100% {
-        opacity: .45;
-        filter: brightness(1);
-    }
 }
 
 .story-section {
     margin-bottom: 75vh;
     opacity: 0;
     transform: translateY(45px);
-    transition:
-        opacity 1.5s ease,
-        transform 1.5s ease;
+    transition: opacity 1.5s ease, transform 1.5s ease;
 }
 
 .story-section:last-of-type {
@@ -277,10 +147,7 @@ p.zh-text {
     margin-top: .25rem;
     margin-bottom: 2.3rem;
     color: var(--zh-text);
-    font:
-        300 .8rem/1.7
-        'Noto Serif SC',
-        serif;
+    font: 300 .8rem/1.7 'Noto Serif SC', serif;
     text-indent: 2.2em;
     letter-spacing: .06em;
 }
@@ -355,7 +222,7 @@ p.eng-text + p.eng-text {
     background: rgba(120, 100, 80, .35);
 }
 
-/* ==================== 卷边按钮 ==================== */
+/* ==================== 卷边折叠按钮 ==================== */
 
 .page-fold-btn {
     position: absolute;
@@ -370,29 +237,15 @@ p.eng-text + p.eng-text {
 .fold-mesh {
     position: absolute;
     inset: 0;
-    background:
-        linear-gradient(
-            135deg,
-            var(--paper) 45%,
-            #d4bfa1 55%,
-            #dfcdb0 80%
-        );
+    background: linear-gradient(135deg, var(--paper) 45%, #d4bfa1 55%, #dfcdb0 80%);
     box-shadow: -4px -4px 10px rgba(59, 42, 34, .15);
     animation: windFlutter 2.2s ease-in-out infinite alternate;
 }
 
 @keyframes windFlutter {
-    0% {
-        transform: rotate(0);
-    }
-
-    50% {
-        transform: scale(1.04) rotate(-1.5deg);
-    }
-
-    100% {
-        transform: scale(.98) rotate(1deg);
-    }
+    0% { transform: rotate(0); }
+    50% { transform: scale(1.04) rotate(-1.5deg); }
+    100% { transform: scale(.98) rotate(1deg); }
 }
 
 .scroll-indicator,
@@ -414,20 +267,12 @@ p.eng-text + p.eng-text {
     opacity: .7;
     transform: translateX(-50%);
     animation: bounce 1.8s infinite;
-    transition:
-        opacity .5s ease,
-        visibility .5s ease;
+    transition: opacity .5s ease, visibility .5s ease;
 }
 
 @keyframes bounce {
-    0%,
-    100% {
-        transform: translate(-50%, 0);
-    }
-
-    50% {
-        transform: translate(-50%, -6px);
-    }
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -6px); }
 }
 
 .fold-hint {
@@ -461,19 +306,19 @@ p.eng-text + p.eng-text {
     transition: opacity .6s ease;
 }
 
-/* ==================== 简约拖拽箭头 ==================== */
+/* ==================== 极简优雅塞进手势箭头 ==================== */
 
 #drop-arrow {
     position: fixed;
     top: calc(56% - 190px);
     left: 50%;
     z-index: 4;
-    width: 28px;
-    height: 54px;
+    width: 24px;
+    height: 50px;
     pointer-events: none;
     opacity: 0;
     transform: translateX(-50%);
-    transition: opacity .6s ease;
+    transition: opacity .5s ease;
 }
 
 #drop-arrow::before {
@@ -483,40 +328,33 @@ p.eng-text + p.eng-text {
     left: 50%;
     width: 1px;
     height: 38px;
-    background: rgba(232, 216, 188, .8);
+    background: rgba(232, 216, 188, .85);
     transform: translateX(-50%);
 }
 
-#drop-arrow span {
+#drop-arrow::after {
+    content: '';
     position: absolute;
-    bottom: 2px;
     left: 50%;
-    width: 13px;
-    height: 13px;
+    bottom: 2px;
+    width: 10px;
+    height: 10px;
     border-right: 1px solid rgba(232, 216, 188, .9);
     border-bottom: 1px solid rgba(232, 216, 188, .9);
     transform: translateX(-50%) rotate(45deg);
 }
 
 #drop-arrow.visible {
-    opacity: .78;
+    opacity: .8;
     animation: elegantArrow 1.5s ease-in-out infinite;
 }
 
 @keyframes elegantArrow {
-    0%,
-    100% {
-        transform: translate(-50%, 0);
-        opacity: .45;
-    }
-
-    50% {
-        transform: translate(-50%, 10px);
-        opacity: .95;
-    }
+    0%, 100% { transform: translate(-50%, 0); opacity: .4; }
+    50% { transform: translate(-50%, 8px); opacity: .95; }
 }
 
-/* ==================== 最终画面 ==================== */
+/* ==================== 最终屏幕 ==================== */
 
 #final-screen {
     position: fixed;
@@ -550,20 +388,14 @@ p.eng-text + p.eng-text {
 
 .cursive-title {
     color: #722f35;
-    font:
-        normal clamp(5.2rem, 13vw, 9.4rem) / .88
-        'Great Vibes',
-        cursive;
+    font: normal clamp(5.2rem, 13vw, 9.4rem) / .88 'Great Vibes', cursive;
     white-space: nowrap;
 }
 
 .readable-title {
     margin: 18px -.7em 5px 0;
     color: #3b2a22;
-    font:
-        600 .75rem
-        'Playfair Display',
-        serif;
+    font: 600 .75rem 'Playfair Display', serif;
     letter-spacing: .7em;
     text-transform: uppercase;
 }
@@ -578,9 +410,7 @@ p.eng-text + p.eng-text {
     letter-spacing: .05em;
     opacity: 0;
     transform: translateY(15px);
-    transition:
-        opacity 1.5s ease .5s,
-        transform 1.5s ease .5s;
+    transition: opacity 1.5s ease .5s, transform 1.5s ease .5s;
 }
 
 #final-screen.active .subtitle-line {
@@ -610,7 +440,7 @@ p.eng-text + p.eng-text {
     opacity: 1;
 }
 
-/* ==================== 移动端 ==================== */
+/* ==================== 移动端适配 ==================== */
 
 @media (max-width: 520px) {
     .warm-quote .eng-text {
@@ -666,228 +496,73 @@ p.eng-text + p.eng-text {
 <div id="story-container">
     <div class="letter-paper" id="paper-element">
 
-        <svg
-            width="90"
-            height="90"
-            viewBox="0 0 120 120"
-            style="
-                position:absolute;
-                top:20px;
-                left:20px;
-                opacity:.12;
-                pointer-events:none;
-            "
-        >
-            <path
-                d="M10 10C25 12 40 25 45 45C35 48 20 35 10 10Z"
-                fill="#34483D"
-            />
-            <path
-                d="M10 10C18 30 32 38 45 45"
-                fill="none"
-                stroke="#2D3F35"
-                stroke-width="1.2"
-            />
+        <svg width="90" height="90" viewBox="0 0 120 120" style="position:absolute;top:20px;left:20px;opacity:.12;pointer-events:none;">
+            <path d="M10 10C25 12 40 25 45 45C35 48 20 35 10 10Z" fill="#34483D"/>
+            <path d="M10 10C18 30 32 38 45 45" fill="none" stroke="#2D3F35" stroke-width="1.2"/>
             <circle cx="45" cy="45" r="5" fill="#722F35"/>
             <circle cx="51" cy="40" r="4" fill="#824880"/>
         </svg>
 
-        <svg
-            width="90"
-            height="90"
-            viewBox="0 0 120 120"
-            style="
-                position:absolute;
-                top:20px;
-                right:20px;
-                opacity:.12;
-                pointer-events:none;
-                transform:scaleX(-1);
-            "
-        >
-            <path
-                d="M10 10C25 12 40 25 45 45C35 48 20 35 10 10Z"
-                fill="#34483D"
-            />
-            <path
-                d="M10 10C18 30 32 38 45 45"
-                fill="none"
-                stroke="#2D3F35"
-                stroke-width="1.2"
-            />
+        <svg width="90" height="90" viewBox="0 0 120 120" style="position:absolute;top:20px;right:20px;opacity:.12;pointer-events:none;transform:scaleX(-1);">
+            <path d="M10 10C25 12 40 25 45 45C35 48 20 35 10 10Z" fill="#34483D"/>
+            <path d="M10 10C18 30 32 38 45 45" fill="none" stroke="#2D3F35" stroke-width="1.2"/>
             <circle cx="45" cy="45" r="5" fill="#722F35"/>
             <circle cx="51" cy="40" r="4" fill="#824880"/>
         </svg>
 
         <div class="story-section" id="sec-1">
             <div class="quote">
-                <p class="eng-text">
-                    “Marley was dead, to begin with.”
-                </p>
-
-                <p class="zh-text">
-                    “马利已经死了——首先，这是确定无疑的。”
-                </p>
+                <p class="eng-text">“Marley was dead, to begin with.”</p>
+                <p class="zh-text">“马利已经死了——首先，这是确定无疑的。”</p>
             </div>
 
-            <p class="eng-text">
-                But on this Christmas Eve, it was not Marley’s Ghost
-                that came knocking. At midnight, beneath the quiet
-                winter sky, a small unsigned letter appeared at Anxin’s
-                door. On its envelope were only these words:
-            </p>
-
-            <p class="zh-text">
-                但在这个平安夜，敲响安信房门的，并不是马利的幽灵。
-                午夜时分，冬夜寂静。一封没有署名的小信，出现在安信的门前。
-                信封上只有一句话：
-            </p>
+            <p class="eng-text">But on this Christmas Eve, it was not Marley’s Ghost that came knocking. At midnight, beneath the quiet winter sky, a small unsigned letter appeared at Anxin’s door. On its envelope were only these words:</p>
+            <p class="zh-text">但在这个平安夜，敲响安信房门的，并不是马利的幽灵。午夜时分，冬夜寂静。一封没有署名的小信，出现在安信的门前。信封上只有一句话：</p>
 
             <div class="quote warm-quote">
-                <p class="eng-text">
-                    “Come and listen to the nights your song has made warm.”
-                </p>
-
-                <p class="zh-text">
-                    “来听一听，那些曾被你的歌声温柔陪伴的夜晚。”
-                </p>
+                <p class="eng-text">“Come and listen to the nights your song has made warm.”</p>
+                <p class="zh-text">“来听一听，那些曾被你的歌声温柔陪伴的夜晚。”</p>
             </div>
 
-            <p class="eng-text">
-                That night, three Ghosts came to him in a dream.
-            </p>
-
-            <p class="zh-text">
-                那一夜，三位幽灵来到他的梦中。
-            </p>
+            <p class="eng-text">That night, three Ghosts came to him in a dream.</p>
+            <p class="zh-text">那一夜，三位幽灵来到防门中。</p>
         </div>
 
         <div class="story-section" id="sec-2">
             <div class="divider-line"></div>
+            <h2 class="ghost-title-en">The Ghost of Christmas Past</h2>
+            <h2 class="ghost-title-zh">过去</h2>
 
-            <h2 class="ghost-title-en">
-                The Ghost of Christmas Past
-            </h2>
-
-            <h2 class="ghost-title-zh">
-                圣诞过去的幽灵
-            </h2>
-
-            <p class="eng-text">
-                The first Ghost showed him Christmases Past. He saw
-                a younger Anxin beneath the stage lights, singing his
-                first songs. In the audience were family, teachers,
-                and strangers hearing his voice for the first time.
-                He did not yet know that his songs would one day
-                accompany someone through a long winter—or accompany
-                him through the more difficult years of his own childhood.
-            </p>
-
-            <p class="zh-text">
-                第一位幽灵带他看见了过去的圣诞。他看见年少的安信站在舞台灯光下，
-                唱起最初的歌。台下有家人、老师，也有第一次听见他声音的陌生人。
-                那时的他还不知道，自己的歌声有一天会陪伴某些人走过漫长的冬天，
-                也会陪伴那个曾经有些辛苦地长大的自己，走过童年。
-            </p>
+            <p class="eng-text">The first Ghost showed him Christmases Past. He saw a younger Anxin beneath the stage lights, singing his first songs. In the audience were family, teachers, and strangers hearing his voice for the first time. He did not yet know that his songs would one day accompany someone through a long winter—or accompany him through the more difficult years of his own childhood.</p>
+            <p class="zh-text">第一位幽灵带他看见了过去的圣诞。他看见年少的安信站在舞台灯光下，唱起最初的歌。台下有家人、老师，也有第一次听见他声音的陌生人。那时的他还不知道，自己的歌声有一天会陪伴某些人走过漫长的冬天，也会陪伴那个曾经有些辛苦地长大的自己，走过童年。</p>
         </div>
 
         <div class="story-section" id="sec-3">
             <div class="divider-line"></div>
+            <h2 class="ghost-title-en">The Ghost of Christmas Present</h2>
+            <h2 class="ghost-title-zh">现在</h2>
 
-            <h2 class="ghost-title-en">
-                The Ghost of Christmas Present
-            </h2>
-
-            <h2 class="ghost-title-zh">
-                圣诞现在的幽灵
-            </h2>
-
-            <p class="eng-text">
-                The second Ghost showed him Christmas Present.
-                Under the stage lights, Anxin gave his whole heart
-                to every rehearsal, every performance, and every
-                quiet moment shared with the people who supported him.
-                Somewhere, someone was smiling at the same moment he smiled.
-                Somewhere else, someone was listening to his voice,
-                letting the night pass a little more gently.
-                The joy he gave was never loud or fleeting. It moved
-                quietly from one heart to another, becoming part of
-                days he might never see.
-            </p>
-
-            <p class="zh-text">
-                第二位幽灵带他看见了现在的圣诞。聚光灯下，安信把全部的认真
-                交给每一次练习、每一场演出，也交给那些与喜欢他的人共同度过
-                的安静时刻。在某个地方，有人因为看见他的笑容而笑了起来；
-                在另一个地方，也有人听着他的声音，让漫长的夜晚缓缓经过。
-                他给予的快乐，从来不喧哗，也不短暂。它安静地从一颗心抵达
-                另一颗心，成为许多他未曾亲眼见过的日子的一部分。
-            </p>
+            <p class="eng-text">The second Ghost showed him Christmas Present. Under the stage lights, Anxin gave his whole heart to every rehearsal, every performance, and every quiet moment shared with the people who supported him. Somewhere, someone was smiling at the same moment he smiled. Somewhere else, someone was listening to his voice, letting the night pass a little more gently. The joy he gave was never loud or fleeting. It moved quietly from one heart to another, becoming part of days he might never see.</p>
+            <p class="zh-text">第二位幽灵带他看见了现在的圣诞。聚光灯下，安信把全部的认真交给每一次练习、每一场演出，也交给那些与喜欢他的人共同度过的安静时刻。在某个地方，有人因为看见他的笑容而笑了起来；在另一个地方，也有人听着他的声音，让漫长的夜晚缓缓经过。他给予的快乐，从来不喧哗，也不短暂。它安静地从一颗心抵达另一颗心，成为许多他未曾亲眼见过的日子的一部分。</p>
         </div>
 
         <div class="story-section" id="sec-4">
             <div class="divider-line"></div>
+            <h2 class="ghost-title-en">The Ghost of Christmas Yet to Come</h2>
+            <h2 class="ghost-title-zh">未来</h2>
 
-            <h2 class="ghost-title-en">
-                The Ghost of Christmas Yet to Come
-            </h2>
-
-            <h2 class="ghost-title-zh">
-                尚未来临的圣诞幽灵
-            </h2>
-
-            <p class="eng-text">
-                Then came the third Ghost, carrying no words, only
-                a soft and distant light. It showed him Christmas
-                Yet to Come. Beneath a great Christmas tree were
-                gifts from every corner of the world: carefully written
-                letters, familiar photographs, small handmade keepsakes,
-                and wishes folded into envelopes. Anxin looked at the
-                gifts, and at the letters resting among them. And he
-                found that he had understood long ago. A gift is not
-                made precious only by the moment it is opened. Its meaning
-                grows as it is given, received, and gently passed from
-                one person to another. A song can do the same. What begins
-                with one voice may travel farther than the singer can
-                imagine, carrying warmth, courage, and happiness to places
-                he may never see.
-            </p>
-
-            <p class="zh-text">
-                随后，第三位幽灵来到他的面前。它没有带来话语，只带来一束
-                遥远而柔和的光。它带他看见了尚未来临的圣诞。一棵巨大的
-                圣诞树下，放着来自世界各地的礼物：认真写下的信、熟悉的照片、
-                亲手制作的小小纪念品，还有被折进信封里的祝福。
-                安信望着那些礼物，也望着散落其间的一封封信。他发现，
-                自己其实早已明白。礼物的珍贵，并不只在于被打开的那一刻。
-                它的意义，会在赠予、接收与传递之间，慢慢生长。
-                歌声也是如此。一首歌从一个人的声音开始，却可以抵达歌者
-                无法想象的远方，将温柔、勇气与幸福送到那些他未曾抵达的地方。
-            </p>
+            <p class="eng-text">Then came the third Ghost, carrying no words, only a soft and distant light. It showed him Christmas Yet to Come. Beneath a great Christmas tree were gifts from every corner of the world: carefully written letters, familiar photographs, small handmade keepsakes, and wishes folded into envelopes. Anxin looked at the gifts, and at the letters resting among them. And he found that he had understood long ago. A gift is not made precious only by the moment it is opened. Its meaning grows as it is given, received, and gently passed from one person to another. A song can do the same. What begins with one voice may travel farther than the singer can imagine, carrying warmth, courage, and happiness to places he may never see.</p>
+            <p class="zh-text">随后，第三位幽灵来到他的面前。它没有带来话语，只带来一束遥远而柔和的光。它带他看见了尚未来临的圣诞。一棵巨大的圣诞树下，放着来自世界各地的礼物：认真写下的信、熟悉的照片、亲手制作的小小纪念品，还有被折进信封里的祝福。安信望着那些礼物，也望着散落其间的一封封信。他发现，自己其实早已明白。礼物的珍贵，并不只在于被打开的那一刻。它的意义，会在赠予、接收与传递之间，慢慢生长。歌声也是如此。一首歌从一个人的声音开始，却可以抵达歌者无法想象的远方，将温柔、勇气与幸福送到那些他未曾抵达的地方。</p>
         </div>
 
         <div class="story-section" id="sec-5">
             <div class="divider-line"></div>
-
-            <p class="eng-text">
-                And so, beneath the same sky, we gathered Anxin’s
-                music, stages, memories, growth, and every heartfelt
-                wish into one small gift.
-            </p>
-
-            <p class="zh-text">
-                于是，在同一片天空下，我们将安信的音乐、舞台、记忆、成长，
-                以及每一份真心写下的祝福，收集成一件小小的礼物。
-            </p>
+            <p class="eng-text">And so, beneath the same sky, we gathered Anxin’s music, stages, memories, growth, and every heartfelt wish into one small gift.</p>
+            <p class="zh-text">于是，在同一片天空下，我们将安信的音乐、舞台、记忆、成长，以及每一份真心写下的祝福，收集成一件小小的礼物。</p>
 
             <div class="quote">
-                <p class="eng-text">
-                    “God bless us, every one!”
-                </p>
-
-                <p class="zh-text">
-                    “愿上帝赐福于我们每一个人！”
-                </p>
+                <p class="eng-text">“God bless us, every one!”</p>
+                <p class="zh-text">“愿上帝赐福于我们每一个人！”</p>
             </div>
         </div>
 
@@ -904,9 +579,7 @@ p.eng-text + p.eng-text {
 
 <canvas id="animation-canvas"></canvas>
 
-<div id="drop-arrow" aria-hidden="true">
-    <span></span>
-</div>
+<div id="drop-arrow" aria-hidden="true"></div>
 
 <div id="final-screen">
     <div class="logo-wrap">
@@ -930,82 +603,45 @@ p.eng-text + p.eng-text {
 </div>
 
 <script>
-const storySections =
-    document.querySelectorAll('.story-section');
-
-const scroller =
-    document.getElementById('scroller');
-
-const foldHintText =
-    document.getElementById('fold-hint-text');
-
-const storyContainer =
-    document.getElementById('story-container');
-
-const paperElement =
-    document.getElementById('paper-element');
-
-const foldTrigger =
-    document.getElementById('corner-trigger');
-
-const dropArrow =
-    document.getElementById('drop-arrow');
-
-const finalScreen =
-    document.getElementById('final-screen');
-
-const restartButton =
-    document.getElementById('restart-btn');
-
-const canvas =
-    document.getElementById('animation-canvas');
-
-const ctx =
-    canvas.getContext('2d');
+const storySections = document.querySelectorAll('.story-section');
+const scroller = document.getElementById('scroller');
+const foldHintText = document.getElementById('fold-hint-text');
+const storyContainer = document.getElementById('story-container');
+const paperElement = document.getElementById('paper-element');
+const foldTrigger = document.getElementById('corner-trigger');
+const dropArrow = document.getElementById('drop-arrow');
+const finalScreen = document.getElementById('final-screen');
+const restartButton = document.getElementById('restart-btn');
+const canvas = document.getElementById('animation-canvas');
+const ctx = canvas.getContext('2d');
 
 /* ==================== 阅读淡入 ==================== */
-
 const sectionObserver = new IntersectionObserver(
     entries => {
         entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                return;
-            }
-
+            if (!entry.isIntersecting) return;
             entry.target.classList.add('revealed');
-
             if (entry.target.id === 'sec-5') {
                 foldHintText.classList.add('visible');
             }
         });
     },
-    {
-        threshold: .15,
-        rootMargin: '0px 0px -80px 0px'
-    }
+    { threshold: .15, rootMargin: '0px 0px -80px 0px' }
 );
-
-storySections.forEach(section => {
-    sectionObserver.observe(section);
-});
+storySections.forEach(section => sectionObserver.observe(section));
 
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-        scroller.style.opacity = '0';
-    } else {
-        scroller.style.opacity = '.7';
-    }
+    scroller.style.opacity = window.scrollY > 100 ? '0' : '.7';
 });
 
-/* ==================== 动画状态 ==================== */
-
+/* ==================== 动画状态阶段 ==================== */
 const STAGE_READING = 0;
 const STAGE_FOLDING = 1;
 const STAGE_TRANSITION = 2;
 const STAGE_DRAGGING = 3;
 const STAGE_SLIDE = 4;
 const STAGE_CLOSING = 5;
-const STAGE_ZOOM = 6;
+const STAGE_FLIP_ZOOM = 6;
 const STAGE_FINAL = 7;
 
 let currentStage = STAGE_READING;
@@ -1025,7 +661,7 @@ let transitionStartY = 0;
 let foldProgress = 0;
 let transitionProgress = 0;
 let flapProgress = 0;
-let zoomProgress = 0;
+let flipZoomProgress = 0;
 
 let envelopeX = 0;
 let envelopeY = 0;
@@ -1037,8 +673,7 @@ let dragOffsetX = 0;
 let dragOffsetY = 0;
 let hintTimer = null;
 
-/* ==================== 音效状态 ==================== */
-
+/* ==================== 音效模块 ==================== */
 let audioContext = null;
 let masterGain = null;
 let audioStarted = false;
@@ -1049,59 +684,100 @@ let envelopeSoundPlayed = false;
 let envelopeCloseSoundPlayed = false;
 let finalSoundPlayed = false;
 
-/* ==================== Canvas ==================== */
+function startAudio() {
+    if (audioStarted) {
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
+        return;
+    }
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    audioContext = new AudioContext();
+    masterGain = audioContext.createGain();
+    masterGain.gain.value = .16;
+    masterGain.connect(audioContext.destination);
+    audioStarted = true;
+}
 
+function playTone(frequency, duration, type = 'sine', volume = .05, delay = 0) {
+    if (!audioContext || !masterGain) return;
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    const startTime = audioContext.currentTime + delay;
+
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    gain.gain.setValueAtTime(.0001, startTime);
+    gain.gain.exponentialRampToValueAtTime(volume, startTime + .025);
+    gain.gain.exponentialRampToValueAtTime(.0001, startTime + duration);
+
+    oscillator.connect(gain);
+    gain.connect(masterGain);
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration + .04);
+}
+
+function playPaperRustle() {
+    if (!audioContext || !masterGain) return;
+    const duration = .42;
+    const bufferSize = Math.floor(audioContext.sampleRate * duration);
+    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+    }
+    const source = audioContext.createBufferSource();
+    const filter = audioContext.createBiquadFilter();
+    const gain = audioContext.createGain();
+
+    filter.type = 'bandpass';
+    filter.frequency.value = 1500;
+    filter.Q.value = .7;
+    gain.gain.value = .055;
+
+    source.buffer = buffer;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(masterGain);
+    source.start();
+}
+
+function playFoldStartSound() { playTone(220, .8, 'sine', .045); }
+function playFoldCreaseSound() { playPaperRustle(); playTone(330, .28, 'triangle', .035); }
+function playEnvelopeSlideSound() { playTone(180, .65, 'sine', .04); playTone(360, .45, 'triangle', .025, .18); }
+function playEnvelopeCloseSound() { playPaperRustle(); playTone(420, .38, 'triangle', .045); }
+function playFinalSound() {
+    playTone(392, 1.2, 'sine', .045);
+    playTone(523.25, 1.5, 'sine', .035, .28);
+    playTone(659.25, 1.8, 'sine', .025, .58);
+}
+
+/* ==================== Canvas 尺寸适配 ==================== */
 function resizeCanvas() {
     width = window.innerWidth;
     height = window.innerHeight;
-
-    dpr = Math.min(
-        window.devicePixelRatio || 1,
-        2
-    );
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
-
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
 
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    envelopeWidth = Math.min(
-        width * .84,
-        420
-    );
-
-    envelopeHeight =
-        envelopeWidth * .64;
-
+    envelopeWidth = Math.min(width * .84, 420);
+    envelopeHeight = envelopeWidth * .64;
     envelopeX = width / 2;
     envelopeY = height * .56;
 }
-
-window.addEventListener(
-    'resize',
-    resizeCanvas
-);
-
+window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-/* ==================== 缓动 ==================== */
-
+/* ==================== 缓动数学方法 ==================== */
 function easeInOut(value) {
     value = Math.max(0, Math.min(1, value));
-
-    return value < .5
-        ? 2 * value * value
-        : 1 - Math.pow(-2 * value + 2, 2) / 2;
+    return value < .5 ? 2 * value * value : 1 - Math.pow(-2 * value + 2, 2) / 2;
 }
 
 function easeOutCubic(value) {
@@ -1109,316 +785,36 @@ function easeOutCubic(value) {
     return 1 - Math.pow(1 - value, 3);
 }
 
-/* ==================== 音效 ==================== */
-
-function startAudio() {
-    if (audioStarted) {
-        if (
-            audioContext &&
-            audioContext.state === 'suspended'
-        ) {
-            audioContext.resume();
-        }
-
-        return;
-    }
-
-    const AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext;
-
-    if (!AudioContext) {
-        return;
-    }
-
-    audioContext = new AudioContext();
-
-    masterGain =
-        audioContext.createGain();
-
-    masterGain.gain.value = .16;
-
-    masterGain.connect(
-        audioContext.destination
-    );
-
-    audioStarted = true;
-}
-
-function playTone(
-    frequency,
-    duration,
-    type = 'sine',
-    volume = .05,
-    delay = 0
-) {
-    if (!audioContext || !masterGain) {
-        return;
-    }
-
-    const oscillator =
-        audioContext.createOscillator();
-
-    const gain =
-        audioContext.createGain();
-
-    const startTime =
-        audioContext.currentTime + delay;
-
-    oscillator.type = type;
-
-    oscillator.frequency.setValueAtTime(
-        frequency,
-        startTime
-    );
-
-    gain.gain.setValueAtTime(
-        .0001,
-        startTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        volume,
-        startTime + .025
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        startTime + duration
-    );
-
-    oscillator.connect(gain);
-    gain.connect(masterGain);
-
-    oscillator.start(startTime);
-    oscillator.stop(
-        startTime + duration + .04
-    );
-}
-
-function playPaperRustle() {
-    if (!audioContext || !masterGain) {
-        return;
-    }
-
-    const duration = .42;
-
-    const bufferSize =
-        Math.floor(
-            audioContext.sampleRate * duration
-        );
-
-    const buffer =
-        audioContext.createBuffer(
-            1,
-            bufferSize,
-            audioContext.sampleRate
-        );
-
-    const data =
-        buffer.getChannelData(0);
-
-    for (let i = 0; i < bufferSize; i++) {
-        data[i] =
-            (Math.random() * 2 - 1) *
-            Math.pow(1 - i / bufferSize, 2);
-    }
-
-    const source =
-        audioContext.createBufferSource();
-
-    const filter =
-        audioContext.createBiquadFilter();
-
-    const gain =
-        audioContext.createGain();
-
-    filter.type = 'bandpass';
-    filter.frequency.value = 1500;
-    filter.Q.value = .7;
-
-    gain.gain.value = .055;
-
-    source.buffer = buffer;
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(masterGain);
-
-    source.start();
-}
-
-function playFoldStartSound() {
-    playTone(220, .8, 'sine', .045);
-}
-
-function playFoldCreaseSound() {
-    playPaperRustle();
-    playTone(330, .28, 'triangle', .035);
-}
-
-function playEnvelopeSlideSound() {
-    playTone(180, .65, 'sine', .04);
-    playTone(360, .45, 'triangle', .025, .18);
-}
-
-function playEnvelopeCloseSound() {
-    playPaperRustle();
-    playTone(420, .38, 'triangle', .045);
-}
-
-function playFinalSound() {
-    playTone(392, 1.2, 'sine', .045);
-    playTone(523.25, 1.5, 'sine', .035, .28);
-    playTone(659.25, 1.8, 'sine', .025, .58);
-}
-
-/* ==================== 纸张绘制 ==================== */
-
-function drawPaperPanel(
-    panelWidth,
-    panelHeight,
-    color = '#F8F3E8',
-    lineOpacity = .22
-) {
+/* ==================== 纯净米白信纸及透视翻折绘制 ==================== */
+function drawPaperPanel(panelWidth, panelHeight, color = '#F8F3E8', lineOpacity = .22) {
     ctx.fillStyle = color;
+    ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, panelHeight);
 
-    ctx.fillRect(
-        -panelWidth / 2,
-        -panelHeight / 2,
-        panelWidth,
-        panelHeight
-    );
-
-    /*
-     * 横线随纸张几何高度一起缩放。
-     */
-    ctx.fillStyle =
-        `rgba(145, 132, 111, ${lineOpacity})`;
-
+    ctx.fillStyle = `rgba(145, 132, 111, ${lineOpacity})`;
     const lineGap = 36.8;
-
-    for (
-        let y = -panelHeight / 2 + lineGap;
-        y < panelHeight / 2;
-        y += lineGap
-    ) {
-        ctx.fillRect(
-            -panelWidth / 2 + 14,
-            y,
-            panelWidth - 28,
-            1
-        );
+    for (let y = -panelHeight / 2 + lineGap; y < panelHeight / 2; y += lineGap) {
+        ctx.fillRect(-panelWidth / 2 + 14, y, panelWidth - 28, 1);
     }
 
-    ctx.fillStyle =
-        'rgba(59, 42, 34, .1)';
-
-    ctx.fillRect(
-        -panelWidth / 2,
-        -panelHeight / 2,
-        panelWidth,
-        2
-    );
-
-    ctx.fillRect(
-        -panelWidth / 2,
-        panelHeight / 2 - 2,
-        panelWidth,
-        2
-    );
+    ctx.fillStyle = 'rgba(59, 42, 34, .1)';
+    ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, 2);
+    ctx.fillRect(-panelWidth / 2, panelHeight / 2 - 2, panelWidth, 2);
 }
 
-function drawFoldedNote(
-    noteWidth,
-    noteHeight
-) {
-    drawPaperPanel(
-        noteWidth,
-        noteHeight,
-        '#F8F3E8',
-        .23
-    );
-
-    ctx.fillStyle =
-        'rgba(145, 132, 111, .28)';
-
-    ctx.fillRect(
-        -noteWidth / 2 + 10,
-        -noteHeight / 6,
-        noteWidth - 20,
-        1
-    );
-
-    ctx.fillRect(
-        -noteWidth / 2 + 10,
-        noteHeight / 6,
-        noteWidth - 20,
-        1
-    );
+function drawFoldedNote(noteWidth, noteHeight) {
+    drawPaperPanel(noteWidth, noteHeight, '#F8F3E8', .23);
 }
 
-function drawCrease(
-    creaseWidth,
-    y,
-    strength
-) {
-    ctx.fillStyle =
-        `rgba(59, 42, 34, ${.18 * strength})`;
-
-    ctx.fillRect(
-        -creaseWidth / 2 + 12,
-        y - 1,
-        creaseWidth - 24,
-        2
-    );
-
-    ctx.fillStyle =
-        `rgba(255, 255, 255, ${.28 * strength})`;
-
-    ctx.fillRect(
-        -creaseWidth / 2 + 12,
-        y + 1,
-        creaseWidth - 24,
-        1
-    );
-}
-
-/*
- * 绘制带有透视变化的折叠纸片。
- *
- * topY / bottomY 是纸片上下边缘，
- * topScale / bottomScale 控制边缘向远处缩短，
- * 用来模拟纸张绕横向折痕旋转。
- */
-function drawPerspectiveSheet(
-    sheetWidth,
-    topY,
-    bottomY,
-    topScale,
-    bottomScale,
-    color
-) {
-    const topWidth =
-        sheetWidth * topScale;
-
-    const bottomWidth =
-        sheetWidth * bottomScale;
-
-    const topLeft =
-        -topWidth / 2;
-
-    const topRight =
-        topWidth / 2;
-
-    const bottomLeft =
-        -bottomWidth / 2;
-
-    const bottomRight =
-        bottomWidth / 2;
+// 绘制带有 X 轴 3D 旋转透视投影面，模拟下半段和上半段的折叠
+function drawPerspectiveSheet(sheetWidth, topY, bottomY, topScale, bottomScale, color) {
+    const topWidth = sheetWidth * topScale;
+    const bottomWidth = sheetWidth * bottomScale;
+    const topLeft = -topWidth / 2;
+    const topRight = topWidth / 2;
+    const bottomLeft = -bottomWidth / 2;
+    const bottomRight = bottomWidth / 2;
 
     ctx.fillStyle = color;
-
     ctx.beginPath();
     ctx.moveTo(topLeft, topY);
     ctx.lineTo(topRight, topY);
@@ -1427,11 +823,7 @@ function drawPerspectiveSheet(
     ctx.closePath();
     ctx.fill();
 
-    /*
-     * 折叠面上的横线也随透视变形。
-     */
     ctx.save();
-
     ctx.beginPath();
     ctx.moveTo(topLeft, topY);
     ctx.lineTo(topRight, topY);
@@ -1440,48 +832,23 @@ function drawPerspectiveSheet(
     ctx.closePath();
     ctx.clip();
 
-    ctx.strokeStyle =
-        'rgba(145, 132, 111, .24)';
-
+    ctx.strokeStyle = 'rgba(145, 132, 111, .24)';
     ctx.lineWidth = 1;
-
-    const heightValue =
-        bottomY - topY;
-
+    const heightValue = Math.max(bottomY - topY, 1);
     const lineGap = 36.8;
-
-    for (
-        let y = topY + lineGap;
-        y < bottomY;
-        y += lineGap
-    ) {
-        const ratio =
-            (y - topY) /
-            Math.max(heightValue, 1);
-
-        const left =
-            topLeft +
-            (bottomLeft - topLeft) *
-            ratio;
-
-        const right =
-            topRight +
-            (bottomRight - topRight) *
-            ratio;
-
+    for (let y = topY + lineGap; y < bottomY; y += lineGap) {
+        const ratio = (y - topY) / heightValue;
+        const left = topLeft + (bottomLeft - topLeft) * ratio;
+        const right = topRight + (bottomRight - topRight) * ratio;
         ctx.beginPath();
         ctx.moveTo(left, y);
         ctx.lineTo(right, y);
         ctx.stroke();
     }
-
     ctx.restore();
 
-    ctx.strokeStyle =
-        'rgba(59, 42, 34, .18)';
-
+    ctx.strokeStyle = 'rgba(59, 42, 34, .18)';
     ctx.lineWidth = 1;
-
     ctx.beginPath();
     ctx.moveTo(topLeft, topY);
     ctx.lineTo(topRight, topY);
@@ -1491,156 +858,148 @@ function drawPerspectiveSheet(
     ctx.stroke();
 }
 
-/* ==================== 信封绘制 ==================== */
+// 增加了折痕线在过程中的粗细和对比，让折叠感更加外显与粗壮
+function drawCrease(creaseWidth, y, strength) {
+    ctx.fillStyle = `rgba(59, 42, 34, ${.26 * strength})`;
+    ctx.fillRect(-creaseWidth / 2 + 12, y - 1.5, creaseWidth - 24, 3);
+    ctx.fillStyle = `rgba(255, 255, 255, ${.38 * strength})`;
+    ctx.fillRect(-creaseWidth / 2 + 12, y + 1.5, creaseWidth - 24, 1.2);
+}
 
-function drawOpenEnvelope(alpha = 1) {
-    ctx.save();
+/* ==================== 真实信封纸面绘制（去除内部直三角） ==================== */
 
-    ctx.globalAlpha = alpha;
-
-    const left =
-        envelopeX - envelopeWidth / 2;
-
-    const right =
-        envelopeX + envelopeWidth / 2;
-
-    const top =
-        envelopeY - envelopeHeight / 2;
-
-    const bottom =
-        envelopeY + envelopeHeight / 2;
-
+// 渲染信封内嵌背板
+function drawEnvelopeBack() {
+    const left = envelopeX - envelopeWidth / 2;
+    const top = envelopeY - envelopeHeight / 2;
     ctx.fillStyle = '#D6BFA5';
-
     ctx.beginPath();
-    ctx.roundRect(
-        left,
-        top,
-        envelopeWidth,
-        envelopeHeight,
-        7
-    );
+    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
     ctx.fill();
+}
+
+// 渲染信封下半部插口及两瓣拼接线（还原真实的平面贴合与横向接缝，无交叉三角线条）
+function drawEnvelopeFrontPocket() {
+    const left = envelopeX - envelopeWidth / 2;
+    const right = envelopeX + envelopeWidth / 2;
+    const top = envelopeY - envelopeHeight / 2;
+    const bottom = envelopeY + envelopeHeight / 2;
 
     ctx.fillStyle = '#E8D8BC';
     ctx.strokeStyle = '#C5B29B';
     ctx.lineWidth = 1;
 
+    // 平整的前部背袋板
     ctx.beginPath();
-    ctx.moveTo(left, top + 8);
-    ctx.lineTo(envelopeX, envelopeY + 28);
-    ctx.lineTo(right, top + 8);
-    ctx.lineTo(right, bottom);
-    ctx.lineTo(left, bottom);
-    ctx.closePath();
+    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
     ctx.fill();
     ctx.stroke();
 
+    // 绘制背板底翼拼缝：极度还原工艺的手法。底折片微微折上，且其边缘是平齐的
+    ctx.strokeStyle = 'rgba(183, 159, 134, .6)';
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(left, bottom);
-    ctx.lineTo(envelopeX, envelopeY - 14);
-    ctx.lineTo(right, bottom);
+    ctx.moveTo(left + 2, bottom - 1);
+    ctx.lineTo(right - 2, bottom - 1);
     ctx.stroke();
 
+    // 顶插入缝的微弱阴影线，保证真实纸张拼缝深度感
+    ctx.strokeStyle = 'rgba(183, 159, 134, .45)';
+    ctx.beginPath();
+    ctx.moveTo(left + 8, top + 11);
+    ctx.lineTo(right - 8, top + 11);
+    ctx.stroke();
+}
+
+function drawOpenEnvelopeFlap() {
+    const left = envelopeX - envelopeWidth / 2;
+    const right = envelopeX + envelopeWidth / 2;
+    const top = envelopeY - envelopeHeight / 2;
+
     ctx.fillStyle = '#E8D8BC';
+    ctx.strokeStyle = '#B79F86';
+    ctx.lineWidth = 1;
 
     ctx.beginPath();
     ctx.moveTo(left, top);
-    ctx.lineTo(
-        envelopeX,
-        top - envelopeHeight * .5
-    );
+    ctx.lineTo(envelopeX, top - envelopeHeight * .5);
     ctx.lineTo(right, top);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+}
 
+function drawOpenEnvelope(alpha = 1) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    drawEnvelopeBack();
+    drawEnvelopeFrontPocket();
+    drawOpenEnvelopeFlap();
     ctx.restore();
 }
 
-function drawEnvelopeBack() {
-    const left =
-        envelopeX - envelopeWidth / 2;
-
-    const top =
-        envelopeY - envelopeHeight / 2;
-
-    ctx.fillStyle = '#D6BFA5';
-
-    ctx.beginPath();
-    ctx.roundRect(
-        left,
-        top,
-        envelopeWidth,
-        envelopeHeight,
-        7
-    );
-    ctx.fill();
-}
-
-function drawEnvelopeFrontPocket() {
-    const left =
-        envelopeX - envelopeWidth / 2;
-
-    const right =
-        envelopeX + envelopeWidth / 2;
-
-    const top =
-        envelopeY - envelopeHeight / 2;
-
-    const bottom =
-        envelopeY + envelopeHeight / 2;
+// 旋转过程中的信封正面绘制（全平底，淡阴影封盖边缘，除去交叉线）
+function drawClosedEnvelopeFace() {
+    const left = -envelopeWidth / 2;
+    const top = -envelopeHeight / 2;
 
     ctx.fillStyle = '#E8D8BC';
-    ctx.strokeStyle = '#C5B29B';
+    ctx.strokeStyle = '#B79F86';
     ctx.lineWidth = 1;
 
     ctx.beginPath();
-    ctx.moveTo(left, top + 8);
-    ctx.lineTo(envelopeX, envelopeY + 28);
-    ctx.lineTo(right, top + 8);
-    ctx.lineTo(right, bottom);
-    ctx.lineTo(left, bottom);
-    ctx.closePath();
+    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
     ctx.fill();
     ctx.stroke();
 
+    // 绘制贴合状态的上封盖底角边缘阴影，极缓的浅折线
+    ctx.strokeStyle = 'rgba(150, 119, 91, .55)';
     ctx.beginPath();
-    ctx.moveTo(left, bottom);
-    ctx.lineTo(envelopeX, envelopeY - 14);
-    ctx.lineTo(right, bottom);
+    ctx.moveTo(left + 8, top + 12);
+    ctx.lineTo(0, top + 42);
+    ctx.lineTo(left + envelopeWidth - 8, top + 12);
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(183, 159, 134, .6)';
+    ctx.beginPath();
+    ctx.moveTo(left + 1, top + 12);
+    ctx.lineTo(left + envelopeWidth - 1, top + 12);
+    ctx.stroke();
+}
+
+// 旋转过程中的信封背面绘制
+function drawClosedEnvelopeBack() {
+    const left = -envelopeWidth / 2;
+    const top = -envelopeHeight / 2;
+
+    ctx.fillStyle = '#D6BFA5';
+    ctx.strokeStyle = '#B79F86';
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(183, 159, 134, .55)';
+    ctx.beginPath();
+    ctx.moveTo(left + 2, top + envelopeHeight - 14);
+    ctx.lineTo(left + envelopeWidth - 2, top + envelopeHeight - 14);
     ctx.stroke();
 }
 
 function drawEnvelopeFlap(progress) {
-    const left =
-        envelopeX - envelopeWidth / 2;
+    const left = envelopeX - envelopeWidth / 2;
+    const right = envelopeX + envelopeWidth / 2;
+    const top = envelopeY - envelopeHeight / 2;
 
-    const right =
-        envelopeX + envelopeWidth / 2;
+    const openApexY = top - envelopeHeight * .5;
+    const closedApexY = envelopeY + 31;
 
-    const top =
-        envelopeY - envelopeHeight / 2;
+    const eased = easeOutCubic(progress);
+    const apexY = openApexY + (closedApexY - openApexY) * eased;
 
-    const openApexY =
-        top - envelopeHeight * .5;
-
-    const closedApexY =
-        envelopeY + 31;
-
-    const eased =
-        easeOutCubic(progress);
-
-    const apexY =
-        openApexY +
-        (closedApexY - openApexY) *
-        eased;
-
-    ctx.fillStyle =
-        progress < .55
-            ? '#E8D8BC'
-            : '#DECFAF';
-
+    ctx.fillStyle = progress < .55 ? '#E8D8BC' : '#DECFAF';
     ctx.strokeStyle = '#B79F86';
     ctx.lineWidth = 1;
 
@@ -1653,11 +1012,8 @@ function drawEnvelopeFlap(progress) {
     ctx.stroke();
 
     if (progress >= 1) {
-        ctx.strokeStyle =
-            'rgba(150, 119, 91, .5)';
-
+        ctx.strokeStyle = 'rgba(150, 119, 91, .5)';
         ctx.lineWidth = 1.5;
-
         ctx.beginPath();
         ctx.moveTo(left + 2, top + 1);
         ctx.lineTo(envelopeX, closedApexY - 1);
@@ -1666,35 +1022,19 @@ function drawEnvelopeFlap(progress) {
     }
 }
 
-/* ==================== 尺寸与拖拽 ==================== */
-
+/* ==================== 尺寸计算 ==================== */
 function getFoldedSize() {
-    const foldedWidth = Math.min(
-        envelopeWidth * .62,
-        300
-    );
-
-    return {
-        width: foldedWidth,
-        height: foldedWidth * .9
-    };
+    const foldedWidth = Math.min(envelopeWidth * .62, 300);
+    return { width: foldedWidth, height: foldedWidth * .9 };
 }
 
 function getPointerPosition(event) {
-    return {
-        x: event.clientX,
-        y: event.clientY
-    };
+    return { x: event.clientX, y: event.clientY };
 }
 
-/* ==================== 开始折叠 ==================== */
-
+/* ==================== 卷边点击：初始化并进入 Canvas 动画 ==================== */
 foldTrigger.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'instant'
-    });
-
+    window.scrollTo({ top: 0, behavior: 'instant' });
     document.body.style.overflow = 'hidden';
 
     scroller.style.opacity = '0';
@@ -1703,9 +1043,7 @@ foldTrigger.addEventListener('click', () => {
 
     foldHintText.classList.remove('visible');
 
-    const rect =
-        paperElement.getBoundingClientRect();
-
+    const rect = paperElement.getBoundingClientRect();
     paperWidth = rect.width;
     paperHeight = rect.height;
 
@@ -1718,7 +1056,7 @@ foldTrigger.addEventListener('click', () => {
     foldProgress = 0;
     transitionProgress = 0;
     flapProgress = 0;
-    zoomProgress = 0;
+    flipZoomProgress = 0;
 
     foldBottomSoundPlayed = false;
     foldTopSoundPlayed = false;
@@ -1734,92 +1072,44 @@ foldTrigger.addEventListener('click', () => {
 
     startAudio();
     playFoldStartSound();
-
     animate();
 });
 
-/* ==================== 拖拽逻辑 ==================== */
-
+/* ==================== 拖拽控制逻辑 ==================== */
 function pointerDown(event) {
-    if (currentStage !== STAGE_DRAGGING) {
-        return;
-    }
-
-    const pointer =
-        getPointerPosition(event);
-
-    const size =
-        getFoldedSize();
-
-    const inside =
-        Math.abs(pointer.x - paperX) <
-            size.width / 2 &&
-        Math.abs(pointer.y - paperY) <
-            size.height / 2;
-
-    if (!inside) {
-        return;
-    }
+    if (currentStage !== STAGE_DRAGGING) return;
+    const pointer = getPointerPosition(event);
+    const size = getFoldedSize();
+    const inside = Math.abs(pointer.x - paperX) < size.width / 2 &&
+                   Math.abs(pointer.y - paperY) < size.height / 2;
+    if (!inside) return;
 
     isDragging = true;
-
-    dragOffsetX =
-        paperX - pointer.x;
-
-    dragOffsetY =
-        paperY - pointer.y;
+    dragOffsetX = paperX - pointer.x;
+    dragOffsetY = paperY - pointer.y;
 
     dropArrow.classList.remove('visible');
-
-    canvas.setPointerCapture?.(
-        event.pointerId
-    );
+    canvas.setPointerCapture?.(event.pointerId);
 }
 
 function pointerMove(event) {
-    if (!isDragging) {
-        return;
-    }
-
-    const pointer =
-        getPointerPosition(event);
-
-    paperX =
-        pointer.x + dragOffsetX;
-
-    paperY =
-        pointer.y + dragOffsetY;
-
+    if (!isDragging) return;
+    const pointer = getPointerPosition(event);
+    paperX = pointer.x + dragOffsetX;
+    paperY = pointer.y + dragOffsetY;
     event.preventDefault();
 }
 
 function pointerUp() {
-    if (!isDragging) {
-        return;
-    }
-
+    if (!isDragging) return;
     isDragging = false;
 
     const targetX = envelopeX;
+    const targetY = envelopeY - envelopeHeight / 2 - 20;
+    const distance = Math.hypot(paperX - targetX, paperY - targetY);
 
-    const targetY =
-        envelopeY -
-        envelopeHeight / 2 -
-        20;
-
-    const distance =
-        Math.hypot(
-            paperX - targetX,
-            paperY - targetY
-        );
-
-    if (
-        distance < 95 &&
-        paperY <
-            envelopeY -
-            envelopeHeight / 2 +
-            35
-    ) {
+    // 拖进敏感区，自动吸附滑入
+    if (distance < 95 && paperY < envelopeY - envelopeHeight / 2 + 35) {
         currentStage = STAGE_SLIDE;
         dropArrow.classList.remove('visible');
     } else {
@@ -1829,238 +1119,145 @@ function pointerUp() {
 
 function showDropArrow(delay) {
     clearTimeout(hintTimer);
-
     hintTimer = setTimeout(() => {
-        if (
-            currentStage === STAGE_DRAGGING &&
-            !isDragging
-        ) {
+        if (currentStage === STAGE_DRAGGING && !isDragging) {
             dropArrow.classList.add('visible');
         }
     }, delay);
 }
 
-canvas.addEventListener(
-    'pointerdown',
-    pointerDown
-);
+canvas.addEventListener('pointerdown', pointerDown);
+canvas.addEventListener('pointermove', pointerMove);
+window.addEventListener('pointerup', pointerUp);
 
-canvas.addEventListener(
-    'pointermove',
-    pointerMove
-);
-
-window.addEventListener(
-    'pointerup',
-    pointerUp
-);
-
-/* ==================== 主动画 ==================== */
-
+/* ==================== 统一动画逻辑渲染环 ==================== */
 function animate() {
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
+    // 渲染时清除画布，使 Canvas 透明，完全透出 body 层的静态闪烁夜空背景
+    ctx.clearRect(0, 0, width, height);
 
     /*
-     * 折叠阶段
+     * 1. 折叠动画阶段（包含文字内容的米白信纸三维高度缩短）
      */
     if (currentStage === STAGE_FOLDING) {
-        foldProgress = Math.min(
-            1,
-            foldProgress + .00125
-        );
+        // 折叠每帧速度由原来的 0.00125 略快调升至 0.0032 
+        foldProgress = Math.min(1, foldProgress + .0032);
+        const segmentHeight = paperHeight / 3;
 
-        const segmentHeight =
-            paperHeight / 3;
+        // 0.0 - 0.38 阶段：信纸在平面上进行等比例全局缩小
+        const cameraProgress = easeInOut(Math.min(foldProgress / .38, 1));
+        const cameraScale = 1 - cameraProgress * .5;
 
-        /*
-         * 先缩小完整信纸。
-         */
-        const cameraProgress =
-            easeInOut(
-                Math.min(
-                    foldProgress / .38,
-                    1
-                )
-            );
+        // 0.38 - 0.69 阶段：下半段沿 Y 轴向上翻折
+        const bottomProgress = easeInOut(Math.max(0, Math.min(1, (foldProgress - .38) / .31)));
+        
+        // 0.69 - 1.0 阶段：上半段沿 Y 轴向下折来
+        const topProgress = easeInOut(Math.max(0, Math.min(1, (foldProgress - .69) / .31)));
 
-        const cameraScale =
-            1 - cameraProgress * .5;
+        const bottomAngle = bottomProgress * Math.PI;
+        const topAngle = topProgress * Math.PI;
 
-        /*
-         * 下半部分和上半部分分别折叠。
-         */
-        const bottomProgress =
-            easeInOut(
-                Math.max(
-                    0,
-                    Math.min(
-                        1,
-                        (foldProgress - .38) / .31
-                    )
-                )
-            );
+        const bottomScale = Math.abs(Math.cos(bottomAngle));
+        const topScale = Math.abs(Math.cos(topAngle));
 
-        const topProgress =
-            easeInOut(
-                Math.max(
-                    0,
-                    Math.min(
-                        1,
-                        (foldProgress - .69) / .31
-                    )
-                )
-            );
-
-        const bottomAngle =
-            bottomProgress * Math.PI;
-
-        const topAngle =
-            topProgress * Math.PI;
-
-        const bottomScale =
-            Math.abs(Math.cos(bottomAngle));
-
-        const topScale =
-            Math.abs(Math.cos(topAngle));
-
-        if (
-            bottomProgress > .1 &&
-            !foldBottomSoundPlayed
-        ) {
+        if (bottomProgress > .1 && !foldBottomSoundPlayed) {
             foldBottomSoundPlayed = true;
             playFoldCreaseSound();
         }
 
-        if (
-            topProgress > .1 &&
-            !foldTopSoundPlayed
-        ) {
+        if (topProgress > .1 && !foldTopSoundPlayed) {
             foldTopSoundPlayed = true;
             playFoldCreaseSound();
         }
 
         ctx.save();
+        ctx.translate(paperX, paperY);
+        ctx.scale(cameraScale, cameraScale);
 
-        ctx.translate(
-            paperX,
-            paperY
-        );
-
-        ctx.scale(
-            cameraScale,
-            cameraScale
-        );
-
-        ctx.shadowColor =
-            'rgba(59, 42, 34, .24)';
-
+        ctx.shadowColor = 'rgba(59, 42, 34, .24)';
         ctx.shadowBlur = 24;
         ctx.shadowOffsetY = 10;
 
-        /*
-         * 完整信纸先缩小，
-         * 这一阶段不发生折叠。
-         */
+        // 仅缩放还没有折的时候
         if (foldProgress < .38) {
-            drawPaperPanel(
-                paperWidth,
-                paperHeight
-            );
-
+            drawPaperPanel(paperWidth, paperHeight);
             ctx.restore();
-
             requestAnimationFrame(animate);
             return;
         }
 
-        /*
-         * 中间三分之一。
-         */
-        drawPaperPanel(
-            paperWidth,
-            segmentHeight
-        );
+        // --- 3D 空间叠合层级绘制及高度缩短逻辑 ---
+        // A. 绘制大底：平整静止的中间 1/3 段
+        drawPaperPanel(paperWidth, segmentHeight);
 
-        /*
-         * 下半信纸从下方叠上去。
-         */
-        if (bottomScale > .015) {
-            const bottomTop =
-                segmentHeight / 2;
-
-            const bottomBottom =
-                segmentHeight / 2 +
-                segmentHeight * bottomScale;
-
+        // B. 绘制下段纸板折起与高度同步缩减
+        if (bottomProgress < 0.5) {
+            // 向着屏幕倾斜的透视纸片：底部线段收缩
+            const bottomTop = segmentHeight / 2;
+            const bottomBottom = segmentHeight / 2 + segmentHeight * bottomScale;
             drawPerspectiveSheet(
                 paperWidth,
                 bottomTop,
                 bottomBottom,
                 .98,
                 bottomScale,
-                bottomProgress < .5
-                    ? '#F8F3E8'
-                    : '#E5D6BD'
+                '#F8F3E8'
             );
-        }
-
-        drawCrease(
-            paperWidth,
-            segmentHeight / 2,
-            bottomProgress
-        );
-
-        /*
-         * 上半信纸从上方叠下来。
-         */
-        if (topScale > .015) {
-            const topTop =
-                -segmentHeight / 2 -
-                segmentHeight * topScale;
-
-            const topBottom =
-                -segmentHeight / 2;
-
+        } else {
+            // 翻转并黏合在中间面板上面
+            const bottomTop = segmentHeight / 2;
+            const bottomBottom = segmentHeight / 2 - segmentHeight * bottomScale;
             drawPerspectiveSheet(
                 paperWidth,
-                topTop,
-                topBottom,
-                topScale,
+                bottomBottom,
+                bottomTop,
+                bottomScale,
                 .98,
-                topProgress < .5
-                    ? '#F8F3E8'
-                    : '#DECFAF'
+                '#E5D6BD' // 背部暗面以强化区分翻转面
             );
         }
+        drawCrease(paperWidth, segmentHeight / 2, bottomProgress);
 
-        drawCrease(
-            paperWidth,
-            -segmentHeight / 2,
-            topProgress
-        );
+        // C. 绘制上段纸板翻折与高度同步缩短
+        if (topProgress > 0) {
+            if (topProgress < 0.5) {
+                // 上部分纸张朝中间折入
+                const topTop = -segmentHeight / 2 - segmentHeight * topScale;
+                const topBottom = -segmentHeight / 2;
+                drawPerspectiveSheet(
+                    paperWidth,
+                    topTop,
+                    topBottom,
+                    topScale,
+                    .98,
+                    '#F8F3E8'
+                );
+            } else {
+                // 翻盖黏贴到中间面板的前部图层之上
+                const topTop = -segmentHeight / 2 + segmentHeight * topScale;
+                const topBottom = -segmentHeight / 2;
+                drawPerspectiveSheet(
+                    paperWidth,
+                    topBottom,
+                    topTop,
+                    .98,
+                    topScale,
+                    '#DECFAF'
+                );
+            }
+            drawCrease(paperWidth, -segmentHeight / 2, topProgress);
+        } else {
+            // 还未折叠的平整上半截
+            drawPaperPanel(paperWidth, segmentHeight);
+            ctx.save();
+            ctx.translate(0, -segmentHeight);
+            drawPaperPanel(paperWidth, segmentHeight);
+            ctx.restore();
+        }
 
-        /*
-         * 中间纸片增加轻微厚度阴影，
-         * 强化三维叠放效果。
-         */
-        if (
-            bottomProgress > .75 ||
-            topProgress > .75
-        ) {
-            ctx.fillStyle =
-                'rgba(59, 42, 34, .16)';
-
-            ctx.fillRect(
-                -paperWidth / 2 + 8,
-                segmentHeight / 2 - 2,
-                paperWidth - 16,
-                4
-            );
+        // D. 为重合纸片添加轻微立体阴影效果
+        if (bottomProgress > .75 || topProgress > .75) {
+            ctx.fillStyle = 'rgba(59, 42, 34, .16)';
+            ctx.fillRect(-paperWidth / 2 + 8, segmentHeight / 2 - 2, paperWidth - 16, 4);
         }
 
         ctx.restore();
@@ -2074,79 +1271,30 @@ function animate() {
     }
 
     /*
-     * 折叠完成后，信笺移动到上方。
+     * 2. 滑动转移安置阶段：将折叠折平的信纸移动到信封顶口
      */
-    else if (
-        currentStage === STAGE_TRANSITION
-    ) {
-        transitionProgress =
-            Math.min(
-                1,
-                transitionProgress + .012
-            );
+    else if (currentStage === STAGE_TRANSITION) {
+        transitionProgress = Math.min(1, transitionProgress + .012);
+        const progress = easeOutCubic(transitionProgress);
+        const folded = getFoldedSize();
 
-        const progress =
-            easeOutCubic(
-                transitionProgress
-            );
+        const currentWidth = paperWidth + (folded.width - paperWidth) * progress;
+        const currentHeight = paperHeight / 3 + (folded.height - paperHeight / 3) * progress;
 
-        const folded =
-            getFoldedSize();
+        const targetX = width / 2;
+        const targetY = Math.max(height * .16, 82);
 
-        const currentWidth =
-            paperWidth +
-            (folded.width - paperWidth) *
-            progress;
+        paperX = transitionStartX + (targetX - transitionStartX) * progress;
+        paperY = transitionStartY + (targetY - transitionStartY) * progress;
 
-        const currentHeight =
-            paperHeight / 3 +
-            (folded.height - paperHeight / 3) *
-            progress;
-
-        const targetX =
-            width / 2;
-
-        const targetY =
-            Math.max(
-                height * .16,
-                82
-            );
-
-        paperX =
-            transitionStartX +
-            (targetX - transitionStartX) *
-            progress;
-
-        paperY =
-            transitionStartY +
-            (targetY - transitionStartY) *
-            progress;
-
-        drawOpenEnvelope(
-            Math.min(
-                1,
-                progress * 1.3
-            )
-        );
+        drawOpenEnvelope(Math.min(1, progress * 1.3));
 
         ctx.save();
-
-        ctx.translate(
-            paperX,
-            paperY
-        );
-
-        ctx.shadowColor =
-            'rgba(59, 42, 34, .25)';
-
+        ctx.translate(paperX, paperY);
+        ctx.shadowColor = 'rgba(59, 42, 34, .25)';
         ctx.shadowBlur = 18;
         ctx.shadowOffsetY = 7;
-
-        drawFoldedNote(
-            currentWidth,
-            currentHeight
-        );
-
+        drawFoldedNote(currentWidth, currentHeight);
         ctx.restore();
 
         if (transitionProgress >= 1) {
@@ -2156,66 +1304,35 @@ function animate() {
     }
 
     /*
-     * 拖拽阶段。
+     * 3. 拖拽停滞阶段：等待用户动作
      */
-    else if (
-        currentStage === STAGE_DRAGGING
-    ) {
+    else if (currentStage === STAGE_DRAGGING) {
         drawOpenEnvelope(1);
-
-        const folded =
-            getFoldedSize();
+        const folded = getFoldedSize();
 
         ctx.save();
-
-        ctx.translate(
-            paperX,
-            paperY
-        );
-
-        ctx.shadowColor =
-            'rgba(59, 42, 34, .25)';
-
+        ctx.translate(paperX, paperY);
+        ctx.shadowColor = 'rgba(59, 42, 34, .25)';
         ctx.shadowBlur = 16;
         ctx.shadowOffsetY = 7;
-
-        drawFoldedNote(
-            folded.width,
-            folded.height
-        );
-
+        drawFoldedNote(folded.width, folded.height);
         ctx.restore();
     }
 
     /*
-     * 放入信封、闭合、结束。
+     * 4. 插入与闭合信封阶段
      */
-    else if (
-        currentStage >= STAGE_SLIDE &&
-        currentStage <= STAGE_ZOOM
-    ) {
-        const folded =
-            getFoldedSize();
+    else if (currentStage >= STAGE_SLIDE && currentStage <= STAGE_CLOSING) {
+        const folded = getFoldedSize();
 
         if (currentStage === STAGE_SLIDE) {
-            const targetX =
-                envelopeX;
+            const targetX = envelopeX;
+            const targetY = envelopeY - envelopeHeight * .08 + folded.height / 2;
 
-            const targetY =
-                envelopeY -
-                envelopeHeight * .08 +
-                folded.height / 2;
+            paperX += (targetX - paperX) * .13;
+            paperY += (targetY - paperY) * .11;
 
-            paperX +=
-                (targetX - paperX) * .13;
-
-            paperY +=
-                (targetY - paperY) * .11;
-
-            if (
-                Math.abs(paperX - targetX) < .8 &&
-                Math.abs(paperY - targetY) < .8
-            ) {
+            if (Math.abs(paperX - targetX) < .8 && Math.abs(paperY - targetY) < .8) {
                 paperX = targetX;
                 paperY = targetY;
                 currentStage = STAGE_CLOSING;
@@ -2229,55 +1346,29 @@ function animate() {
 
         drawEnvelopeBack();
 
+        // 将折纸切入插袋
         ctx.save();
-
-        const left =
-            envelopeX - envelopeWidth / 2;
-
-        const top =
-            envelopeY - envelopeHeight / 2;
-
+        const left = envelopeX - envelopeWidth / 2;
+        const top = envelopeY - envelopeHeight / 2;
         ctx.beginPath();
-
-        ctx.rect(
-            left,
-            top,
-            envelopeWidth,
-            envelopeHeight
-        );
-
+        ctx.rect(left, top, envelopeWidth, envelopeHeight);
         ctx.clip();
 
         ctx.save();
-
-        ctx.translate(
-            paperX,
-            paperY
-        );
-
-        drawFoldedNote(
-            folded.width,
-            folded.height
-        );
-
+        ctx.translate(paperX, paperY);
+        drawFoldedNote(folded.width, folded.height);
         ctx.restore();
         ctx.restore();
 
+        // 插口袋的前板
         drawEnvelopeFrontPocket();
 
-        if (
-            currentStage === STAGE_CLOSING
-        ) {
-            flapProgress =
-                Math.min(
-                    1,
-                    flapProgress + .018
-                );
-
+        if (currentStage === STAGE_CLOSING) {
+            flapProgress = Math.min(1, flapProgress + .018);
             if (flapProgress >= 1) {
                 flapProgress = 1;
                 zoomProgress = 0;
-                currentStage = STAGE_ZOOM;
+                currentStage = STAGE_FLIP_ZOOM;
 
                 if (!envelopeCloseSoundPlayed) {
                     envelopeCloseSoundPlayed = true;
@@ -2286,56 +1377,70 @@ function animate() {
             }
         }
 
-        drawEnvelopeFlap(
-            flapProgress
-        );
+        drawEnvelopeFlap(flapProgress);
+    }
 
-        if (
-            currentStage === STAGE_ZOOM
-        ) {
-            zoomProgress =
-                Math.min(
-                    1,
-                    zoomProgress + .018
-                );
+    /*
+     * 5. 信封旋转翻转，同时极速拉近拉大填满全屏阶段
+     */
+    else if (currentStage === STAGE_FLIP_ZOOM) {
+        flipZoomProgress = Math.min(1, flipZoomProgress + .014);
+        const progress = easeInOut(flipZoomProgress);
 
-            if (zoomProgress >= 1) {
-                currentStage = STAGE_FINAL;
-                finalScreen.classList.add('active');
+        // 翻面跨度 0.0 - 180.0 度
+        const angle = progress * Math.PI;
 
-                if (!finalSoundPlayed) {
-                    finalSoundPlayed = true;
-                    playFinalSound();
-                }
+        // 计算铺满整个屏幕的比例
+        const fitScale = Math.max(width / envelopeWidth, height / envelopeHeight) * 1.35;
+        const scale = 1 + (fitScale - 1) * Math.pow(progress, 1.1);
+
+        const horizontalProjection = Math.max(.02, Math.abs(Math.cos(angle)));
+
+        // 渐渐将中心移动至视口中心
+        const currentCenterX = envelopeX + (width / 2 - envelopeX) * progress;
+        const currentCenterY = envelopeY + (height / 2 - envelopeY) * progress;
+
+        ctx.save();
+        ctx.translate(currentCenterX, currentCenterY);
+        ctx.scale(horizontalProjection * scale, scale);
+
+        // 旋转过半时信封顺滑翻面
+        if (Math.cos(angle) >= 0) {
+            drawClosedEnvelopeFace();
+        } else {
+            drawClosedEnvelopeBack();
+        }
+        ctx.restore();
+
+        if (flipZoomProgress >= 1) {
+            canvas.style.opacity = '0';
+            finalScreen.classList.add('active');
+
+            if (!finalSoundPlayed) {
+                finalSoundPlayed = true;
+                playFinalSound();
             }
+            currentStage = STAGE_FINAL;
         }
     }
 
-    if (
-        currentStage !== STAGE_READING &&
-        currentStage !== STAGE_FINAL
-    ) {
+    if (currentStage !== STAGE_READING && currentStage !== STAGE_FINAL) {
         requestAnimationFrame(animate);
     }
 }
 
-/* ==================== 重新阅读 ==================== */
-
+/* ==================== 重新放映 ==================== */
 restartButton.addEventListener('click', () => {
     currentStage = STAGE_READING;
-
     foldProgress = 0;
     transitionProgress = 0;
     flapProgress = 0;
     zoomProgress = 0;
-
     paperX = 0;
     paperY = 0;
-
     isDragging = false;
 
     clearTimeout(hintTimer);
-
     dropArrow.classList.remove('visible');
 
     foldBottomSoundPlayed = false;
@@ -2346,22 +1451,16 @@ restartButton.addEventListener('click', () => {
 
     canvas.style.opacity = '0';
     canvas.style.pointerEvents = 'none';
-
     finalScreen.classList.remove('active');
 
     storyContainer.style.opacity = '1';
-
     scroller.style.display = 'block';
     scroller.style.visibility = 'visible';
     scroller.style.pointerEvents = 'none';
     scroller.style.opacity = '.7';
 
     document.body.style.overflow = 'auto';
-
-    window.scrollTo({
-        top: 0,
-        behavior: 'instant'
-    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
     storySections.forEach(section => {
         section.classList.remove('revealed');
