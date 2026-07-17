@@ -36,7 +36,7 @@ body {
     overflow-x: hidden;
 }
 
-/* 解决电脑端和手机端背景不一致的问题 */
+/* 解决电脑端和手机端背景不视差的问题 */
 #bg-fixed {
     position: fixed;
     inset: 0;
@@ -98,7 +98,7 @@ body {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.035'/%3E%3C/svg%3E");
 }
 
-/* ==================== 阅读大厅 ==================== */
+/* ==================== 阅读区排版 ==================== */
 
 #story-container {
     max-width: 680px;
@@ -109,7 +109,7 @@ body {
 
 .letter-paper {
     position: relative;
-    padding: 85px 50px 145px;
+    padding: 4.8rem 50px 145px; /* 让首段刚好对齐背景的首根金格线 */
     overflow: hidden;
     background-color: var(--paper);
     border: 1px solid rgba(59, 42, 34, .1);
@@ -122,24 +122,33 @@ body {
 
 /* 
  * 遮罩屏蔽中文网格线 
- * 利用 Padding 撑满空间，彻底消隐中文处的格线
+ * 利用两侧负 margins 将背景底色直接向两侧拓宽至信纸的最边缘，
+ * 采用 1.15rem (半线格高度) 巧妙把随后的英文拉回、对齐下一根格线上
  */
 p.zh-text {
-    margin: 0;
-    padding-top: .25rem;
-    padding-bottom: 2.3rem;
+    margin-left: -50px;
+    margin-right: -50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: .2rem;
+    padding-bottom: 1.15rem;
     color: var(--zh-text);
-    font: 300 .8rem/1.7 'Noto Serif SC', serif;
-    text-indent: 2.2em;
+    font: 300 .85rem/1.6 'Noto Serif SC', serif;
+    text-indent: 2.2em; /* 保留首行正常的中文缩进 */
     letter-spacing: .06em;
     background-color: var(--paper);
     position: relative;
     z-index: 1;
+    display: block;
+    width: calc(100% + 100px);
 }
 
 .ghost-title-zh {
-    margin: 0;
-    padding-bottom: 25px;
+    margin-left: -50px;
+    margin-right: -50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 1.15rem;
     color: var(--green);
     font-size: .9rem;
     font-weight: 600;
@@ -147,12 +156,17 @@ p.zh-text {
     background-color: var(--paper);
     position: relative;
     z-index: 1;
+    display: block;
+    width: calc(100% + 100px);
 }
 
 .quote p.zh-text {
-    margin: 0;
-    padding-top: 1px;
-    padding-bottom: 2px;
+    margin-left: -50px;
+    margin-right: -50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 2px;
+    padding-bottom: 8px;
     font-size: .8rem;
     font-weight: 400;
     text-align: center;
@@ -160,8 +174,8 @@ p.zh-text {
     background-color: var(--paper);
     position: relative;
     z-index: 1;
-    display: inline-block;
-    width: 100%;
+    display: block;
+    width: calc(100% + 100px);
 }
 
 .story-section {
@@ -187,9 +201,11 @@ p.eng-text {
     font-family: 'Caveat', cursive;
     font-size: 1.25rem;
     font-weight: 400;
-    line-height: 2.3rem;
+    line-height: 2.3rem; /* 严格等于背景网格高度以实现完美贴底线 */
     text-indent: 2em;
     letter-spacing: .01em;
+    position: relative;
+    z-index: 1;
 }
 
 p.eng-text + p.eng-text {
@@ -198,7 +214,7 @@ p.eng-text + p.eng-text {
 
 .quote {
     width: 100%;
-    margin: 20px 0;
+    margin: 0 0 2.3rem 0;
     text-align: center;
 }
 
@@ -235,19 +251,13 @@ p.eng-text + p.eng-text {
 }
 
 .ghost-title-en {
-    margin: 45px 0 2px;
+    margin: 0;
+    padding-top: 1.7rem;
     color: var(--title);
     font: normal 2.4rem 'Great Vibes', cursive;
 }
 
-.divider-line {
-    width: 100%;
-    height: 1px;
-    margin: 45px 0;
-    background: rgba(120, 100, 80, .35);
-}
-
-/* ==================== 封口卷折手势 ==================== */
+/* ==================== 封口手势 ==================== */
 
 .page-fold-btn {
     position: absolute;
@@ -331,7 +341,7 @@ p.eng-text + p.eng-text {
     transition: opacity .6s ease;
 }
 
-/* ==================== 极简优雅塞进手势箭头 ==================== */
+/* ==================== 精准拖拽手势箭头 ==================== */
 
 #drop-arrow {
     position: fixed;
@@ -489,6 +499,17 @@ p.eng-text + p.eng-text {
         padding: 50px 20px 100px;
     }
 
+    /* 移动端下将中文罩盖块及标题的负外边距同比例收窄至 20px */
+    p.zh-text,
+    .ghost-title-zh,
+    .quote p.zh-text {
+        width: calc(100% + 40px) !important;
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
     .cursive-title {
         font-size: clamp(3.0rem, 15vw, 5.0rem);
         white-space: normal;
@@ -518,7 +539,7 @@ p.eng-text + p.eng-text {
 
 <body>
 
-<!-- 全像素同步的固定夜空背景 -->
+<!-- 多端色彩百分百渲染一致的固定夜空背景 -->
 <div id="bg-fixed"></div>
 <div class="vintage-overlay"></div>
 
@@ -563,7 +584,6 @@ p.eng-text + p.eng-text {
         </div>
 
         <div class="story-section" id="sec-2">
-            <div class="divider-line"></div>
             <h2 class="ghost-title-en">The Ghost of Christmas Past</h2>
             <h2 class="ghost-title-zh">过去</h2>
 
@@ -572,7 +592,6 @@ p.eng-text + p.eng-text {
         </div>
 
         <div class="story-section" id="sec-3">
-            <div class="divider-line"></div>
             <h2 class="ghost-title-en">The Ghost of Christmas Present</h2>
             <h2 class="ghost-title-zh">现在</h2>
 
@@ -581,7 +600,6 @@ p.eng-text + p.eng-text {
         </div>
 
         <div class="story-section" id="sec-4">
-            <div class="divider-line"></div>
             <h2 class="ghost-title-en">The Ghost of Christmas Yet to Come</h2>
             <h2 class="ghost-title-zh">未来</h2>
 
@@ -590,7 +608,6 @@ p.eng-text + p.eng-text {
         </div>
 
         <div class="story-section" id="sec-5">
-            <div class="divider-line"></div>
             <p class="eng-text">And so, beneath the same sky, we gathered Anxin’s music, stages, memories, growth, and every heartfelt wish into one small gift.</p>
             <p class="zh-text">于是，在同一片天空下，我们将安信的音乐、舞台、记忆、成长，以及每一份真心写下的祝福，收集成一件小小的礼物。</p>
 
@@ -622,10 +639,11 @@ p.eng-text + p.eng-text {
             <span class="readable-title">Godsent Noel</span>
         </div>
 
+        <!-- 调换顺序后的尾页英文/中文副标题 -->
         <p class="subtitle-line">
-            <span>献给安信的圣诞礼物</span>
-            <span>•</span>
             <span>A Christmas Gift for Anxin</span>
+            <span>•</span>
+            <span>献给安信的圣诞礼物</span>
             <span>•</span>
             <span>안신에게 보내는 크리스마스 선물</span>
         </p>
@@ -706,7 +724,6 @@ let masterGain = null;
 let audioStarted = false;
 
 let envelopeSoundPlayed = false;
-let envelopeCloseSoundPlayed = false;
 let finalSoundPlayed = false;
 
 function startAudio() {
@@ -769,11 +786,161 @@ function playPaperRustle() {
 }
 
 function playEnvelopeSlideSound() { playTone(180, .65, 'sine', .04); playTone(360, .45, 'triangle', .025, .18); }
-function playEnvelopeCloseSound() { playPaperRustle(); playTone(420, .38, 'triangle', .045); }
 function playFinalSound() {
     playTone(392, 1.2, 'sine', .045);
     playTone(523.25, 1.5, 'sine', .035, .28);
     playTone(659.25, 1.8, 'sine', .025, .58);
+}
+
+/* ==================== Canvas 相对位移坐标绘制方法 ==================== */
+function drawEnvelopeBackRel(context, w, h) {
+    context.fillStyle = '#D6BFA5';
+    context.beginPath();
+    context.roundRect(-w / 2, -h / 2, w, h, 7);
+    context.fill();
+}
+
+function drawEnvelopeFrontPocketRel(context, w, h) {
+    const left = -w / 2;
+    const right = w / 2;
+    const top = -h / 2;
+    const bottom = h / 2;
+
+    context.fillStyle = '#E8D8BC';
+    context.strokeStyle = '#C5B29B';
+    context.lineWidth = 1;
+
+    context.beginPath();
+    context.moveTo(left, top + 8);
+    context.lineTo(0, 28);
+    context.lineTo(right, top + 8);
+    context.lineTo(right, bottom);
+    context.lineTo(left, bottom);
+    context.closePath();
+    context.fill();
+    context.stroke();
+
+    context.strokeStyle = 'rgba(183, 159, 134, .6)';
+    context.lineWidth = 1;
+    context.beginPath();
+    context.moveTo(left + 2, bottom - 1);
+    context.lineTo(right - 2, bottom - 1);
+    context.stroke();
+}
+
+function drawEnvelopeFlapRel(context, w, h, progress) {
+    const left = -w / 2;
+    const right = w / 2;
+    const top = -h / 2;
+
+    const openApexY = top - h * .5;
+    const closedApexY = 31;
+
+    const eased = easeOutCubic(progress);
+    const apexY = openApexY + (closedApexY - openApexY) * eased;
+
+    context.fillStyle = progress < .55 ? '#E8D8BC' : '#DECFAF';
+    context.strokeStyle = '#B79F86';
+    context.lineWidth = 1;
+
+    context.beginPath();
+    context.moveTo(left, top - 1);
+    context.lineTo(0, apexY);
+    context.lineTo(right, top - 1);
+    context.closePath();
+    context.fill();
+    context.stroke();
+
+    if (progress >= 1) {
+        context.strokeStyle = 'rgba(150, 119, 91, .5)';
+        context.lineWidth = 1.5;
+        context.beginPath();
+        context.moveTo(left + 2, top + 1);
+        context.lineTo(0, closedApexY - 1);
+        context.lineTo(right - 2, top + 1);
+        context.stroke();
+    }
+}
+
+/* ==================== Canvas 绝对定位包装入口 ==================== */
+function drawEnvelopeBack() {
+    ctx.save();
+    ctx.translate(envelopeX, envelopeY);
+    drawEnvelopeBackRel(ctx, envelopeWidth, envelopeHeight);
+    ctx.restore();
+}
+
+function drawEnvelopeFrontPocket() {
+    ctx.save();
+    ctx.translate(envelopeX, envelopeY);
+    drawEnvelopeFrontPocketRel(ctx, envelopeWidth, envelopeHeight);
+    ctx.restore();
+}
+
+function drawOpenEnvelopeFlap() {
+    ctx.save();
+    ctx.translate(envelopeX, envelopeY);
+    drawEnvelopeFlapRel(ctx, envelopeWidth, envelopeHeight, 0);
+    ctx.restore();
+}
+
+function drawOpenEnvelope() {
+    drawEnvelopeBack();
+    drawEnvelopeFrontPocket();
+    drawOpenEnvelopeFlap();
+}
+
+// 旋转中的信封正面绘制（调用完全相同的相对方程，保证合扰前与翻面缩放后形态绝对的一致）
+function drawClosedEnvelopeFace() {
+    drawEnvelopeBackRel(ctx, envelopeWidth, envelopeHeight);
+    drawEnvelopeFrontPocketRel(ctx, envelopeWidth, envelopeHeight);
+    drawEnvelopeFlapRel(ctx, envelopeWidth, envelopeHeight, 1);
+}
+
+function drawClosedEnvelopeBack() {
+    const left = -envelopeWidth / 2;
+    const top = -envelopeHeight / 2;
+
+    ctx.fillStyle = '#D6BFA5';
+    ctx.strokeStyle = '#B79F86';
+    ctx.lineWidth = 1;
+
+    ctx.beginPath();
+    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.strokeStyle = 'rgba(183, 159, 134, .55)';
+    ctx.beginPath();
+    ctx.moveTo(left + 2, top + envelopeHeight - 14);
+    ctx.lineTo(left + envelopeWidth - 2, top + envelopeHeight - 14);
+    ctx.stroke();
+}
+
+function drawEnvelopeFlap(progress) {
+    ctx.save();
+    ctx.translate(envelopeX, envelopeY);
+    drawEnvelopeFlapRel(ctx, envelopeWidth, envelopeHeight, progress);
+    ctx.restore();
+}
+
+function drawPaperPanel(panelWidth, panelHeight, color = '#F8F3E8', lineOpacity = .22) {
+    ctx.fillStyle = color;
+    ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, panelHeight);
+
+    ctx.fillStyle = `rgba(145, 132, 111, ${lineOpacity})`;
+    const lineGap = 36.8;
+    for (let y = -panelHeight / 2 + lineGap; y < panelHeight / 2; y += lineGap) {
+        ctx.fillRect(-panelWidth / 2 + 14, y, panelWidth - 28, 1);
+    }
+
+    ctx.fillStyle = 'rgba(59, 42, 34, .1)';
+    ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, 2);
+    ctx.fillRect(-panelWidth / 2, panelHeight / 2 - 2, panelWidth, 2);
+}
+
+function drawFoldedNote(noteWidth, noteHeight) {
+    drawPaperPanel(noteWidth, noteHeight, '#F8F3E8', .23);
 }
 
 /* ==================== Canvas 尺寸适配 ==================== */
@@ -808,174 +975,6 @@ function easeOutCubic(value) {
     return 1 - Math.pow(1 - value, 3);
 }
 
-/* ==================== 纯净米白信纸绘制 ==================== */
-function drawPaperPanel(panelWidth, panelHeight, color = '#F8F3E8', lineOpacity = .22) {
-    ctx.fillStyle = color;
-    ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, panelHeight);
-
-    ctx.fillStyle = `rgba(145, 132, 111, ${lineOpacity})`;
-    const lineGap = 36.8;
-    for (let y = -panelHeight / 2 + lineGap; y < panelHeight / 2; y += lineGap) {
-        ctx.fillRect(-panelWidth / 2 + 14, y, panelWidth - 28, 1);
-    }
-
-    ctx.fillStyle = 'rgba(59, 42, 34, .1)';
-    ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, 2);
-    ctx.fillRect(-panelWidth / 2, panelHeight / 2 - 2, panelWidth, 2);
-}
-
-function drawFoldedNote(noteWidth, noteHeight) {
-    drawPaperPanel(noteWidth, noteHeight, '#F8F3E8', .23);
-}
-
-/* ==================== 真实信封纸面绘制（去除内部交叉线，保留三角V口镂空） ==================== */
-function drawEnvelopeBack() {
-    const left = envelopeX - envelopeWidth / 2;
-    const top = envelopeY - envelopeHeight / 2;
-    ctx.fillStyle = '#D6BFA5';
-    ctx.beginPath();
-    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
-    ctx.fill();
-}
-
-function drawEnvelopeFrontPocket() {
-    const left = envelopeX - envelopeWidth / 2;
-    const right = envelopeX + envelopeWidth / 2;
-    const top = envelopeY - envelopeHeight / 2;
-    const bottom = envelopeY + envelopeHeight / 2;
-
-    ctx.fillStyle = '#E8D8BC';
-    ctx.strokeStyle = '#C5B29B';
-    ctx.lineWidth = 1;
-
-    // 前部口袋上边缘呈现 V 型三角镂空，下半部无交叉线条
-    ctx.beginPath();
-    ctx.moveTo(left, top + 8);
-    ctx.lineTo(envelopeX, envelopeY + 28);
-    ctx.lineTo(right, top + 8);
-    ctx.lineTo(right, bottom);
-    ctx.lineTo(left, bottom);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    // 缝合处边缘阴影线，保证质感
-    ctx.strokeStyle = 'rgba(183, 159, 134, .6)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(left + 2, bottom - 1);
-    ctx.lineTo(right - 2, bottom - 1);
-    ctx.stroke();
-}
-
-function drawOpenEnvelopeFlap() {
-    const left = envelopeX - envelopeWidth / 2;
-    const right = envelopeX + envelopeWidth / 2;
-    const top = envelopeY - envelopeHeight / 2;
-
-    ctx.fillStyle = '#E8D8BC';
-    ctx.strokeStyle = '#B79F86';
-    ctx.lineWidth = 1;
-
-    ctx.beginPath();
-    ctx.moveTo(left, top);
-    ctx.lineTo(envelopeX, top - envelopeHeight * .5);
-    ctx.lineTo(right, top);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-}
-
-function drawOpenEnvelope() {
-    drawEnvelopeBack();
-    drawEnvelopeFrontPocket();
-    drawOpenEnvelopeFlap();
-}
-
-// 旋转过程中的信封正面绘制（保留静止合盖三角，盖子和底部外表形态不突变）
-function drawClosedEnvelopeFace() {
-    const left = -envelopeWidth / 2;
-    const top = -envelopeHeight / 2;
-
-    ctx.fillStyle = '#E8D8BC';
-    ctx.strokeStyle = '#B79F86';
-    ctx.lineWidth = 1;
-
-    ctx.beginPath();
-    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
-    ctx.fill();
-    ctx.stroke();
-
-    // 绘制合上的盖子边缘
-    ctx.strokeStyle = 'rgba(150, 119, 91, .55)';
-    ctx.beginPath();
-    ctx.moveTo(left + 8, top + 12);
-    ctx.lineTo(0, top + 42);
-    ctx.lineTo(left + envelopeWidth - 8, top + 12);
-    ctx.stroke();
-
-    ctx.strokeStyle = 'rgba(183, 159, 134, .6)';
-    ctx.beginPath();
-    ctx.moveTo(left + 1, top + 12);
-    ctx.lineTo(left + envelopeWidth - 1, top + 12);
-    ctx.stroke();
-}
-
-function drawClosedEnvelopeBack() {
-    const left = -envelopeWidth / 2;
-    const top = -envelopeHeight / 2;
-
-    ctx.fillStyle = '#D6BFA5';
-    ctx.strokeStyle = '#B79F86';
-    ctx.lineWidth = 1;
-
-    ctx.beginPath();
-    ctx.roundRect(left, top, envelopeWidth, envelopeHeight, 7);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.strokeStyle = 'rgba(183, 159, 134, .55)';
-    ctx.beginPath();
-    ctx.moveTo(left + 2, top + envelopeHeight - 14);
-    ctx.lineTo(left + envelopeWidth - 2, top + envelopeHeight - 14);
-    ctx.stroke();
-}
-
-function drawEnvelopeFlap(progress) {
-    const left = envelopeX - envelopeWidth / 2;
-    const right = envelopeX + envelopeWidth / 2;
-    const top = envelopeY - envelopeHeight / 2;
-
-    const openApexY = top - envelopeHeight * .5;
-    const closedApexY = envelopeY + 31;
-
-    const eased = easeOutCubic(progress);
-    const apexY = openApexY + (closedApexY - openApexY) * eased;
-
-    ctx.fillStyle = progress < .55 ? '#E8D8BC' : '#DECFAF';
-    ctx.strokeStyle = '#B79F86';
-    ctx.lineWidth = 1;
-
-    ctx.beginPath();
-    ctx.moveTo(left, top - 1);
-    ctx.lineTo(envelopeX, apexY);
-    ctx.lineTo(right, top - 1);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-
-    if (progress >= 1) {
-        ctx.strokeStyle = 'rgba(150, 119, 91, .5)';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(left + 2, top + 1);
-        ctx.lineTo(envelopeX, closedApexY - 1);
-        ctx.lineTo(right - 2, top + 1);
-        ctx.stroke();
-    }
-}
-
-/* ==================== 尺寸计算 ==================== */
 function getFoldedSize() {
     const foldedWidth = Math.min(envelopeWidth * .62, 300);
     return { width: foldedWidth, height: foldedWidth * .9 };
@@ -985,7 +984,7 @@ function getPointerPosition(event) {
     return { x: event.clientX, y: event.clientY };
 }
 
-/* ==================== 点击直接切换进入信封拖拽面 ==================== */
+/* ==================== 点击直接跳转至信封场景 ==================== */
 foldTrigger.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.body.style.overflow = 'hidden';
@@ -995,10 +994,8 @@ foldTrigger.addEventListener('click', () => {
     scroller.style.pointerEvents = 'none';
     foldHintText.classList.remove('visible');
 
-    // 略过中间的所有分段 3D 折折痕计算
     currentStage = STAGE_DRAGGING;
 
-    // 获取并设置信纸已折后的预备尺寸与悬停初始位置
     const size = getFoldedSize();
     paperWidth = size.width;
     paperHeight = size.height;
@@ -1009,7 +1006,6 @@ foldTrigger.addEventListener('click', () => {
     flipZoomProgress = 0;
 
     envelopeSoundPlayed = false;
-    envelopeCloseSoundPlayed = false;
     finalSoundPlayed = false;
 
     storyContainer.style.opacity = '0';
@@ -1017,7 +1013,7 @@ foldTrigger.addEventListener('click', () => {
     canvas.style.pointerEvents = 'auto';
 
     startAudio();
-    playEnvelopeSlideSound(); // 直接播放展开音效入场
+    playEnvelopeSlideSound(); 
     showDropArrow(700);
     animate();
 });
@@ -1076,12 +1072,12 @@ canvas.addEventListener('pointerdown', pointerDown);
 canvas.addEventListener('pointermove', pointerMove);
 window.addEventListener('pointerup', pointerUp);
 
-/* ==================== 渲染主循环 ==================== */
+/* ==================== 渲染执行器 ==================== */
 function animate() {
     ctx.clearRect(0, 0, width, height);
 
     /*
-     * 3. 拖拽挂载状态
+     * 3. 拖起悬挂状态
      */
     if (currentStage === STAGE_DRAGGING) {
         drawOpenEnvelope(1);
@@ -1097,7 +1093,7 @@ function animate() {
     }
 
     /*
-     * 4. 滑落插入与合盖状态
+     * 4. 插入与合盖状态
      */
     else if (currentStage >= STAGE_SLIDE && currentStage <= STAGE_CLOSING) {
         const folded = getFoldedSize();
@@ -1144,11 +1140,7 @@ function animate() {
                 flapProgress = 1;
                 flipZoomProgress = 0;
                 currentStage = STAGE_FLIP_ZOOM;
-
-                if (!envelopeCloseSoundPlayed) {
-                    envelopeCloseSoundPlayed = true;
-                    playEnvelopeCloseSound();
-                }
+                // 去掉了合盖的音效
             }
         }
 
@@ -1156,7 +1148,7 @@ function animate() {
     }
 
     /*
-     * 5. 翻盘旋转 & 全屏放大冲刺
+     * 5. 翻页缩放拉近转场
      */
     else if (currentStage === STAGE_FLIP_ZOOM) {
         flipZoomProgress = Math.min(1, flipZoomProgress + .014);
@@ -1164,7 +1156,6 @@ function animate() {
 
         const angle = progress * Math.PI;
 
-        // 大到覆盖满多端视口的最高高度/宽度比例，产生平滑进深溢满色
         const fitScale = Math.max(width / envelopeWidth, height / envelopeHeight) * 1.5;
         const scale = 1 + (fitScale - 1) * Math.pow(progress, 1.1);
 
@@ -1177,7 +1168,7 @@ function animate() {
         ctx.translate(currentCenterX, currentCenterY);
         ctx.scale(horizontalProjection * scale, scale);
 
-        // 翻面跨页渲染，信封盖子状态保持闭合不改变
+        // 翻页渲染（正面由于使用了相对绘制方程，其构造、形态完全与合纸时一模一样，无改变）
         if (Math.cos(angle) >= 0) {
             drawClosedEnvelopeFace();
         } else {
@@ -1215,7 +1206,6 @@ restartButton.addEventListener('click', () => {
     dropArrow.classList.remove('visible');
 
     envelopeSoundPlayed = false;
-    envelopeCloseSoundPlayed = false;
     finalSoundPlayed = false;
 
     canvas.style.opacity = '0';
