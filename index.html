@@ -56,7 +56,7 @@
 
         .letter-paper {
             background-color: var(--paper-color);
-            padding: 80px 50px 140px 50px;
+            padding: 85px 50px 145px 50px;
             border-radius: 2px;
             box-shadow: 
                 0 4px 10px rgba(59, 42, 34, 0.04),
@@ -71,12 +71,12 @@
             background-position: 0 4.8rem;
         }
 
-        /* 保证滑动出一整屏才展示下一章节 */
+        /* 故事段落的单屏淡入机制 */
         .story-section {
-            margin-bottom: 72vh;
+            margin-bottom: 75vh;
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1), transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(45px);
+            transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .story-section:last-of-type {
@@ -88,21 +88,20 @@
             transform: translateY(0);
         }
 
-        /* 故事文本行距控制 */
         p.eng-text {
             font-family: 'Caveat', cursive;
             font-size: 1.25rem;
             color: var(--text-color);
-            text-indent: 2em; /* 英文段首空格 */
+            text-indent: 2em; /* 段首二字缩进 */
             line-height: 1.6;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         p.zh-text {
             font-family: 'Noto Serif SC', serif;
             font-size: 0.8rem; /* 调小中文字号 */
             font-weight: 300;
-            color: #513e34; /* 统一中文颜色为深暖啡 */
+            color: #513e34; /* 统一中文颜色为深咖 */
             text-indent: 2.2em; /* 中文段首空格 */
             letter-spacing: 0.06em;
             line-height: 1.7;
@@ -127,7 +126,7 @@
         .quote p.zh-text {
             font-size: 0.8rem !important;
             font-weight: 400;
-            color: #513e34 !important; /* 统一中文颜色为深暖啡 */
+            color: #513e34 !important; /* 统一中文颜色为深咖 */
             text-indent: 0 !important;
             margin-top: 2px; /* 间距拉近 */
             margin-bottom: 0px;
@@ -190,10 +189,10 @@
             100% { transform: scale(0.98) rotate(1deg); }
         }
 
-        /* 提示类文字，统一改用Noto Serif样式 */
+        /* 下滑与折信词配置（Noto Serif 字体） */
         .scroll-indicator, .fold-hint {
             font-family: 'Noto Serif SC', serif;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-weight: 300;
             letter-spacing: 0.05em;
             opacity: 0.65;
@@ -247,7 +246,7 @@
             transition: opacity 0.6s ease;
         }
 
-        /* 拖信提示 */
+        /* 拖拽交互提示 */
         #drag-hint {
             position: fixed;
             top: 54%;
@@ -295,32 +294,34 @@
             padding: 20px;
         }
 
-        /* 双标题版式 */
+        /* 终幕版式架构 */
         .title-block {
             position: relative;
             margin-bottom: 25px;
         }
 
-        .readable-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            color: var(--title-color);
-            opacity: 0.85;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            display: block;
-        }
-
+        /* 放大红色的花体主字 (深酒红) */
         .cursive-title {
             font-family: 'Great Vibes', cursive;
             font-weight: normal;
-            color: var(--accent-color);
-            font-size: 4.8rem;
-            line-height: 1;
-            margin-top: -15x;
+            color: var(--title-color); /* 深酒红 */
+            font-size: 6.2rem;
+            line-height: 0.9;
             display: block;
+            margin-bottom: 12px;
+        }
+
+        /* 易读高间隔的线条体 */
+        .readable-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.75rem; /* 与副标题字号基本统一 */
+            font-weight: 600;
+            letter-spacing: 0.55em; /* 拉开自字间距成一条线 */
+            color: var(--text-color);
+            text-transform: uppercase;
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 30px;
         }
 
         .subtitle-line {
@@ -373,10 +374,11 @@
                 padding: 50px 20px 100px 20px;
             }
             .cursive-title {
-                font-size: 3.4rem;
+                font-size: 3.8rem;
             }
             .readable-title {
-                font-size: 1.5rem;
+                font-size: 0.68rem;
+                letter-spacing: 0.35em;
             }
             .subtitle-line {
                 flex-direction: column;
@@ -389,16 +391,16 @@
 
     <div class="vintage-overlay"></div>
 
-    <!-- 下滑指示器 (Noto Serif SC 字体) -->
+    <!-- 下滑指示器 -->
     <div class="scroll-indicator" id="scroller">
         ↓ Scroll to read<br>向下滚动阅读
     </div>
 
-    <!-- 故事DOM排版排布层 -->
+    <!-- 故事排版层 -->
     <div id="story-container">
         <div class="letter-paper" id="paper-element">
             
-            <!-- 极淡的植物纹样挂角 (墨绿偏淡) -->
+            <!-- 四角纹饰 -->
             <svg class="paper-deco deco-tl" viewBox="0 0 120 120" width="90" height="90" style="position:absolute; top:20px; left:20px; opacity:0.12; pointer-events:none;">
                 <path d="M10,10 C25,12 40,25 45,45 C35,48 20,35 10,10 Z" fill="var(--green-color)"/>
                 <path d="M10,10 C18,30 32,38 45,45 Z" fill="#2d3f35"/>
@@ -414,7 +416,7 @@
                 <line x1="10" y1="10" x2="35" y2="35" stroke="var(--shadow-color)" stroke-width="1.2"/>
             </svg>
 
-            <!-- PART 1: 始与引信 -->
+            <!-- 节1: Marley -->
             <div class="story-section" id="sec-1">
                 <div class="quote">
                     <p class="eng-text">“Marley was dead, to begin with.”</p>
@@ -430,7 +432,7 @@
                 <p class="zh-text">那一夜，三位幽灵来到他的梦中。</p>
             </div>
 
-            <!-- PART 2: 过去 -->
+            <!-- 节2: Past -->
             <div class="story-section" id="sec-2">
                 <div class="divider-line"></div>
                 <h2 class="ghost-title-en">The Ghost of Christmas Past</h2>
@@ -439,7 +441,7 @@
                 <p class="zh-text">第一位幽灵带他看见了过去的圣诞。他看见年少的安信站在舞台灯光下，唱起最初的歌。台下有家人、老师，也有第一次听见他声音的陌生人。那时的他还不知道，自己的歌声有一天会陪伴某些人走过漫长的冬天，也会陪伴那个曾经有些辛苦地长大的自己，走过童年。</p>
             </div>
 
-            <!-- PART 3: 现在 -->
+            <!-- 节3: Present -->
             <div class="story-section" id="sec-3">
                 <div class="divider-line"></div>
                 <h2 class="ghost-title-en">The Ghost of Christmas Present</h2>
@@ -448,7 +450,7 @@
                 <p class="zh-text">第二位幽灵带他看见了现在的圣诞。聚光灯下，安信把全部的认真交给每一次练习、每一场演出，也交给那些与喜欢他的人共同度过的安静时刻。在某个地方，有人因为看见他的笑容而笑了起来；在另一个地方，也有人听着他的声音，让漫长的夜晚缓缓经过。他给予的快乐，从来不喧哗，也不短暂。它安静地从一颗心抵达另一颗心，成为许多他未曾亲眼见过的日子的一部分。</p>
             </div>
 
-            <!-- PART 4: 未来 -->
+            <!-- 节4: Yet to Come -->
             <div class="story-section" id="sec-4">
                 <div class="divider-line"></div>
                 <h2 class="ghost-title-en">The Ghost of Christmas Yet to Come</h2>
@@ -457,7 +459,7 @@
                 <p class="zh-text">随后，第三位幽灵来到他的面前。它没有带来话语，只带来一束遥远而柔和的光。它带他看见了尚未来临的圣诞。一棵巨大的圣诞树下，放着来自世界各地的礼物：认真写下的信、熟悉的照片、亲手制作的小小纪念品，还有被折进信封里的祝福。安信望着那些礼物，也望着散落其间的一封封信。他发现，自己其实早已明白。礼物的珍贵，并不只在于被打开的那一刻。它的意义，会在赠予、接收与传递之间，慢慢生长。歌声也是如此。一首歌从一个人的声音开始，却可以抵达歌者无法想象的远方，将温柔、勇气与幸福送到那些他未曾抵达的地方。也许，这才是最珍贵的礼物：把幸福送给别人，也终于发现，那些幸福早已在漫长的岁月里，悄悄回到了自己身边。</p>
             </div>
 
-            <!-- PART 5: 尾声 -->
+            <!-- 节5: Outro -->
             <div class="story-section" id="sec-5">
                 <div class="divider-line"></div>
                 <p class="eng-text">And so, beneath the same sky, we gathered Anxin’s music, stages, memories, growth, and every heartfelt wish into one small gift.</p>
@@ -468,32 +470,32 @@
                 </div>
             </div>
 
-            <!-- 右下角卷曲起的纸张边缘触发域 -->
+            <!-- 右下角卷曲触发边 -->
             <div class="page-fold-btn" id="corner-trigger">
                 <div class="fold-mesh"></div>
             </div>
-            <!-- 折扣提示（已经统一为 Noto Serif SC 字体） -->
+            <!-- 指导文字 -->
             <div class="fold-hint" id="fold-hint-text">
                 Fold & Seal<br>折叠并封存此信
             </div>
         </div>
     </div>
 
-    <!-- Canvas 画布动画层 -->
+    <!-- Canvas -->
     <canvas id="animation-canvas"></canvas>
 
-    <!-- 拖拽操作交互指令 -->
+    <!-- 拖曳提示 -->
     <div id="drag-hint">
         <div class="en">Place the letter inside.</div>
-        <div class="zh">将信纸拖入信封中。</div>
+        <div class="zh">将信纸按自上而下的朝向，拖入信封中。</div>
     </div>
 
-    <!-- 终幕显现 -->
+    <!-- 终幕 -->
     <div id="final-screen">
         <div class="logo-wrap">
             <div class="title-block">
-                <span class="readable-title" id="final-lead-title">Godsent Noel</span>
                 <span class="cursive-title" id="final-cursive-title">Godsent Noel</span>
+                <span class="readable-title" id="final-lead-title">Godsent Noel</span>
             </div>
             <p class="subtitle-line">
                 <span>献给安信的圣诞礼物</span>
@@ -522,7 +524,7 @@
         function playPaperRustle() {
             try {
                 const ctx = getAudioContext();
-                const bufferSize = ctx.sampleRate * 0.55; // 延长摩擦声宽容度
+                const bufferSize = ctx.sampleRate * 0.55;
                 const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
                 const data = buffer.getChannelData(0);
                 for (let i = 0; i < bufferSize; i++) {
@@ -548,7 +550,6 @@
             } catch(e){}
         }
 
-        // 装入成功的短频音效
         function playSnappingSound() {
             try {
                 const ctx = getAudioContext();
@@ -566,7 +567,6 @@
             } catch(e){}
         }
 
-        // 终幕狂风呼啸音
         function playFlipWind() {
             try {
                 const ctx = getAudioContext();
@@ -597,7 +597,7 @@
             } catch(e){}
         }
 
-        /* ==================== 滚动段落淡入控制 ==================== */
+        /* ==================== 滚动监测 ==================== */
         const storySections = document.querySelectorAll('.story-section');
         const scroller = document.getElementById('scroller');
         const foldHintText = document.getElementById('fold-hint-text');
@@ -606,8 +606,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('revealed');
-                    
-                    // 当滑动显现第5节（最底节）时，显现折叠信纸引导词
                     if(entry.target.id === 'sec-5') {
                         foldHintText.classList.add('visible');
                     }
@@ -630,7 +628,7 @@
             }
         });
 
-        /* ==================== CANVAS 动力学与封装核心 ==================== */
+        /* ==================== CANVAS 2D 与拖放实现 ==================== */
         const canvas = document.getElementById('animation-canvas');
         const ctx = canvas.getContext('2d');
         const storyContainer = document.getElementById('story-container');
@@ -639,14 +637,15 @@
         const finalScreen = document.getElementById('final-screen');
         const restartBtn = document.getElementById('restart-btn');
 
-        // 核心运行流程状态
+        // 状态定义
         const STAGE_READING = 0;
-        const STAGE_FOLDING = 1;
-        const STAGE_DRAGGING = 2;
-        const STAGE_SNAP_SLIDE = 3;
-        const STAGE_FLAP_CLOSING = 4;
-        const STAGE_FLIP_ZOOM = 5;
-        const STAGE_FINAL = 6;
+        const STAGE_FOLDING = 1;      // 整张信纸从下往上发生对折叠合
+        const STAGE_FOLD_TRANS = 2;   // 折起后等比缩小滑移至上方，同时下方大信封淡入
+        const STAGE_DRAGGING = 3;     // 自由拖拽
+        const STAGE_SNAP_SLIDE = 4;   // 从上而下落入口袋中
+        const STAGE_FLAP_CLOSING = 5; // 信封合上盖
+        const STAGE_FLIP_ZOOM = 6;    // 信封翻滚放大
+        const STAGE_FINAL = 7;        // 终结幕
 
         let currentStage = STAGE_READING;
         let dpr = window.devicePixelRatio || 1;
@@ -654,22 +653,23 @@
         let width = window.innerWidth;
         let height = window.innerHeight;
 
-        // 信纸与信封尺寸布局参数
+        // 信纸尺寸及动态坐标
         let pWidth, pHeight;
-        let pX, pY; // 信纸动态位置
+        let pX, pY; 
         
         let foldProgress = 0.0;
         let scaleProgress = 0.0;
 
-        // 信封（上移且变大，给下保留充足的拖曳滑轨）
+        // 信封居中放大配置
         let envX, envY, envW, envH;
+        let envelopeOpacity = 0.0; // 动画转场时再呈现
         let flapProgress = 0;
 
-        // 大字终幕翻叠缩放参数
+        // 终幕旋转和尺寸缩放
         let flipAngle = 0.0;
         let envZScale = 1.0;
 
-        // 物理拖动变量
+        // 拖动参数
         let isDragging = false;
         let dragOffset = { x: 0, y: 0 };
         let showHintTimer = null;
@@ -682,11 +682,11 @@
             canvas.height = height * dpr;
             ctx.scale(dpr, dpr);
             
-            // 重新校准信封上居中的定位
-            envW = Math.min(width * 0.8, 335); 
-            envH = envW * 0.68;
+            // 设定信封的中心坐标在屏幕中居中，且变大
+            envW = Math.min(width * 0.82, 380); 
+            envH = envW * 0.65;
             envX = width / 2;
-            envY = height * 0.28; // 上移至28%视口高度
+            envY = height * 0.58; // 信封居中略微偏下
         }
         window.addEventListener('resize', resize);
         resize();
@@ -704,7 +704,7 @@
             }
         }
 
-        // 点击折边触发 DOM -> Canvas 平滑转换
+        // 起折转换
         foldTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             getAudioContext();
@@ -712,7 +712,6 @@
             scroller.style.display = 'none';
             foldHintText.classList.remove('visible');
 
-            // 瞬间顶层归零对齐
             window.scrollTo({top: 0, behavior: 'instant'});
             document.body.style.overflow = 'hidden';
 
@@ -722,7 +721,6 @@
             canvas.style.opacity = 1;
             storyContainer.style.opacity = 0;
             
-            // 复制DOM的大小和坐标
             pWidth = rect.width;
             pHeight = rect.height;
             pX = rect.left + rect.width / 2;
@@ -731,11 +729,12 @@
             currentStage = STAGE_FOLDING;
             foldProgress = 0.0;
             scaleProgress = 0.0;
+            envelopeOpacity = 0.0;
             playPaperRustle();
             animate();
         });
 
-        // 拖拽多点捕获
+        // 物理手势捕获
         function getPointerPos(e) {
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
             const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -746,8 +745,8 @@
             if (currentStage !== STAGE_DRAGGING) return;
             const pos = getPointerPos(e);
             
-            // 对应三折叠收缩状态下的微缩小信纸体积
-            const foldedW = envW * 0.88;
+            // 点击折后便笺（小规格）的包围盒判定
+            const foldedW = envW * 0.72;
             const foldedH = (pHeight / 3) * (foldedW / pWidth);
             
             if (Math.abs(pos.x - pX) < foldedW/2 && Math.abs(pos.y - pY) < foldedH/2) {
@@ -771,14 +770,14 @@
             if (!isDragging) return;
             isDragging = false;
             
-            // 判定区：吸入口定位设定在信封内袋入口附近 (中线上部区域)
+            // 判定点：只有从“上开口往下”滑入。检测点定在信封三角翻盖顶部的滑道区域
             const snapSlotX = envX;
-            const snapSlotY = envY - envH * 0.2;
+            const snapSlotY = envY - envH/2 - 20;
             
             const gapDist = Math.hypot(pX - snapSlotX, pY - snapSlotY);
             
-            // 如果投递物精准拖曳到吸附点（100px物理判定半径内）
-            if (gapDist < 100) {
+            // 85px 半径以内松手触发
+            if (gapDist < 85 && pY < (envY - envH/2 + 20)) { 
                 currentStage = STAGE_SNAP_SLIDE;
                 playSnappingSound();
             } else {
@@ -803,31 +802,47 @@
             }, ms);
         }
 
-        // 精描画布面板（折叠信纸外观）
-        function drawFoldedPaperGraphic(cW, cH) {
-            ctx.fillStyle = '#F8F3E8'; // 象牙白底板
-            ctx.fillRect(-cW/2, -cH/2, cW, cH);
+        // 精描长信纸纹（折叠过程中使用）
+        function drawFullPaperDetail(w, h, foldPhase) {
+            ctx.fillStyle = '#F8F3E8';
+            ctx.fillRect(-w/2, -h/2, w, h);
 
-            // 复古浅褐横线
-            ctx.fillStyle = 'rgba(185, 165, 140, 0.16)';
-            for (let i = -cH/3; i <= cH/3; i += cH/3) {
-                ctx.fillRect(-cW/2 + 10, i, cW - 20, 1.2);
+            // 复古红横线背景
+            ctx.fillStyle = 'rgba(185, 165, 140, 0.12)';
+            for (let y = -h/2 + 65; y < h/2 - 30; y += 45) {
+                ctx.fillRect(-w/2 + 25, y, w - 50, 1.2);
             }
-            
-            // 边缘淡化的冬青浆果矢量线描图
+
+            // 极淡挂角图案
             ctx.save();
-            ctx.globalAlpha = 0.15;
+            ctx.globalAlpha = 0.1;
             ctx.fillStyle = 'var(--green-color)';
             ctx.beginPath();
-            ctx.arc(-cW/2 + 20, -cH/2 + 15, 4, 0, Math.PI*2);
-            ctx.arc(-cW/2 + 25, -cH/2 + 10, 4, 0, Math.PI*2);
+            ctx.arc(-w/2 + 35, -h/2 + 35, 6, 0, Math.PI*2);
+            ctx.arc(-w/2 + 45, -h/2 + 25, 4.5, 0, Math.PI*2);
             ctx.fill();
             ctx.restore();
         }
 
-        /* ==================== CANVAS 主体绘制渲染帧 ==================== */
+        // 精描折后便笺（拖动时使用）
+        function drawFoldedNoteCover(w, h) {
+            ctx.fillStyle = '#F8F3E8';
+            ctx.fillRect(-w/2, -h/2, w, h);
+
+            // 均匀淡线
+            ctx.fillStyle = 'rgba(185, 165, 140, 0.15)';
+            ctx.fillRect(-w/2 + 10, -h/6, w - 20, 1);
+            ctx.fillRect(-w/2 + 10, h/6, w - 20, 1);
+            
+            // 边缘缝线投影
+            ctx.fillStyle = 'rgba(59, 42, 34, 0.08)';
+            ctx.fillRect(-w/2, -h/2, w, 2);
+            ctx.fillRect(-w/2, h/2 - 2, w, 2);
+        }
+
+        /* ==================== SCREEN ANIMATION LOOP ==================== */
         function animate() {
-            // 背景复原暖白底色
+            // 清屏暖白背景底
             ctx.fillStyle = '#F3EBDD';
             ctx.fillRect(0, 0, width, height);
 
@@ -843,96 +858,99 @@
                 ctx.fill();
             });
 
-            const targetFoldedW = envW * 0.88;
-            const targetFoldedH = (pHeight / 3) * (targetFoldedW / pWidth);
+            // 拖折纸的大小
+            const foldedSizeW = envW * 0.72; // 缩小信纸
+            const foldedSizeH = (pHeight / 3) * (foldedSizeW / pWidth);
 
             if (currentStage === STAGE_FOLDING) {
-                // 1. 三折物理展开及收合动画调试 -- 显著放慢运行步长 0.007
+                // 1. 阅读页面的“从下往上卷起折叠” -- 设定折叠步长
                 foldProgress += 0.007; 
                 
-                if (foldProgress > 1.0) {
+                if (foldProgress >= 1.0) {
                     foldProgress = 1.0;
-                    scaleProgress += 0.025; // 缓慢收缩收尾
-                    if (scaleProgress >= 1.0) {
-                        scaleProgress = 1.0;
-                        currentStage = STAGE_DRAGGING;
-                        pX = width / 2;
-                        // 预备终了位置放在屏幕下方安全地带
-                        pY = height * 0.72; 
-                        setupDragTextDelay(500);
-                    }
+                    currentStage = STAGE_FOLD_TRANS;
                 }
 
-                // 依据分段比例缩短高度
-                let currentScale = 1.0 - (0.5 * scaleProgress);
-                let currentXScale = 1.0 - (scaleProgress * (1 - (targetFoldedW / pWidth)));
-                
-                let renderW = pWidth * currentXScale;
-                let renderH = pHeight;
-                const sh = renderH / 3;
+                // 2.5D 平面对折卷线投影计算
+                let sh = pHeight / 3;
 
-                // 第一步对折上半页 (0.0 至 0.5) 第二步对折下半页 (0.5 至 1.0)
-                let topPhase = Math.min(1.0, foldProgress * 2.0);
-                let bottomPhase = Math.max(0.0, (foldProgress - 0.5) * 2.0);
-
-                let startYPos = height * 0.72;
-                let currentY = pY + (startYPos - pY) * scaleProgress;
+                // 阶段分派：前半段下折页向上折（0 到 0.5），后半段上折页向下折（0.5 到 1.0）
+                let bottomPhase = Math.min(1.0, foldProgress * 2.0);
+                let topPhase = Math.max(0.0, (foldProgress - 0.5) * 2.0);
 
                 ctx.save();
-                ctx.translate(pX, currentY);
+                ctx.translate(pX, pY);
 
-                // 投影
                 ctx.shadowColor = 'rgba(59, 42, 34, 0.12)';
                 ctx.shadowBlur = 20;
                 ctx.shadowOffsetY = 6;
 
-                // --- 渲染中层 (主支撑面，不动) ---
-                drawFoldedPaperGraphic(renderW, sh);
+                // A. 绘制中层（主支撑部）
+                ctx.fillStyle = '#F8F3E8';
+                ctx.fillRect(-pWidth/2, -sh/2, pWidth, sh);
+                ctx.fillStyle = 'rgba(185, 165, 140, 0.15)';
+                ctx.fillRect(-pWidth/2 + 20, 0, pWidth - 40, 1.2);
 
-                // --- 渲染上部对折板 ---
+                // B. 绘制底部折页（顺着中铰链处折上来盖在中部）
+                ctx.save();
+                ctx.translate(0, sh/2);
+                let bCos = Math.cos(bottomPhase * Math.PI);
+                if (bCos > 0) {
+                    // 正面
+                    ctx.fillStyle = '#F8F3E8';
+                    ctx.fillRect(-pWidth/2, 0, pWidth, sh * bCos);
+                } else {
+                    // 折了上来的翻面 (暗衬面)
+                    ctx.fillStyle = '#E8DFCC';
+                    ctx.fillRect(-pWidth/2, -sh * Math.abs(bCos), pWidth, sh * Math.abs(bCos));
+                }
+                ctx.restore();
+
+                // C. 绘制顶部折页（顺着上铰链处向下对折）
                 ctx.save();
                 ctx.translate(0, -sh/2); 
                 let tCos = Math.cos(topPhase * Math.PI); 
                 if (tCos > 0) {
                     ctx.fillStyle = '#F8F3E8';
-                    ctx.fillRect(-renderW/2, -sh * tCos, renderW, sh * tCos);
-                } else {
-                    ctx.fillStyle = '#E8DFCC'; // 翻下后的折缝底面
-                    ctx.fillRect(-renderW/2, 0, renderW, sh * Math.abs(tCos));
-                }
-                ctx.restore();
-
-                // --- 渲染下部对折板 ---
-                ctx.save();
-                ctx.translate(0, sh/2);
-                let bCos = Math.cos(bottomPhase * Math.PI);
-                if (bCos > 0) {
-                    ctx.fillStyle = '#F8F3E8';
-                    ctx.fillRect(-renderW/2, 0, renderW, sh * bCos);
+                    ctx.fillRect(-pWidth/2, -sh * tCos, pWidth, sh * tCos);
                 } else {
                     ctx.fillStyle = '#DECFAF';
-                    ctx.fillRect(-renderW/2, -sh * Math.abs(bCos), renderW, sh * Math.abs(bCos));
+                    ctx.fillRect(-pWidth/2, 0, pWidth, sh * Math.abs(tCos));
                 }
                 ctx.restore();
 
                 ctx.restore();
 
-            } else if (currentStage === STAGE_DRAGGING) {
-                // 2. 独立信封渲染与拖拽
+            } else if (currentStage === STAGE_FOLD_TRANS) {
+                // 2. 长信对折好的小方块等比缩小，并平滑滑移至上方；同时居中大信封淡入
+                scaleProgress += 0.022; // 控制滑动过渡速度
+                envelopeOpacity = Math.min(1.0, scaleProgress * 1.5);
+
+                if (scaleProgress >= 1.0) {
+                    scaleProgress = 1.0;
+                    currentStage = STAGE_DRAGGING;
+                    pX = width / 2;
+                    pY = height * 0.18; // 停留至上方
+                    setupDragTextDelay(800);
+                }
+
+                // 物理插值计算信纸当前宽高度/定位
+                let curW = pWidth + (foldedSizeW - pWidth) * scaleProgress;
+                let curH = (pHeight / 3) + (foldedSizeH - (pHeight / 3)) * scaleProgress;
                 
-                // === A. 先把信封底腔及底袋正上方层级绘出 ===
-                // 底袋后托
+                let targetYPos = height * 0.18;
+                let curY = pY + (targetYPos - pY) * scaleProgress;
+
+                // --- 渲染淡入的居中大信封 ---
                 ctx.save();
-                ctx.shadowColor = 'rgba(59, 42, 34, 0.1)';
-                ctx.shadowBlur = 12;
-                ctx.shadowOffsetY = 6;
-                ctx.fillStyle = '#D6BFA5'; // 信封空袋暗腔
+                ctx.globalAlpha = envelopeOpacity;
+                // 底袋后托
+                ctx.fillStyle = '#D6BFA5';
                 ctx.beginPath();
                 ctx.roundRect(envX - envW/2, envY - envH/2, envW, envH, 6);
                 ctx.fill();
-                ctx.restore();
-
-                // 底外袋前盖（前托部分，此时信纸在它前面，不会被截断遮挡，可以自由任意拖拽）
+                
+                // 底外袋前盖
                 ctx.fillStyle = '#E8D8BC';
                 ctx.strokeStyle = '#C5B29B';
                 ctx.lineWidth = 1;
@@ -946,40 +964,83 @@
                 ctx.fill();
                 ctx.stroke();
 
-                // 描边加固封边阴影
+                // 翻盖（敞开朝上）
+                let hingeY = envY - envH/2;
+                ctx.beginPath();
+                ctx.moveTo(envX - envW/2, hingeY - 1);
+                ctx.lineTo(envX, hingeY - (envH * 0.495));
+                ctx.lineTo(envX + envW/2, hingeY - 1);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                // --- 绘制运动收缩中的信纸 ---
+                ctx.save();
+                ctx.translate(pX, curY);
+                ctx.shadowColor = 'rgba(59, 42, 34, 0.15)';
+                ctx.shadowBlur = 18;
+                ctx.shadowOffsetY = 5;
+                drawFoldedNoteCover(curW, curH);
+                ctx.restore();
+
+            } else if (currentStage === STAGE_DRAGGING) {
+                // 3. 拖拽大信纸
+                
+                // --- 绘出信封底腔 + 前贴袋 ---
+                ctx.save();
+                ctx.fillStyle = '#D6BFA5'; 
+                ctx.beginPath();
+                ctx.roundRect(envX - envW/2, envY - envH/2, envW, envH, 6);
+                ctx.fill();
+                ctx.restore();
+
+                // 前贴袋
+                ctx.fillStyle = '#E8D8BC';
+                ctx.strokeStyle = '#C5B29B';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(envX - envW/2, envY - envH/2 + 8);
+                ctx.lineTo(envX, envY + 28);
+                ctx.lineTo(envX + envW/2, envY - envH/2 + 8);
+                ctx.lineTo(envX + envW/2, envY + envH/2);
+                ctx.lineTo(envX - envW/2, envY + envH/2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
                 ctx.beginPath();
                 ctx.moveTo(envX - envW/2, envY + envH/2);
                 ctx.lineTo(envX, envY - 14);
                 ctx.lineTo(envX + envW/2, envY + envH/2);
                 ctx.stroke();
 
-                // 顶三角盖处于展开（朝上）
+                // 顶翻盖敞开朝上
                 let hingeY = envY - envH/2;
                 ctx.fillStyle = '#E8D8BC';
                 ctx.beginPath();
                 ctx.moveTo(envX - envW/2, hingeY - 1);
-                ctx.lineTo(envX, hingeY - (envH * 0.495)); // 指向上方
+                ctx.lineTo(envX, hingeY - (envH * 0.495));
                 ctx.lineTo(envX + envW/2, hingeY - 1);
                 ctx.closePath();
                 ctx.fill();
                 ctx.stroke();
 
-                // === B. 在顶层渲染可全屏幕自由移动的信纸 ===
+                // --- 自由拖拽的信纸 (层级在最上方，完好可见) ---
                 ctx.save();
                 ctx.translate(pX, pY);
                 ctx.shadowColor = 'rgba(59, 42, 34, 0.15)';
                 ctx.shadowBlur = 15;
                 ctx.shadowOffsetY = 6;
-                drawFoldedPaperGraphic(targetFoldedW, targetFoldedH);
+                drawFoldedNoteCover(foldedSizeW, foldedSizeH);
                 ctx.restore();
 
             } else if (currentStage >= STAGE_SNAP_SLIDE && currentStage <= STAGE_FLIP_ZOOM) {
-                // 3. 吸入及盖翻盖动作。此时信纸物理层级下沉至口袋层中！
+                // 4. 从上而下落入口袋与盖下封口
 
                 if (currentStage === STAGE_SNAP_SLIDE) {
-                    // 吸入口袋底衬中（从信封口上沿滑向腔体底）
                     const destX = envX;
-                    const destY = envY - envH * 0.15 + targetFoldedH/2; // 降至底袋内部
+                    const destY = envY - envH * 0.12 + foldedSizeH/2; // 降至底袋内腔
                     
                     pX += (destX - pX) * 0.18;
                     pY += (destY - pY) * 0.15;
@@ -993,27 +1054,25 @@
 
                 ctx.save();
                 if (currentStage === STAGE_FLIP_ZOOM) {
-                    // 全屏展开旋转，缩放直至填满界面
+                    // 全屏大翻转放大
                     ctx.translate(envX, envY);
-                    
-                    let yRotateX = Math.cos(flipAngle);
-                    ctx.scale(yRotateX * envZScale, envZScale);
-                    
+                    let rotateScaleX = Math.cos(flipAngle);
+                    ctx.scale(rotateScaleX * envZScale, envZScale);
                     ctx.translate(-envX, -envY);
 
-                    flipAngle += 0.035; // 匀速转面
-                    envZScale += (25.0 - envZScale) * 0.05; // 逼真膨胀爆发放大
+                    flipAngle += 0.035;
+                    envZScale += (25.0 - envZScale) * 0.05;
 
                     if (flipAngle >= Math.PI) {
                         flipAngle = Math.PI;
                     }
-                    if (envZScale > 23.0) {
+                    if (envZScale > 22.0) {
                         currentStage = STAGE_FINAL;
                         finalScreen.classList.add('active');
                     }
                 }
 
-                // === A. 底衬后托 ===
+                // === A. 中底袋后托 ===
                 ctx.save();
                 ctx.fillStyle = '#D6BFA5';
                 ctx.beginPath();
@@ -1021,20 +1080,18 @@
                 ctx.fill();
                 ctx.restore();
 
-                // === B. 口袋裁剪域绘制，物理模拟“进入就遮挡”效果 ===
+                // === B. 核心：裁剪域限制信纸下半段，模拟落袋遮掩 ===
                 ctx.save();
                 ctx.beginPath();
-                // 仅剪切底袋以下区域，超出口袋以外的下部将被截断以隐藏
                 ctx.rect(envX - envW/2 - 1, envY - envH/2 - 1, envW + 2, envH * 1.5);
-                ctx.clip();
+                ctx.clip(); // 锁区
                 
-                // 绘制缓缓落袋的信纸
                 ctx.save();
                 ctx.translate(pX, pY);
-                drawFoldedPaperGraphic(targetFoldedW, targetFoldedH);
+                drawFoldedNoteCover(foldedSizeW, foldedSizeH);
                 ctx.restore();
                 
-                ctx.restore(); // 取消裁剪
+                ctx.restore(); // 释放剪裁
 
                 // === C. 贴盖前外袋 ===
                 ctx.fillStyle = '#E8D8BC';
@@ -1056,9 +1113,9 @@
                 ctx.lineTo(envX + envW/2, envY + envH/2);
                 ctx.stroke();
 
-                // === D. 向上对折直到盖下（完全重合无缝隙） ===
+                // === D. 翻盖盖下动作（完全叠合无缝） ===
                 if (currentStage === STAGE_FLAP_CLOSING) {
-                    flapProgress += 0.028; // 缓合翻折
+                    flapProgress += 0.028;
                     if (flapProgress >= 1) {
                         flapProgress = 1;
                         currentStage = STAGE_FLIP_ZOOM;
@@ -1072,9 +1129,9 @@
 
                 ctx.fillStyle = scaleFlapY > 0 ? '#E8D8BC' : '#DECFAF';
                 ctx.beginPath();
-                ctx.moveTo(envX - envW/2, hingeY - 1.5); // 稍微往上覆盖一点防止缝隙
+                ctx.moveTo(envX - envW/2, hingeY - 1.5); 
                 
-                // +3 像素下压扩展，确保顶点压合，消除最后一切缝隙
+                // 加长尖角下挂深度，无缝咬合
                 ctx.lineTo(envX, hingeY - (envH * 0.495) * scaleFlapY + (scaleFlapY < 0 ? 3.5 : 0));
                 ctx.lineTo(envX + envW/2, hingeY - 1.5);
                 ctx.closePath();
@@ -1087,8 +1144,8 @@
             if (currentStage !== STAGE_FINAL) {
                 requestAnimationFrame(animate);
             } else {
-                // 终幕静默飘雪
-                ctx.fillStyle = '#E8D8BC'; // 翻盖背景放大铺满时的怀旧信糊色
+                // 终幕静显飘雪底屏
+                ctx.fillStyle = '#E8D8BC';
                 ctx.fillRect(0, 0, width, height);
 
                 snowParticles.forEach(p => {
@@ -1104,7 +1161,7 @@
             }
         }
 
-        /* ==================== 重新回放 ==================== */
+        /* ==================== Replay ==================== */
         restartBtn.addEventListener('click', () => {
             currentStage = STAGE_READING;
             
