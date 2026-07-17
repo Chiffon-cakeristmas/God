@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GODSENT NOEL - 献给安信的圣诞礼物</title>
+    <!-- 引入高质感字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Noto+Serif+SC:wght@300;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 变量定义 */
+        :root {
+            --bg-color: #F3EBDD;        /* 暖象牙白 */
+            --paper-color: #E8D8BC;     /* 旧纸米白 */
+            --text-color: #3B2A22;      /* 主要文字：深咖啡色 */
+            --title-color: #722F35;     /* 主标题：深酒红 */
+            --accent-color: #824880;    /* 专属点缀：茄子绀 */
+            --green-color: #34483D;     /* 辅助点缀：暗松柏绿 */
+            --shadow-color: #B9A58C;    /* 阴影压痕：棕灰色 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Noto Serif SC', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--shadow-color);
+            border-radius: 3px;
+        }
+
+        /* 复古纸张微纹理和阴影叠加 */
+        .vintage-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle, transparent 50%, rgba(59, 42, 34, 0.08));
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* 第一阶段：故事阅读区域 */
+        #story-container {
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 20px;
+            transition: opacity 1s ease;
+        }
+
+        .letter-paper {
+            background-color: var(--paper-color);
+            padding: 60px 45px;
+            border-radius: 4px;
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.05),
+                0 10px 30px rgba(185, 165, 140, 0.35),
+                inset 0 0 100px rgba(59, 42, 34, 0.05);
+            position: relative;
+            border: 1px solid rgba(59, 42, 34, 0.1);
+        }
+
+        /* 纸张边缘压痕与装饰线 */
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 15px; bottom: 15px; left: 15px; right: 15px;
+            border: 1px double rgb(185, 165, 140, 0.4);
+            pointer-events: none;
+        }
+
+        /* 段落出现动画 */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            margin-bottom: 35px;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 中英文及字体样式选择 */
+        p.eng-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.45rem;
+            line-height: 1.4;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        p.zh-text {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+
+        /* 引用/强调段落 */
+        .quote {
+            text-align: center;
+            font-weight: bold;
+        }
+        .quote p.eng-text {
+            font-size: 1.6rem;
+            color: var(--title-color);
+        }
+        .quote p.zh-text {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 1;
+        }
+
+        /* 章节标记与幽灵名称 */
+        h2.ghost-title-en {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            text-align: center;
+            margin-top: 50px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        h2.ghost-title-zh {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 600;
+            color: var(--green-color);
+            font-size: 1.05rem;
+            text-align: center;
+            margin-bottom: 35px;
+            letter-spacing: 0.1em;
+        }
+
+        .divider-line {
+            width: 60px;
+            height: 1px;
+            background-color: var(--shadow-color);
+            margin: 30px auto;
+            opacity: 0.5;
+        }
+
+        /* 触发信件折叠的大按钮 */
+        .fold-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        #fold-button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 15px 35px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 2px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(130, 72, 128, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.1em;
+            text-align: center;
+        }
+
+        #fold-button:hover {
+            background-color: #6d3a6b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(130, 72, 128, 0.3);
+        }
+
+        #fold-button span {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 300;
+            margin-top: 4px;
+            letter-spacing: 0.05em;
+        }
+
+        /* 滚动引导 */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            opacity: 0.7;
+            text-align: center;
+            pointer-events: none;
+            animation: bounce 1.8s infinite;
+            transition: opacity 0.5s ease;
+            z-index: 5;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, 0); }
+            50% { transform: translate(-50%, -10px); }
+        }
+
+        /* 第二/三/四阶段：Canvas画布层 */
+        #animation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none; /* 初始状态不允许交互 */
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* 拖拽提示层 */
+        #drag-hint {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translate(-55%, 0);
+            z-index: 4;
+            pointer-events: none;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        #drag-hint .en {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        #drag-hint .zh {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            letter-spacing: 0.1em;
+        }
+
+        /* 第五阶段：揭晓屏幕 */
+        #final-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease 1s;
+        }
+
+        #final-screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .logo-wrap {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--title-color);
+            font-size: 4rem;
+            letter-spacing: 0.25em;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.8s ease;
+        }
+
+        #final-screen.active .main-title {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .subtitle-line {
+            color: var(--text-color);
+            font-weight: 300;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s, opacity 1.8s ease 0.6s;
+        }
+
+        #final-screen.active .subtitle-line {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .subtitle-line span {
+            white-space: nowrap;
+        }
+
+        .restart-btn {
+            margin-top: 60px;
+            background: transparent;
+            border: 1px solid var(--shadow-color);
+            color: var(--text-color);
+            padding: 8px 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        .restart-btn:hover {
+            opacity: 1;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            #story-container {
+                padding: 10px;
+                margin: 20px auto;
+            }
+            .letter-paper {
+                padding: 40px 20px;
+            }
+            .main-title {
+                font-size: 2.2rem;
+                letter-spacing: 0.15em;
+            }
+            .subtitle-line {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vintage-overlay"></div>
+
+    <!-- 滚动提醒 -->
+    <div class="scroll-indicator" id="scroller">
+        ↓ Scroll to read<br>向下滚动阅读
+    </div>
+
+    <!-- 一、阅读信件层 -->
+    <div id="story-container">
+        <div class="letter-paper" id="paper-element">
+            <!-- 故事头部 -->
+            <div class="scroll-reveal quote">
+                <p class="eng-text">“Marley was dead, to begin with.”</p>
+                <p class="zh-text">“马利已经死了——首先，这是确定无疑的。”</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">But on this Christmas Eve, it was not Marley’s Ghost that came knocking.</p>
+                <p class="zh-text">但在这个平安夜，敲响安信房门的，并不是马利的幽灵。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">At midnight, beneath the quiet winter sky, a small unsigned letter appeared at Anxin’s door. On its envelope were only these words:</p>
+                <p class="zh-text">午夜时分，冬夜寂静。一封没有署名的小信，出现在安信的门前。信封上只有一句话：</p>
+            </div>
+
+            <div class="scroll-reveal quote">
+                <p class="eng-text">“Come and listen to the nights your song has made warm.”</p>
+                <p class="zh-text">“来听一听，那些曾被你的歌声温柔陪伴的夜晚。”</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">That night, three Ghosts came to him in a dream.</p>
+                <p class="zh-text">那一夜，三位幽灵来到他的梦中。</p>
+            </div>
+
+            <div class="divider-line scroll-reveal"></div>
+
+            <!-- Chapter 1 -->
+            <div class="scroll-reveal">
+                <h2 class="ghost-title-en">The Ghost of Christmas Past</h2>
+                <h2 class="ghost-title-zh">圣诞过去的幽灵</h2>
+                <p class="eng-text">The first Ghost showed him Christmases Past.</p>
+                <p class="zh-text">第一位幽灵带他看见了过去的圣诞。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">He saw a younger Anxin beneath the stage lights, singing his first songs. In the audience were family, teachers, and strangers hearing his voice for the first time.</p>
+                <p class="zh-text">他看见年少的安信站在舞台灯光下，唱起最初的歌。台下有家人、老师，也有第一次听见他声音的陌生人。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">He did not yet know that his songs would one day accompany someone through a long winter—or accompany him through the more difficult years of his own childhood.</p>
+                <p class="zh-text">那时的他还不知道，自己的歌声有一天会陪伴某些人走过漫长的冬天，也会陪伴那个曾经有些辛苦地长大的自己，走过童年。</p>
+            </div>
+
+            <div class="divider-line scroll-reveal"></div>
+
+            <!-- Chapter 2 -->
+            <div class="scroll-reveal">
+                <h2 class="ghost-title-en">The Ghost of Christmas Present</h2>
+                <h2 class="ghost-title-zh">圣诞现在的幽灵</h2>
+                <p class="eng-text">The second Ghost showed him Christmas Present.</p>
+                <p class="zh-text">第二位幽灵带他看见了现在的圣诞。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">Under the stage lights, Anxin gave his whole heart to every rehearsal, every performance, and every quiet moment shared with the people who supported him.</p>
+                <p class="zh-text">聚光灯下，安信把全部的认真交给每一次练习、每一场演出，也交给那些与喜欢他的人共同度过的安静时刻。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">Somewhere, someone was smiling at the same moment he smiled. Somewhere else, someone was listening to his voice, letting the night pass a little more gently.</p>
+                <p class="zh-text">在某个地方，有人因为看见他的笑容而笑了起来；在另一个地方，也有人听着他的声音，让漫长的夜晚缓缓经过。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">The joy he gave was never loud or fleeting. It moved quietly from one heart to another, becoming part of days he might never see.</p>
+                <p class="zh-text">他给予的快乐，从来不喧哗，也不短暂。它安静地从一颗心抵达另一颗心，成为许多他未曾亲眼见过的日子的一部分。</p>
+            </div>
+
+            <div class="divider-line scroll-reveal"></div>
+
+            <!-- Chapter 3 -->
+            <div class="scroll-reveal">
+                <h2 class="ghost-title-en">The Ghost of Christmas Yet to Come</h2>
+                <h2 class="ghost-title-zh">尚未来临的圣诞幽灵</h2>
+                <p class="eng-text">Then came the third Ghost, carrying no words, only a soft and distant light.</p>
+                <p class="zh-text">随后，第三位幽灵来到他的面前。它没有带来话语，只带来一束遥远而柔和的光。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">It showed him Christmas Yet to Come.</p>
+                <p class="zh-text">它带他看见了尚未来临的圣诞。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">Beneath a great Christmas tree were gifts from every corner of the world: carefully written letters, familiar photographs, small handmade keepsakes, and wishes folded into envelopes.</p>
+                <p class="zh-text">一棵巨大的圣诞树下，放着来自世界各地的礼物：认真写下的信、熟悉的照片、亲手制作的小小纪念品，还有被折进信封里的祝福。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">Anxin looked at the gifts, and at the letters resting among them.</p>
+                <p class="zh-text">安信望着那些礼物，也望着散落其间的一封封信。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">And he found that he had understood long ago.</p>
+                <p class="zh-text">他发现，自己其实早已明白。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">A gift is not made precious only by the moment it is opened. Its meaning grows as it is given, received, and gently passed from one person to another.</p>
+                <p class="zh-text">礼物的珍贵，并不只在于被打开的那一刻。它的意义，会在赠予、接收与传递之间，慢慢生长。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">A song can do the same.</p>
+                <p class="zh-text">歌声也是如此。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">What begins with one voice may travel farther than the singer can imagine, carrying warmth, courage, and happiness to places he may never see.</p>
+                <p class="zh-text">一首歌从一个人的声音开始，却可以抵达歌者无法想象的远方，将温柔、勇气与幸福送到那些他未曾抵达的地方。</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="eng-text">And perhaps that was the truest gift of all: to give happiness, and to discover that it had been quietly returning all along.</p>
+                <p class="zh-text">也许，这才是最珍贵的礼物：把幸福送给别人，也终于发现，那些幸福早已在漫长的岁月里，悄悄回到了自己身边。</p>
+            </div>
+
+            <div class="divider-line scroll-reveal"></div>
+
+            <!-- Outro -->
+            <div class="scroll-reveal quote">
+                <p class="eng-text">“God bless us, every one!”</p>
+                <p class="zh-text">“愿上帝赐福于我们每一个人！”</p>
+            </div>
+
+            <div class="scroll-reveal">
+                <p class="zh-text" style="text-align: center; margin-bottom: 0;">
+                    于是，在同一片天空下，我们将安信的音乐、舞台、记忆、成长，以及每一份真心写下的祝福，收集成一件小小的礼物。<br>
+                    <span style="font-family:'Caveat', cursive; font-size:1.15rem; font-weight:normal; display:inline-block; margin-top:5px;">
+                        And so, beneath the same sky, we gathered Anxin’s music, stages, memories, growth, and every heartfelt wish into one small gift.
+                    </span>
+                </p>
+            </div>
+
+            <!-- 折信动作激发入口 -->
+            <div class="fold-btn-container scroll-reveal">
+                <button id="fold-button">
+                    折叠并封存这封信
+                    <span>Fold & Seal the Letter</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二、Canvas 交互动画层 -->
+    <canvas id="animation-canvas"></canvas>
+
+    <!-- 拖拽操作英文/中文提示 -->
+    <div id="drag-hint">
+        <div class="en">Place the letter inside.</div>
+        <div class="zh">将信纸放入信封。</div>
+    </div>
+
+    <!-- 三、GODSENT NOEL 最终揭晓 -->
+    <div id="final-screen">
+        <div class="logo-wrap">
+            <h1 class="main-title">GODSENT NOEL</h1>
+            <p class="subtitle-line">
+                <span>献给安信的圣诞礼物</span>
+                <span style="color:var(--accent-color)">•</span>
+                <span>A Christmas Gift for Anxin</span>
+                <span style="color:var(--accent-color)">•</span>
+                <span>안신에게 보내는 크리스마斯 선물</span>
+            </p>
+            <button class="restart-btn" id="restart-btn">重新阅读 / Replay</button>
+        </div>
+    </div>
+
+    <script>
+        /* ==================== WEB AUDIO AUDIO SYNTHESIZER ==================== */
+        // 基于Web Audio API 实时生成折纸、摩擦、风吹、盖印章等音效，不需要外部依赖文件
+        let audioCtx;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // 折纸/摩擦声音 (白噪音经过带通滤波以及指数包络衰减)
+        function playPaperRustle() {
+            try {
+                const ctx = getAudioContext();
+                const bufferSize = ctx.sampleRate * 0.4;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.Q.value = 3;
+                filter.frequency.setValueAtTime(600, ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.35);
+
+                const gainNode = ctx.createGain();
+                gainNode.gain.setValueAtTime(0.06, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+
+                noise.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                noise.start();
+            } catch(e){}
+        }
+
+        // 物体被吸附拖入信封的声音 (双音频短声)
+        function playPopupSound() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(260, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(520, ctx.currentTime + 0.12);
+
+                gain.gain.setValueAtTime(0.07, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.12);
+            } catch(e){}
+        }
+
+        // 火漆印章敲击音 (低频原声冲击)
+        function playStampSound() {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(90, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(25, ctx.currentTime + 0.22);
+                
+                gain.gain.setValueAtTime(0.35, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.22);
+            } catch(e){}
+        }
+
+        // 魔法散开/风声 (高空灵滤波扫频白噪)
+        function playWindDissolve() {
+            try {
+                const ctx = getAudioContext();
+                const bufferSize = ctx.sampleRate * 1.5;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = ctx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.Q.value = 6;
+                filter.frequency.setValueAtTime(250, ctx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(3200, ctx.currentTime + 1.2);
+
+                const gainNode = ctx.createGain();
+                gainNode.gain.setValueAtTime(0.07, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.4);
+
+                noise.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                noise.start();
+
+                // 辅以柔和的八音盒和弦
+                const notes = [329.63, 392.00, 523.25, 659.25, 783.99]; // E5, G5, C6, E6, G6
+                notes.forEach((freq, i) => {
+                    const timeOffset = ctx.currentTime + i * 0.15;
+                    const oscTone = ctx.createOscillator();
+                    const toneGain = ctx.createGain();
+                    oscTone.type = 'sine';
+                    oscTone.frequency.setValueAtTime(freq, timeOffset);
+                    toneGain.gain.setValueAtTime(0, timeOffset);
+                    toneGain.gain.linearRampToValueAtTime(0.04, timeOffset + 0.05);
+                    toneGain.gain.exponentialRampToValueAtTime(0.001, timeOffset + 1.5);
+                    oscTone.connect(toneGain);
+                    toneGain.connect(ctx.destination);
+                    oscTone.start(timeOffset);
+                    oscTone.stop(timeOffset + 1.6);
+                });
+            } catch(e){}
+        }
+
+        /* ==================== 页面滚动动效 (STAGE 1) ==================== */
+        const reveals = document.querySelectorAll('.scroll-reveal');
+        const scroller = document.getElementById('scroller');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -60px 0px"
+        });
+
+        reveals.forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                scroller.style.opacity = 0;
+            } else {
+                scroller.style.opacity = 0.7;
+            }
+        });
+
+        /* ==================== CANVAS APP (STAGE 2 - STAGE 5) ==================== */
+        const canvas = document.getElementById('animation-canvas');
+        const ctx = canvas.getContext('2d');
+        const storyContainer = document.getElementById('story-container');
+        const foldBtn = document.getElementById('fold-button');
+        const dragHint = document.getElementById('drag-hint');
+        const finalScreen = document.getElementById('final-screen');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // 状态定义
+        const STAGE_READING = 0;
+        const STAGE_FOLDING = 1;
+        const STAGE_DRAGGING = 2;
+        const STAGE_SNAP_SLIDE = 3;
+        const STAGE_FLAP_CLOSING = 4;
+        const STAGE_SEALING = 5;
+        const STAGE_DISSOLVING = 6;
+        const STAGE_FINAL = 7;
+
+        let currentStage = STAGE_READING;
+        let dpr = window.devicePixelRatio || 1;
+
+        // 视口尺寸
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+
+        // 折叠动画变量
+        let foldProgress = 0.0;
+        let scaleProgress = 0.0;
+
+        // 纸张坐标变量（折叠缩放后的）
+        let pWidth, pHeight;
+        let pX, pY; // 信件位置
+
+        // 信封坐标
+        let envX, envY, envW, envH;
+        let flapProgress = 0.0; // 0: 展开, 1: 闭合
+        let sealProgress = 0.0; // 印章盖压动画
+
+        // 鼠标跟手变量
+        let pointer = { x: 0, y: 0 };
+        let isDragging = false;
+        let dragOffset = { x: 0, y: 0 };
+        let dragHintTimeout = null;
+
+        // 粒子系统
+        let particles = [];
+        let ambientParticles = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            // 初始化信件和信封尺寸布局
+            const minDim = Math.min(width, height);
+            envW = Math.min(width * 0.7, 260);
+            envH = envW * 0.65;
+            envX = width / 2;
+            envY = height * 0.72;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // 产生背景微弱的飘雪效果
+        function createAmbientParticles() {
+            while (ambientParticles.length < 25) {
+                ambientParticles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2 + 1,
+                    speedY: Math.random() * 0.4 + 0.1,
+                    speedX: (Math.random() - 0.5) * 0.2,
+                    alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+        }
+
+        // 触发开始折叠
+        foldBtn.addEventListener('click', () => {
+            getAudioContext(); // 交互激活音频引擎
+            
+            // 锁定滚动并平稳滑至顶部使得隐藏过渡顺滑
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.body.style.overflow = 'hidden';
+
+            const rect = document.getElementById('paper-element').getBoundingClientRect();
+            
+            // 全屏显示 Canvas，关闭文字展示域
+            canvas.style.pointerEvents = 'auto';
+            canvas.style.opacity = 1;
+            storyContainer.style.opacity = 0;
+            
+            // 用 Canvas 模拟一张相同大小的真实尺寸纸片
+            pWidth = rect.width;
+            pHeight = rect.height;
+            pX = rect.left + rect.width / 2;
+            pY = rect.top + rect.height / 2;
+            
+            currentStage = STAGE_FOLDING;
+            foldProgress = 0.0;
+            playPaperRustle();
+            animate();
+        });
+
+        // 鼠标跟手交互逻辑
+        function getPointerPos(e) {
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX, y: clientY };
+        }
+
+        function downHandler(e) {
+            if (currentStage !== STAGE_DRAGGING) return;
+            const pos = getPointerPos(e);
+            
+            // 折叠后信件边界检查 (只占用折叠后的 1/3 大小且被再次缩放到信封适配比)
+            const targetW = envW * 0.9;
+            const targetH = (pHeight / 3) * (targetW / pWidth);
+            
+            const dx = Math.abs(pos.x - pX);
+            const dy = Math.abs(pos.y - pY);
+            
+            if (dx < targetW/2 && dy < targetH/2) {
+                isDragging = true;
+                dragOffset.x = pX - pos.x;
+                dragOffset.y = pY - pos.y;
+                clearTimeout(dragHintTimeout);
+                dragHint.style.opacity = 0;
+                playPaperRustle();
+            }
+        }
+
+        function moveHandler(e) {
+            if (!isDragging) return;
+            const pos = getPointerPos(e);
+            pX = pos.x + dragOffset.x;
+            pY = pos.y + dragOffset.y;
+        }
+
+        function upHandler() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            // 吸附检测：折信中心靠近信封中心上沿（装信袋口）
+            const pocketY = envY - envH * 0.15; 
+            const dist = Math.hypot(pX - envX, pY - pocketY);
+            
+            if (dist < 80) {
+                // 吸附动作锁定
+                currentStage = STAGE_SNAP_SLIDE;
+                playPopupSound();
+            } else {
+                // 还原滑动提示
+                showDragHintLater(1000);
+            }
+        }
+
+        canvas.addEventListener('mousedown', downHandler);
+        canvas.addEventListener('mousemove', moveHandler);
+        window.addEventListener('mouseup', upHandler);
+
+        canvas.addEventListener('touchstart', downHandler, { passive: true });
+        canvas.addEventListener('touchmove', moveHandler, { passive: true });
+        window.addEventListener('touchend', upHandler);
+
+        function showDragHintLater(ms) {
+            clearTimeout(dragHintTimeout);
+            dragHintTimeout = setTimeout(() => {
+                if (currentStage === STAGE_DRAGGING && !isDragging) {
+                    dragHint.style.opacity = 0.8;
+                }
+            }, ms);
+        }
+
+        /* ==================== 核心仿真绘制模块 ==================== */
+        function drawCreaseline(y) {
+            ctx.strokeStyle = '#B9A58C';
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.35;
+            ctx.beginPath();
+            ctx.moveTo(pX - pWidth/2, y);
+            ctx.lineTo(pX + pWidth/2, y);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+
+        function drawPaperShadow(x, y, w, h, opacity = 0.15) {
+            ctx.shadowColor = 'rgba(59, 42, 34, 0.4)';
+            ctx.shadowBlur = 12;
+            ctx.shadowOffsetY = 6;
+            ctx.fillStyle = 'rgba(0,0,0,0)';
+            ctx.fillRect(x, y, w, h);
+            ctx.shadowColor = 'transparent'; //重置
+        }
+
+        function animate() {
+            // 背景清理
+            ctx.fillStyle = '#F3EBDD';
+            ctx.fillRect(0, 0, width, height);
+
+            // 绘制飘零雪花 (始终渲染在最底层)
+            createAmbientParticles();
+            ambientParticles.forEach((p, index) => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                if (p.y > height) {
+                    p.y = -10;
+                    p.x = Math.random() * width;
+                }
+                ctx.fillStyle = `rgba(130, 72, 128, ${p.alpha * 0.35})`; // 微带有安信专属色偏的雪花
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            if (currentStage === STAGE_FOLDING) {
+                // 1. 三段折叠动画 (分步：先折上，再折下)
+                foldProgress += 0.015;
+                if (foldProgress > 1) {
+                    foldProgress = 1;
+                    // 渐变到适合信封的微型大小，平滑过渡到DRAGGING
+                    scaleProgress += 0.04;
+                    if (scaleProgress >= 1) {
+                        scaleProgress = 1;
+                        currentStage = STAGE_DRAGGING;
+                        pX = width / 2;
+                        pY = height * 0.35; // 折好后位于中央偏上
+                        showDragHintLater(500);
+                    }
+                }
+
+                // 物理插值计算信纸当前宽高度/定位
+                let currentScale = 1.0 - (0.5 * scaleProgress); // 折成小块后缩小
+                let currentXScale = 1.0 - (scaleProgress * (1 - (envW * 0.9 / pWidth)));
+                
+                let renderW = pWidth * currentXScale;
+                let renderH = pHeight;
+                
+                // 将大长方形均等分成3份高度片层进行空间投影
+                const sh = renderH / 3;
+
+                // 计算两个折叠段进度
+                let topFold = Math.min(1, foldProgress * 2);        // 上半段在前 50% 进度折叠完成
+                let bottomFold = Math.max(0, (foldProgress - 0.5) * 2); // 下半段在后 50% 进度折叠完成
+
+                ctx.save();
+                ctx.translate(pX, pY);
+
+                // --- 渲染中层 (主支点，不动) ---
+                drawPaperShadow(-renderW/2, -sh/2, renderW, sh);
+                ctx.fillStyle = '#E8D8BC';
+                ctx.fillRect(-renderW/2, -sh/2, renderW, sh);
+
+                // --- 渲染上层 (向下对折) ---
+                ctx.save();
+                ctx.translate(0, -sh/2); // 上折线 hinge 处
+                let topScaleY = Math.cos(topFold * Math.PI); // 余弦投影高度缩放模拟
+                
+                if (topScaleY > 0) {
+                    // 正面显示
+                    ctx.fillStyle = '#E8D8BC';
+                    ctx.fillRect(-renderW/2, -sh * topScaleY, renderW, sh * topScaleY);
+                } else {
+                    // 折叠过去，反面（盖在中层上）
+                    ctx.fillStyle = '#DFCEAF';
+                    ctx.fillRect(-renderW/2, 0, renderW, sh * Math.abs(topScaleY));
+                    // 覆盖折缝阴影
+                    ctx.fillStyle = 'rgba(59, 42, 34, 0.08)';
+                    ctx.fillRect(-renderW/2, 0, renderW, sh * Math.abs(topScaleY));
+                }
+                ctx.restore();
+
+                // --- 渲染下层 (向上对折) ---
+                ctx.save();
+                ctx.translate(0, sh/2); // 下折线 hinge 处
+                let bottomScaleY = Math.cos(bottomFold * Math.PI);
+                
+                if (bottomScaleY > 0) {
+                    ctx.fillStyle = '#E8D8BC';
+                    ctx.fillRect(-renderW/2, 0, renderW, sh * bottomScaleY);
+                } else {
+                    // 覆盖在中层上方
+                    ctx.fillStyle = '#E1D2B5';
+                    ctx.fillRect(-renderW/2, -sh * Math.abs(bottomScaleY), renderW, sh * Math.abs(bottomScaleY));
+                    // 辅色投影
+                    ctx.fillStyle = 'rgba(59, 42, 34, 0.06)';
+                    ctx.fillRect(-renderW/2, -sh * Math.abs(bottomScaleY), renderW, sh * Math.abs(bottomScaleY));
+                }
+                ctx.restore();
+                
+                ctx.restore();
+
+            } else if (currentStage === STAGE_DRAGGING || currentStage === STAGE_SNAP_SLIDE || currentStage === STAGE_FLAP_CLOSING || currentStage === STAGE_SEALING) {
+                // 拖拽、吞入、与封蜡封缄部分
+                
+                // 2D 拟真信纸片几何特征
+                const letterW = envW * 0.9;
+                const letterH = (pHeight / 3) * (letterW / pWidth);
+
+                if (currentStage === STAGE_SNAP_SLIDE) {
+                    // 缓慢吸附向信封中心袋口滑下定位
+                    const targetX = envX;
+                    const targetY = envY - envH * 0.15 + letterH / 2;
+                    pX += (targetX - pX) * 0.25;
+                    pY += (targetY - pY) * 0.18;
+
+                    if (Math.abs(pX - targetX) < 1 && Math.abs(pY - targetY) < 1) {
+                        pX = targetX;
+                        pY = targetY;
+                        currentStage = STAGE_FLAP_CLOSING;
+                    }
+                }
+
+                // 2. 依次按纵深层次绘制各物件
+                // ---- [LEVEL 1]: 信封背景大轮廓 (口袋背层) ----
+                ctx.save();
+                ctx.shadowColor = 'rgba(59, 42, 34, 0.18)';
+                ctx.shadowBlur = 18;
+                ctx.shadowOffsetY = 8;
+                ctx.fillStyle = '#D6C7AE'; // 袋底暗色阴影质感
+                ctx.beginPath();
+                ctx.roundRect(envX - envW/2, envY - envH/2, envW, envH, 3);
+                ctx.fill();
+                ctx.restore();
+
+                // ---- [LEVEL 2]: 滑移塞入的折叠信纸 ----
+                // 我们在信封口加一个裁剪区域，令坠落于背面的信纸能隐密藏入袋中
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(envX - envW/2, envY - envH/2 - 2, envW, envH * 1.5);
+                ctx.clip();
+                
+                ctx.fillStyle = '#DFCEAF';
+                ctx.fillRect(pX - letterW/2, pY - letterH/2, letterW, letterH);
+                // 模拟压线阴影
+                ctx.fillStyle = 'rgba(59, 42, 34, 0.15)';
+                ctx.fillRect(pX - letterW/2, pY - letterH/2 + 2, letterW, 2);
+                ctx.restore();
+
+                // ---- [LEVEL 3]: 信封两侧和底部折角 (正面贴袋) ----
+                ctx.fillStyle = '#E8D8BC';
+                ctx.strokeStyle = '#B9A58C';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                
+                // 下折扇面三角形
+                ctx.moveTo(envX - envW/2, envY - envH/2 + 6);
+                ctx.lineTo(envX, envY + 20);
+                ctx.lineTo(envX + envW/2, envY - envH/2 + 6);
+                ctx.lineTo(envX + envW/2, envY + envH/2);
+                ctx.lineTo(envX - envW/2, envY + envH/2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // 细笔勾边界加强纸片物理拼贴层次
+                ctx.beginPath();
+                ctx.moveTo(envX - envW/2, envY + envH/2);
+                ctx.lineTo(envX, envY - 10);
+                ctx.lineTo(envX + envW/2, envY + envH/2);
+                ctx.stroke();
+
+                // ---- [LEVEL 4]: 信封上部翻盖折叶 ----
+                if (currentStage === STAGE_FLAP_CLOSING) {
+                    flapProgress += 0.038;
+                    if (flapProgress >= 1) {
+                        flapProgress = 1;
+                        currentStage = STAGE_SEALING;
+                        playStampSound(); // 印封封蜡
+                    }
+                }
+                
+                // 空间翻叠变换
+                let flapAngle = flapProgress * Math.PI;
+                let flapScaleY = Math.cos(flapAngle);
+                let flapHingeY = envY - envH/2;
+
+                ctx.fillStyle = flapScaleY > 0 ? '#E8D8BC' : '#DFCEAF';
+                ctx.beginPath();
+                ctx.moveTo(envX - envW/2, flapHingeY);
+                // 折盖顶点坐标插值运动
+                ctx.lineTo(envX, flapHingeY - (envH * 0.45) * flapScaleY);
+                ctx.lineTo(envX + envW/2, flapHingeY);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // ---- [LEVEL 5]: 茄子绀专属封蜡火漆印 ----
+                if (currentStage === STAGE_SEALING) {
+                    sealProgress += 0.055;
+                    if (sealProgress >= 1) {
+                        sealProgress = 1;
+                        setTimeout(() => {
+                            currentStage = STAGE_DISSOLVING;
+                            playWindDissolve();
+                            generateDissolveParticles();
+                        }, 500); // 盖下印章静止一会儿触发消散
+                    }
+                }
+
+                if (flapScaleY < 0) { // 翻盖折下来了
+                    const sealX = envX;
+                    const sealY = envY - 5;
+                    const r = 20 * Math.min(1, sealProgress * 1.5);
+                    
+                    // 火漆无规则流状边缘绘制
+                    if (r > 0) {
+                        ctx.fillStyle = 'rgba(130, 72, 128, 0.95)'; // #824880 - 专属茄子绀
+                        ctx.beginPath();
+                        for (let a = 0; a < Math.PI * 2; a += 0.2) {
+                            let wobble = Math.sin(a * 8) * r * 0.08 + Math.cos(a * 5) * r * 0.04;
+                            let rx = sealX + Math.cos(a) * (r + wobble);
+                            let ry = sealY + Math.sin(a) * (r + wobble);
+                            if (a === 0) ctx.moveTo(rx, ry);
+                            else ctx.lineTo(rx, ry);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+
+                        // 极度精细：封印中心的金麦金徽
+                        if (sealProgress >= 1) {
+                            ctx.fillStyle = '#E8D8BC'; // 黄金/旧纸色调
+                            ctx.beginPath();
+                            // 绘制中心的星芒印记
+                            for (let i = 0; i < 8; i++) {
+                                let angle = (i * Math.PI) / 4 - Math.PI/2;
+                                let outerR = 10;
+                                let innerR = 4;
+                                ctx.lineTo(sealX + Math.cos(angle) * outerR, sealY + Math.sin(angle) * outerR);
+                                let insideAngle = angle + Math.PI / 8;
+                                ctx.lineTo(sealX + Math.cos(insideAngle) * innerR, sealY + Math.sin(insideAngle) * innerR);
+                            }
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                    }
+                }
+            } else if (currentStage === STAGE_DISSOLVING) {
+                // 3. 信纸散裂为绚烂碎星动画
+                let allDead = true;
+                particles.forEach(p => {
+                    p.update();
+                    if (p.life > 0) {
+                        allDead = false;
+                        p.draw(ctx);
+                    }
+                });
+
+                if (allDead) {
+                    currentStage = STAGE_FINAL;
+                    finalScreen.classList.add('active');
+                }
+            }
+
+            if (currentStage !== STAGE_FINAL) {
+                requestAnimationFrame(animate);
+            } else {
+                // STAGE_FINAL 依然保留微雪飘洒，让画面感觉鲜活
+                ctx.fillStyle = '#F3EBDD';
+                ctx.fillRect(0, 0, width, height);
+                ambientParticles.forEach((p) => {
+                    p.y += p.speedY * 0.35; // 慢飞
+                    p.x += p.speedX * 0.35;
+                    if (p.y > height) { p.y = -10; p.x = Math.random() * width; }
+                    ctx.fillStyle = `rgba(130, 72, 128, ${p.alpha * 0.25})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+        }
+
+        // 构造消散粒子系统粒子
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 6; // 强横向偏向
+                this.vy = -(Math.random() * 5 + 3);  // 向上吹起
+                this.size = Math.random() * 8 + 3;
+                this.alpha = 1;
+                this.life = 1.0;
+                this.decay = Math.random() * 0.015 + 0.008;
+                this.color = color;
+                this.wiggleFreq = Math.random() * 0.15;
+                this.wiggleAmp = Math.random() * 1.5;
+            }
+            update() {
+                this.x += this.vx + Math.sin(this.y * this.wiggleFreq) * this.wiggleAmp;
+                this.y += this.vy;
+                this.life -= this.decay;
+                this.alpha = Math.max(0, this.life);
+                this.size = Math.max(0.1, this.size - this.decay * 3);
+            }
+            draw(c) {
+                c.save();
+                c.globalAlpha = this.alpha;
+                c.fillStyle = this.color;
+                
+                // 混合微弱的光芒效果
+                c.shadowBlur = 8;
+                c.shadowColor = this.color;
+                
+                c.beginPath();
+                // 矩形和圆形雪花鳞混合
+                if (Math.random() > 0.5) {
+                    c.rect(this.x - this.size/2, this.y - this.size/2, this.size, this.size);
+                } else {
+                    c.arc(this.x, this.y, this.size/2, 0, Math.PI * 2);
+                }
+                c.fill();
+                c.restore();
+            }
+        }
+
+        function generateDissolveParticles() {
+            const startX = envX - envW/2;
+            const startY = envY - envH/2;
+            
+            // 设定茄子绀, 暗松绿, 暖旧米白, 亮金色混合的魔幻粒系
+            const colors = [
+                '#824880', // 专属茄子绀 
+                '#34483D', // 暗松柏绿
+                '#E8D8BC', // 旧纸米白
+                '#722F35', // 深酒红
+                '#D4AF37'  // 华丽香槟金
+            ];
+
+            for (let i = 0; i < 400; i++) {
+                // 空间均匀位置散逸
+                const px = startX + Math.random() * envW;
+                const py = startY + Math.random() * envH;
+                const randColor = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(px, py, randColor));
+            }
+        }
+
+        /* ==================== 重新激活（用于循环阅读） ==================== */
+        restartBtn.addEventListener('click', () => {
+            currentStage = STAGE_READING;
+            
+            // 清理状态
+            foldProgress = 0.0;
+            scaleProgress = 0.0;
+            flapProgress = 0.0;
+            sealProgress = 0.0;
+            particles = [];
+            
+            canvas.style.pointerEvents = 'none';
+            canvas.style.opacity = 0;
+            
+            finalScreen.classList.remove('active');
+            storyContainer.style.opacity = 1;
+            document.body.style.overflow = 'auto';
+        });
+    </script>
+</body>
+</html>
