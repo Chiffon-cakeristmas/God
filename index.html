@@ -122,8 +122,6 @@ body {
 
 /* 
  * 遮罩屏蔽中文网格线 
- * 利用两侧负 margins 将背景底色直接向两侧拓宽至信纸的最边缘，
- * 采用 1.15rem (半线格高度) 巧妙把随后的英文拉回、对齐下一根格线上
  */
 p.zh-text {
     margin-left: -50px;
@@ -291,23 +289,40 @@ p.eng-text + p.eng-text {
     text-align: center;
 }
 
+/* 页面主物理下滑摆动小红针（绝对水平物理居中） */
 .scroll-indicator {
     position: fixed;
     bottom: 25px;
     left: 50%;
-    z-index: 5;
-    line-height: 1.4;
-    pointer-events: none;
-    color: #e8d8bc;
-    opacity: .7;
     transform: translateX(-50%);
-    animation: bounce 1.8s infinite;
+    z-index: 5;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 30px;
     transition: opacity .5s ease, visibility .5s ease;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translate(-50%, 0); }
-    50% { transform: translate(-50%, -6px); }
+.scroll-down-arrow-red {
+    position: relative;
+    width: 20px;
+    height: 10px;
+    opacity: 0.85;
+    animation: smoothDownArrow 1.8s infinite ease-in-out;
+}
+
+.scroll-down-arrow-red::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border-right: 2.2px solid var(--title);
+    border-bottom: 2.2px solid var(--title);
+    transform: translateX(-50%) rotate(45deg);
 }
 
 .fold-hint {
@@ -392,21 +407,22 @@ p.eng-text + p.eng-text {
 /* ==================== 最终屏幕 ==================== */
 
 #final-screen {
-    position: fixed;
-    inset: 0;
+    position: relative;
+    width: 100%;
+    height: 100vh;
     z-index: 3;
-    display: flex;
+    display: none;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: #e8d8bc;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 1.5s ease;
+    transition: opacity 1s ease;
 }
 
 #final-screen.active {
+    display: flex;
     opacity: 1;
-    pointer-events: auto;
 }
 
 .logo-wrap {
@@ -459,22 +475,625 @@ p.eng-text + p.eng-text {
     white-space: nowrap;
 }
 
+/* 重新阅读按钮：定位在屏幕左下角 */
 .restart-btn {
-    margin-top: 55px;
-    padding: 8px 24px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    padding: 5px 14px;
     border: 1px solid #b9a58c;
     background: transparent;
     color: #3b2a22;
-    font: .72rem 'Noto Serif SC', serif;
+    font: .65rem/1.2 'Noto Serif SC', serif;
     cursor: pointer;
     opacity: .65;
     transition: all .3s ease;
+    z-index: 10;
 }
 
 .restart-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
     opacity: 1;
+}
+
+/* 标题下方的下滑提示指示箭头（添加 opacity 平滑过渡） */
+.scroll-down-arrow {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 15px;
+    opacity: 0.6;
+    animation: smoothDownArrow 1.8s infinite ease-in-out;
+    cursor: pointer;
+    z-index: 5;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.scroll-down-arrow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    border-right: 2.2px solid #722f35;
+    border-bottom: 2.2px solid #722f35;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+@keyframes smoothDownArrow {
+    0% { transform: translate(-50%, 0); opacity: 0.35; }
+    50% { transform: translate(-50%, 8px); opacity: 0.8; }
+    100% { transform: translate(-50%, 0); opacity: 0.35; }
+}
+
+/* ==================== 最终屏幕全屏填满第二屏 ==================== */
+#image-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    margin: 0;
+    padding: 0;
+    background: #000;
+    overflow: hidden;
+}
+
+.screen-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    margin: 0;
+    padding: 0;
+    will-change: transform;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.screen-img.shadows-bg {
+    z-index: 1;
+}
+
+.screen-img.light-up {
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hotspots-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+}
+
+.hotspot {
+    flex: 1;
+    height: 70%;
+    margin-top: 30vh;
+    cursor: pointer;
+    background: transparent;
+}
+
+/* ==================== 🆕 拆礼物动效遮罩 ==================== */
+#unwrap-transition-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: #e8d8bc;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.gift-box-anim {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#unwrap-transition-overlay.active .gift-box-anim {
+    transform: scale(1);
+}
+
+.box-lid {
+    position: absolute;
+    top: 35px;
+    left: 10px;
+    width: 140px;
+    height: 30px;
+    background: #722f35;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(59, 42, 34, 0.2);
+    z-index: 5;
+    transform-origin: bottom center;
+}
+
+.box-bow {
+    position: absolute;
+    top: 5px;
+    left: 60px;
+    width: 40px;
+    height: 30px;
+    z-index: 6;
+    background: #f8f3e8;
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    transform-origin: bottom center;
+}
+
+.box-ribbon-v {
+    position: absolute;
+    top: 35px;
+    left: 70px;
+    width: 20px;
+    height: 105px;
+    background: #f8f3e8;
+    z-index: 4;
+}
+
+.box-base {
+    position: absolute;
+    top: 62px;
+    left: 17px;
+    width: 126px;
+    height: 78px;
+    background: #722f35;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 8px 16px rgba(59, 42, 34, 0.15);
+    z-index: 3;
+}
+
+.sparkle-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.gift-box-anim.open .box-lid {
+    animation: lidFly 0.9s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.gift-box-anim.open .box-bow {
+    animation: bowScatter 0.7s forwards ease-in-out;
+}
+.gift-box-anim.open .box-ribbon-v {
+    animation: ribbonFadeOut 0.5s forwards ease-in;
+}
+
+@keyframes lidFly {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    30% { transform: translateY(-40px) rotate(-12deg); }
+    100% { transform: translateY(-160px) scale(0.5) rotate(-35deg); opacity: 0; }
+}
+
+@keyframes bowScatter {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    100% { transform: scale(1.6) translateY(-90px) rotate(45deg); opacity: 0; }
+}
+
+@keyframes ribbonFadeOut {
+    100% { opacity: 0; transform: scaleY(0); }
+}
+
+/* ==================== 🆕 拆开后的全屏内容互动卡 ==================== */
+.gift-detail-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    padding: 100px 20px 48px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    color: #f8f3e8;
+}
+
+.gift-detail-screen.active {
+    display: flex;
+    opacity: 1 !important;
+}
+
+/* 界面一：保持原本的绿色渐变底色 */
+#detail-screen-1 {
+    background: radial-gradient(circle at center, #1b3528 20%, #0d1e15 100%) !important;
+}
+
+/* 界面二：改为复古酒红 */
+#detail-screen-2 {
+    background: radial-gradient(circle at center, #722f35 20%, #3d161a 100%) !important;
+    justify-content: center;
+}
+
+/* 界面三：改为静谧深蓝 */
+#detail-screen-3 {
+    background: radial-gradient(circle at center, #0b2145 20%, #051024 100%) !important;
+    justify-content: center;
+}
+
+/* 界面四：改为经典紫色 */
+#detail-screen-4 {
+    background: radial-gradient(circle at center, #4a215d 20%, #230d2d 100%) !important;
+    justify-content: center;
+}
+
+.back-to-hall-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    padding: 8px 16px;
+    border: 1px solid rgba(248, 243, 232, 0.3);
+    background: rgba(0, 0, 0, 0.4);
+    color: #f8f3e8;
+    font: 0.75rem 'Noto Serif SC', serif;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.back-to-hall-btn:hover {
+    background: #f8f3e8;
+    color: #1b3528;
+    border-color: #f8f3e8;
+}
+
+.detail-card {
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+.detail-title {
+    color: #b9965a;
+    font: normal 2.8rem 'Great Vibes', cursive;
+    margin-bottom: 5px;
+}
+
+.detail-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: rgba(248, 243, 232, 0.6);
+    margin-bottom: 30px;
+}
+
+.detail-desc {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: rgba(248, 243, 232, 0.95);
+    margin-bottom: 30px;
+}
+
+/* ==================== 黑胶唱机及图1五线谱重现 ==================== */
+.turntable-box {
+    position: relative;
+    width: 320px;
+    height: 280px;
+    margin: 0 auto 10px;
+    overflow: visible;
+}
+
+/* 完美复刻图1的金色弯曲五线谱（作为唱机底部底图衬台） */
+.top-stave-classic {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; 
+}
+
+/* 密纹唱片盘 */
+.turntable-platter {
+    position: absolute;
+    left: 10px;
+    top: 25px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #333 40%, #111 41%, #333 60%, #000 65%, #222 70%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 4px solid #13271c;
+    z-index: 2;
+}
+
+.vinyl-grooves-interactive {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle, #102419 0px, #102419 2.2px, #1c3d2c 3px, #102419 3.8px);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.5s ease-out;
+}
+
+.vinyl-grooves-interactive.spin {
+    animation: rotateDisc 12s linear infinite;
+}
+
+.vinyl-label-center {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ec9d30 0%, #e28e23 60%, #521d22 100%);
+    border: 3px solid #722d35;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.vinyl-spindle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #b9965a;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 唱针臂组件：固定定位在右上角 */
+.tonearm-assembly {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
+}
+
+/* 顶固支座 */
+.tonearm-base-hub {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #aa5f21 20%, #521d22 100%);
+    border: 2px solid #b9965a;
+    z-index: 2;
+}
+
+/* 💥 摆动旋轴中枢：左上端（支座）固定，右下端与长方体唱头捆绑 */
+.tonearm-arm-movable {
+    position: absolute;
+    left: 20px; 
+    top: 20px;
+    width: 0;
+    height: 0;
+    transform-origin: 0px 0px; 
+    transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    z-index: 1;
+    transform: rotate(-28deg); /* 💥 闲置状态（默认为右倾）：向右偏摆 -28deg */
+}
+
+/* 💥 播放落盘状态（从右至左顺时针偏摆移动）：向左前方大角度偏转，角度升为 -2deg，落点大幅度左摆，精准落入黑胶偏左侧的主声轨区域 */
+.tonearm-arm-movable.active {
+    transform: rotate(-2deg); /* 💥 摆动落针范围拓宽 */
+}
+
+/* 复古圆形唱臂长棍 */
+.tonearm-shaft-wood {
+    position: absolute;
+    left: -4px;
+    top: 0;
+    width: 8px;
+    height: 140px; 
+    background: linear-gradient(to right, #e29452 0%, #a45a1f 100%);
+    border-radius: 4px;
+    box-shadow: 2px 4px 6px rgba(0,0,0,0.3);
+}
+
+/* 塑料转接关节 */
+.tonearm-joint-crimson {
+    position: absolute;
+    left: -7px;
+    top: 140px; 
+    width: 14px;
+    height: 18px;
+    background: #521d22;
+    border-radius: 2px;
+}
+
+/* 金黄色播放长方体（唱头） */
+.tonearm-cartridge-head {
+    position: absolute;
+    left: -15px;
+    top: 156px; 
+    width: 30px;
+    height: 48px;
+    background: #e8c170;
+    border: 2px solid #6b4313;
+    border-radius: 4px;
+    box-shadow: -4px 6px 12px rgba(0,0,0,0.35);
+}
+
+.cartridge-screw {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    line-height: 6px;
+    font-size: 8px;
+    font-family: inherit;
+    font-weight: bold;
+    color: #4a2d10;
+    text-align: center;
+    border-radius: 50%;
+    background: #aa853c;
+    border: 1px dashed rgba(0,0,0,0.3);
+}
+.cartridge-screw.tl { top: 4px; left: 4px; }
+.cartridge-screw.tr { top: 4px; right: 4px; }
+.cartridge-screw.bl { bottom: 4px; left: 4px; }
+.cartridge-screw.br { bottom: 4px; right: 4px; }
+
+/* ==================== 随着滚动流淌的金色五线谱 ==================== */
+.scroll-reveal-container {
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 10px 100px;
+    z-index: 5;
+}
+
+/* 顺滑流淌如河流不规则蜿蜒流下的金色五线谱（大弧度三阶贝塞尔曲线算法） */
+.stave-lines-flowing {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* 视差故事段落与拍立得 */
+.reveal-item {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.3s cubic-bezier(0.215, 0.61, 0.355, 1), 
+                transform 1.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.reveal-item.revealed-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.polaroid-frame {
+    background: #fdfaf2;
+    padding: 14px 14px 34px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255,255,255,0.7);
+    margin: 60px auto;
+    max-width: 300px;
+    width: 100%;
+    display: block;
+    transform: rotate(-1.5deg);
+    transition: transform 0.5s ease;
+}
+.polaroid-frame:nth-child(even) {
+    transform: rotate(2deg);
+}
+
+.polaroid-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #e2d9c4;
+}
+
+.polaroid-caption {
+    font-family: 'Caveat', cursive;
+    color: #433228;
+    font-size: 1.4rem;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.narrative-card {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 25px 0 60px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.narrative-card p {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: rgba(248, 243, 232, 0.95);
+    margin-bottom: 12px;
+    text-indent: 2em;
+}
+.narrative-card p:last-child {
+    margin-bottom: 0;
+}
+
+/* 倒数日历翻页配置 */
+.calendar-cell.flipped {
+    background: #e8d8bc;
+    color: #722f35;
+    border-color: #e8d8bc;
+    transform: scale(0.95);
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(232, 216, 188, 0.4);
+}
+
+/* 玻璃水晶球 */
+.globe-box {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    border-radius: 50% 50% 0 0;
+    border: 3px solid rgba(255,255,255,0.25);
+    background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 80%);
+    margin: 0 auto 30px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.globe-base {
+    width: 140px;
+    height: 25px;
+    background: #722d35;
+    margin: -3px auto 0;
+    border-radius: 0 0 10px 10px;
+    border: 2px solid #b9965a;
+}
+
+#globe-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 信件重现 */
+#replica-letter-view {
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    background-color: var(--paper);
+    padding: 30px 20px;
+    border-radius: 4px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+#replica-letter-view .letter-paper {
+    padding: 2.5rem 15px 40px;
+    box-shadow: none;
+    border: none;
+    clip-path: none;
 }
 
 /* ==================== 移动端适配 ==================== */
@@ -499,7 +1118,6 @@ p.eng-text + p.eng-text {
         padding: 50px 20px 100px;
     }
 
-    /* 移动端下将中文罩盖块及标题的负外边距同比例收窄至 20px */
     p.zh-text,
     .ghost-title-zh,
     .quote p.zh-text {
@@ -534,18 +1152,25 @@ p.eng-text + p.eng-text {
         top: calc(56% - 160px);
     }
 }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(59, 42, 34, 0.2);
+}
 </style>
 </head>
 
 <body>
 
-<!-- 多端色彩百分百渲染一致的固定夜空背景 -->
+<!-- 固定夜空背景 -->
 <div id="bg-fixed"></div>
 <div class="vintage-overlay"></div>
 
+<!-- 红色滑动箭头指示器（绝对物理水平居中） -->
 <div class="scroll-indicator" id="scroller">
-    ↓ Scroll to read<br>
-    向下滚动阅读
+    <div class="scroll-down-arrow-red"></div>
 </div>
 
 <div id="story-container">
@@ -580,7 +1205,7 @@ p.eng-text + p.eng-text {
             </div>
 
             <p class="eng-text">That night, three Ghosts came to him in a dream.</p>
-            <p class="zh-text">那一夜，三位幽灵来到他的梦中。</p>
+            <p class="zh-text">那一夜，三位幽灵来到梦中。</p>
         </div>
 
         <div class="story-section" id="sec-2">
@@ -632,6 +1257,7 @@ p.eng-text + p.eng-text {
 
 <div id="drop-arrow" aria-hidden="true"></div>
 
+<!-- 最终标题屏界面 -->
 <div id="final-screen">
     <div class="logo-wrap">
         <div class="title-block">
@@ -639,7 +1265,6 @@ p.eng-text + p.eng-text {
             <span class="readable-title">Godsent Noel</span>
         </div>
 
-        <!-- 调换顺序后的尾页英文/中文副标题 -->
         <p class="subtitle-line">
             <span>A Christmas Gift for Anxin</span>
             <span>•</span>
@@ -648,9 +1273,187 @@ p.eng-text + p.eng-text {
             <span>안신에게 보내는 크리스마스 선물</span>
         </p>
 
+        <!-- 重新阅读按钮 -->
         <button class="restart-btn" id="restart-btn">
             重新阅读 / Replay
         </button>
+
+        <!-- 半透明下滑提示双线箭头 -->
+        <div class="scroll-down-arrow" id="down-arrow-indicator"></div>
+    </div>
+</div>
+
+<!-- 最终全屏大图展示第二屏 -->
+<div id="image-screen">
+    <img class="screen-img shadows-bg" src="https://free.boltp.com/2026/07/18/6a5b4d55ea64e.webp" alt="Backdrop with Shadows">
+
+    <img class="screen-img light-up" id="light-1" src="https://free.boltp.com/2026/07/18/6a5b4d5404923.webp" alt="Illuminated 1">
+    <img class="screen-img light-up" id="light-2" src="https://free.boltp.com/2026/07/18/6a5b4d5648b82.webp" alt="Illuminated 2">
+    <img class="screen-img light-up" id="light-3" src="https://free.boltp.com/2026/07/18/6a5b4d5691821.webp" alt="Illuminated 3">
+    <img class="screen-img light-up" id="light-4" src="https://free.boltp.com/2026/07/18/6a5b4d50042c1.webp" alt="Illuminated 4">
+
+    <div class="hotspots-overlay">
+        <div class="hotspot" data-index="1" title="打开黑胶唱片"></div>
+        <div class="hotspot" data-index="2" title="查看倒数日历"></div>
+        <div class="hotspot" data-index="3" title="翻转水晶球"></div>
+        <div class="hotspot" data-index="4" title="展信阅读"></div>
+    </div>
+</div>
+
+<!-- 🆕 拆礼物过渡遮罩 -->
+<div id="unwrap-transition-overlay">
+    <div class="gift-box-anim" id="anim-gift-box">
+        <div class="box-bow"></div>
+        <div class="box-lid"></div>
+        <div class="box-ribbon-v"></div>
+        <div class="box-base"></div>
+    </div>
+</div>
+
+<!-- 🆕 独立的独立礼品互动页面（共4页） -->
+<!-- 界面一：黑胶播放器 -->
+<div class="gift-detail-screen" id="detail-screen-1">
+    <button class="back-to-hall-btn">← 返回大厅 / Back</button>
+    
+    <!-- 1. 复刻主题手绘拟物黑胶唱片大盒 -->
+    <div class="turntable-box">
+        <!-- 精准复刻图1的金色优雅弯曲五线谱（衬底绘制） -->
+        <svg class="top-stave-classic" viewBox="0 0 320 280" fill="none" stroke="#b9965a" stroke-width="1.5" opacity="0.65">
+            <path d="M 0,80 C 40,40 10,120 120,130 C 220,140 240,150 320,180"/>
+            <path d="M 0,86 C 40,46 10,126 120,136 C 220,146 240,156 320,186"/>
+            <path d="M 0,92 C 40,52 10,132 120,142 C 220,152 240,162 320,192"/>
+            <path d="M 0,98 C 40,58 10,138 120,148 C 220,158 240,168 320,198"/>
+            <path d="M 0,104 C 40,64 10,144 120,154 C 220,164 240,174 320,204"/>
+        </svg>
+
+        <!-- 密纹唱片盘 -->
+        <div class="turntable-platter">
+            <div class="vinyl-grooves-interactive" id="vinyl-disc-interactive">
+                <!-- 唱片中心标签 -->
+                <div class="vinyl-label-center">
+                    <div class="vinyl-spindle"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 💥 手卷拟物唱针臂（右上轴，左下针，顺时针投落式结构） -->
+        <div class="tonearm-assembly">
+            <div class="tonearm-base-hub"></div>
+            <!-- 可转动唱臂主轴容器 -->
+            <div class="tonearm-arm-movable" id="tonearm-interactive">
+                <div class="tonearm-shaft-wood"></div>
+                <div class="tonearm-joint-crimson"></div>
+                <div class="tonearm-cartridge-head">
+                    <div class="cartridge-screw tl">+</div>
+                    <div class="cartridge-screw tr">+</div>
+                    <div class="cartridge-screw bl">+</div>
+                    <div class="cartridge-screw br">+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 随着滚动向下不规则流淌蜿蜒的弯曲五线谱（更加顺滑流动如河流） -->
+    <div class="scroll-reveal-container">
+        <!-- 重新使用三阶贝塞尔无极拟合算法，绘制流畅无折角的河道流向五线谱 -->
+        <svg class="stave-lines-flowing" viewBox="0 0 600 2800" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Line 1 -->
+            <path d="M 300,0 C 300,200 80,150 80,400 C 80,650 520,600 520,850 C 520,1100 80,1150 80,1400 C 80,1650 520,1600 520,1850 C 520,2100 80,2150 80,2400 C 80,2600 300,2650 300,2800" stroke="#b9965a" stroke-width="1.2" opacity="0.32"/>
+            <!-- Line 2 -->
+            <path d="M 306,0 C 306,200 86,150 86,400 C 86,650 526,600 526,850 C 526,1100 86,1150 86,1400 C 86,1650 526,1600 526,1850 C 526,2100 86,2150 86,2400 C 86,2600 306,2650 306,2800" stroke="#b9965a" stroke-width="1.2" opacity="0.32"/>
+            <!-- Line 3 -->
+            <path d="M 312,0 C 312,200 92,150 92,400 C 92,650 532,600 532,850 C 532,1100 92,1150 92,1400 C 92,1650 532,1600 532,1850 C 532,2100 92,2150 92,2400 C 92,2600 312,2650 312,2800" stroke="#b9965a" stroke-width="1.2" opacity="0.32"/>
+            <!-- Line 4 -->
+            <path d="M 318,0 C 318,200 98,150 98,400 C 98,650 538,600 538,850 C 538,1100 98,1150 98,1400 C 98,1650 538,1600 538,1850 C 538,2100 98,2150 98,2400 C 98,2600 318,2650 318,2800" stroke="#b9965a" stroke-width="1.2" opacity="0.32"/>
+            <!-- Line 5 -->
+            <path d="M 324,0 C 324,200 104,150 104,400 C 104,650 544,600 544,850 C 544,1100 104,1150 104,1400 C 104,1650 544,1600 544,1850 C 544,2100 104,2150 104,2400 C 104,2600 324,2650 324,2800" stroke="#b9965a" stroke-width="1.2" opacity="0.32"/>
+        </svg>
+
+        <div class="detail-card reveal-item" style="margin-top: 20px;">
+            <h3 class="detail-title">Songs of Christmas</h3>
+            <p class="detail-subtitle">回响的时光乐章</p>
+        </div>
+
+        <!-- 第一幕照片与文字：过去 -->
+        <div class="polaroid-frame reveal-item">
+            <img src="https://free.boltp.com/2026/07/18/6a5b4d5404923.webp" alt="Old Stage Memo">
+            <div class="polaroid-caption">Christmas Past...</div>
+        </div>
+
+        <div class="narrative-card reveal-item">
+            <p>回忆的画卷徐徐展开，将时光拉回到最开始的地方。那时的舞台虽然没有这般璀璨的灯火，但少年歌唱时的明亮目光，却像一缕破晓的晨曦，悄然照亮了那一年的寒冬。</p>
+            <p>安信，你用最初的歌声埋下了温暖的种子，在岁月的沃土中静静抽芽。黑胶旋转，把曾经在深夜里独自面对的那些寒冷，都织成了坚硬温暖的外壳。</p>
+        </div>
+
+        <!-- 第二幕照片与文字：现在 -->
+        <div class="polaroid-frame reveal-item">
+            <img src="https://free.boltp.com/2026/07/18/6a5b4d5648b82.webp" alt="Old Stage Memo">
+            <div class="polaroid-caption">Christmas Present...</div>
+        </div>
+
+        <div class="narrative-card reveal-item">
+            <p>行至当下，音乐已编织成一条看不见的纽带。无数个闪耀的舞台、无数次幕后的排练与执着，我们和安信在同一段主旋律中相遇。</p>
+            <p>在这个温暖的冬夜，不论相距多远，我们的耳畔都有同一个旋律。每一份微小的支持都汇聚于此，歌声在寒冬中升温，化作心底长存的春日煦风。</p>
+        </div>
+
+        <!-- 第三幕照片与文字：未来 -->
+        <div class="polaroid-frame reveal-item">
+            <img src="https://free.boltp.com/2026/07/18/6a5b4d5691821.webp" alt="Old Stage Memo">
+            <div class="polaroid-caption">Christmas Yet to Come...</div>
+        </div>
+
+        <div class="narrative-card reveal-item">
+            <p>幽灵展示的未来，那是一棵系满全世界祝福的心愿圣诞树。树下放着的是还没寄达的信、未来的合影与期许。</p>
+            <p>歌声会走得比你想象的更远，你的温暖会跨越重洋，在漫长又坚定的旅途中，陪伴更多未来的日落与朝阳。我们会在前方继续聆听你的故事。</p>
+        </div>
+
+        <!-- 第四幕照片与文字：祝福 -->
+        <div class="polaroid-frame reveal-item">
+            <img src="https://free.boltp.com/2026/07/18/6a5b4d50042c1.webp" alt="Old Stage Memo">
+            <div class="polaroid-caption">God bless Anxin...</div>
+        </div>
+
+        <div class="narrative-card reveal-item">
+            <p>所有的旋律在大厅回响，编织成一份最终递交到安信手中的终极纪念礼盒。无论未来如何更迭，歌声里的坚定与温柔永远不会老去。</p>
+            <p>这不仅是一场奇幻的圣诞梦境之旅，更是一记永远奏响的暖冬赞歌。这是一个关于爱、梦想与圣诞夜奇迹的小小物语，愿美好的歌声与你岁岁同行。</p>
+        </div>
+    </div>
+</div>
+
+<!-- 界面二：倒数日历 -->
+<div class="gift-detail-screen" id="detail-screen-2">
+    <button class="back-to-hall-btn">← 返回大厅 / Back</button>
+    <div class="detail-card">
+        <div class="calendar-grid" id="advent-calendar-grid"></div>
+        <h3 class="detail-title">Advent Calendar</h3>
+        <p class="detail-subtitle">节日倒数日历</p>
+        <p class="detail-desc">
+            每一个被细心翻过的格牌，都是我们共同等待节日重逢的刻印。一格一格，数着那些饱含温暖祝福、被珍藏的日子。
+        </p>
+    </div>
+</div>
+
+<!-- 界面三：飘雪水晶球 -->
+<div class="gift-detail-screen" id="detail-screen-3">
+    <button class="back-to-hall-btn">← 返回大厅 / Back</button>
+    <div class="detail-card">
+        <div class="globe-box">
+            <canvas id="globe-canvas"></canvas>
+        </div>
+        <div class="globe-base"></div>
+        <h3 class="detail-title">The Crystal Globe</h3>
+        <p class="detail-subtitle">物理飘雪水晶球</p>
+        <p class="detail-desc">
+            轻轻翻转，看漫天晶莹的飘雪落在小巧如梦如幻的木屋顶。水晶球封存着对安信永远温柔的冬天，愿你在歌声里纯净自得。
+        </p>
+    </div>
+</div>
+
+<!-- 界面四：展信阅读 -->
+<div class="gift-detail-screen" id="detail-screen-4">
+    <button class="back-to-hall-btn">← 返回大厅 / Back</button>
+    <div class="detail-card" style="max-width: 620px;">
+        <h3 class="detail-title" style="margin-bottom: 25px;">Review the Letter</h3>
+        <div id="replica-letter-view"></div>
     </div>
 </div>
 
@@ -666,8 +1469,9 @@ const finalScreen = document.getElementById('final-screen');
 const restartButton = document.getElementById('restart-btn');
 const canvas = document.getElementById('animation-canvas');
 const ctx = canvas.getContext('2d');
+const imageScreen = document.getElementById('image-screen');
 
-/* ==================== 阅读淡入 ==================== */
+/* ==================== 阅读与标题滑动联动（检测滚动自动隐藏提醒） ==================== */
 const sectionObserver = new IntersectionObserver(
     entries => {
         entries.forEach(entry => {
@@ -682,8 +1486,26 @@ const sectionObserver = new IntersectionObserver(
 );
 storySections.forEach(section => sectionObserver.observe(section));
 
+// 二合一滚动淡出控制器：信纸箭头和标题下滑指示箭头
 window.addEventListener('scroll', () => {
-    scroller.style.opacity = window.scrollY > 100 ? '0' : '.7';
+    // 1. 信纸底端引导小红针滚动隐藏
+    if (scroller) {
+        scroller.style.opacity = window.scrollY > 100 ? '0' : '0.8';
+    }
+    
+    // 2. 🆕 主标题下滑提示箭头在检测到下滑（大于10px）的同时就立刻消失不见，体验更自然
+    const downArrowIndicator = document.getElementById('down-arrow-indicator');
+    if (downArrowIndicator) {
+        if (window.scrollY > 10) {
+            downArrowIndicator.style.opacity = '0';
+            downArrowIndicator.style.visibility = 'hidden';
+            downArrowIndicator.style.pointerEvents = 'none';
+        } else if (currentStage === STAGE_FINAL) {
+            downArrowIndicator.style.opacity = '0.6';
+            downArrowIndicator.style.visibility = 'visible';
+            downArrowIndicator.style.pointerEvents = 'auto';
+        }
+    }
 });
 
 /* ==================== 动画状态阶段 ==================== */
@@ -760,27 +1582,19 @@ function playTone(frequency, duration, type = 'sine', volume = .05, delay = 0) {
     oscillator.stop(startTime + duration + .04);
 }
 
-function playPaperRustle() {
+function playNoise(duration, volume = 0.04) {
     if (!audioContext || !masterGain) return;
-    const duration = .42;
     const bufferSize = Math.floor(audioContext.sampleRate * duration);
     const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2.5);
     }
     const source = audioContext.createBufferSource();
-    const filter = audioContext.createBiquadFilter();
     const gain = audioContext.createGain();
-
-    filter.type = 'bandpass';
-    filter.frequency.value = 1500;
-    filter.Q.value = .7;
-    gain.gain.value = .055;
-
+    gain.gain.value = volume;
     source.buffer = buffer;
-    source.connect(filter);
-    filter.connect(gain);
+    source.connect(gain);
     gain.connect(masterGain);
     source.start();
 }
@@ -792,7 +1606,16 @@ function playFinalSound() {
     playTone(659.25, 1.8, 'sine', .025, .58);
 }
 
-/* ==================== Canvas 相对位移坐标绘制方法 ==================== */
+function playUnwrapSound() {
+    playNoise(0.48, 0.055);
+    const now = audioContext.currentTime;
+    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((f, i) => {
+        playTone(f, 0.65, 'sine', 0.045, i * 0.06);
+    });
+}
+
+/* ==================== Canvas 相对坐标绘制 ==================== */
 function drawEnvelopeBackRel(context, w, h) {
     context.fillStyle = '#D6BFA5';
     context.beginPath();
@@ -862,7 +1685,7 @@ function drawEnvelopeFlapRel(context, w, h, progress) {
     }
 }
 
-/* ==================== Canvas 绝对定位包装入口 ==================== */
+/* ==================== Canvas 绝对排版入口 ==================== */
 function drawEnvelopeBack() {
     ctx.save();
     ctx.translate(envelopeX, envelopeY);
@@ -890,7 +1713,6 @@ function drawOpenEnvelope() {
     drawOpenEnvelopeFlap();
 }
 
-// 旋转中的信封正面绘制（调用完全相同的相对方程，保证合扰前与翻面缩放后形态绝对的一致）
 function drawClosedEnvelopeFace() {
     drawEnvelopeBackRel(ctx, envelopeWidth, envelopeHeight);
     drawEnvelopeFrontPocketRel(ctx, envelopeWidth, envelopeHeight);
@@ -924,7 +1746,7 @@ function drawEnvelopeFlap(progress) {
     ctx.restore();
 }
 
-function drawPaperPanel(panelWidth, panelHeight, color = '#F8F3E8', lineOpacity = .22) {
+function drawPaperPanel(panelWidth, panelHeight, color = '#f8f3e8', lineOpacity = .22) {
     ctx.fillStyle = color;
     ctx.fillRect(-panelWidth / 2, -panelHeight / 2, panelWidth, panelHeight);
 
@@ -940,7 +1762,7 @@ function drawPaperPanel(panelWidth, panelHeight, color = '#F8F3E8', lineOpacity 
 }
 
 function drawFoldedNote(noteWidth, noteHeight) {
-    drawPaperPanel(noteWidth, noteHeight, '#F8F3E8', .23);
+    drawPaperPanel(noteWidth, noteHeight, '#f8f3e8', .23);
 }
 
 /* ==================== Canvas 尺寸适配 ==================== */
@@ -984,14 +1806,17 @@ function getPointerPosition(event) {
     return { x: event.clientX, y: event.clientY };
 }
 
-/* ==================== 点击直接跳转至信封场景 ==================== */
+/* ==================== 点击直接递交折叠信纸 ==================== */
 foldTrigger.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.body.style.overflow = 'hidden';
 
-    scroller.style.opacity = '0';
-    scroller.style.visibility = 'hidden';
-    scroller.style.pointerEvents = 'none';
+    // 点击折叠与封口时，底部的红色滑动箭头指示器彻底消失
+    if (scroller) {
+        scroller.style.opacity = '0';
+        scroller.style.visibility = 'hidden';
+        scroller.style.display = 'none'; 
+    }
     foldHintText.classList.remove('visible');
 
     currentStage = STAGE_DRAGGING;
@@ -1008,7 +1833,9 @@ foldTrigger.addEventListener('click', () => {
     envelopeSoundPlayed = false;
     finalSoundPlayed = false;
 
+    storyContainer.style.display = 'none';
     storyContainer.style.opacity = '0';
+    
     canvas.style.opacity = '1';
     canvas.style.pointerEvents = 'auto';
 
@@ -1072,13 +1899,10 @@ canvas.addEventListener('pointerdown', pointerDown);
 canvas.addEventListener('pointermove', pointerMove);
 window.addEventListener('pointerup', pointerUp);
 
-/* ==================== 渲染执行器 ==================== */
+/* ==================== 渲染动画逻辑循环 ==================== */
 function animate() {
     ctx.clearRect(0, 0, width, height);
 
-    /*
-     * 3. 拖起悬挂状态
-     */
     if (currentStage === STAGE_DRAGGING) {
         drawOpenEnvelope(1);
         const folded = getFoldedSize();
@@ -1092,9 +1916,6 @@ function animate() {
         ctx.restore();
     }
 
-    /*
-     * 4. 插入与合盖状态
-     */
     else if (currentStage >= STAGE_SLIDE && currentStage <= STAGE_CLOSING) {
         const folded = getFoldedSize();
 
@@ -1140,16 +1961,12 @@ function animate() {
                 flapProgress = 1;
                 flipZoomProgress = 0;
                 currentStage = STAGE_FLIP_ZOOM;
-                // 去掉了合盖的音效
             }
         }
 
         drawEnvelopeFlap(flapProgress);
     }
 
-    /*
-     * 5. 翻页缩放拉近转场
-     */
     else if (currentStage === STAGE_FLIP_ZOOM) {
         flipZoomProgress = Math.min(1, flipZoomProgress + .014);
         const progress = easeInOut(flipZoomProgress);
@@ -1168,7 +1985,6 @@ function animate() {
         ctx.translate(currentCenterX, currentCenterY);
         ctx.scale(horizontalProjection * scale, scale);
 
-        // 翻页渲染（正面由于使用了相对绘制方程，其构造、形态完全与合纸时一模一样，无改变）
         if (Math.cos(angle) >= 0) {
             drawClosedEnvelopeFace();
         } else {
@@ -1178,7 +1994,18 @@ function animate() {
 
         if (flipZoomProgress >= 1) {
             canvas.style.opacity = '0';
+            canvas.style.pointerEvents = 'none';
+
+            window.scrollTo(0, 0);
+            
+            finalScreen.style.display = 'flex';
+            void finalScreen.offsetWidth; 
             finalScreen.classList.add('active');
+            
+            imageScreen.style.display = 'block'; 
+            document.body.style.overflowY = 'auto'; 
+
+            initializeLetterReview();
 
             if (!finalSoundPlayed) {
                 finalSoundPlayed = true;
@@ -1210,13 +2037,31 @@ restartButton.addEventListener('click', () => {
 
     canvas.style.opacity = '0';
     canvas.style.pointerEvents = 'none';
+    
     finalScreen.classList.remove('active');
+    finalScreen.style.display = 'none';
+    imageScreen.style.display = 'none';
 
+    lightUps.forEach(img => img.style.opacity = '0');
+
+    storyContainer.style.display = 'block';
     storyContainer.style.opacity = '1';
-    scroller.style.display = 'block';
-    scroller.style.visibility = 'visible';
-    scroller.style.pointerEvents = 'none';
-    scroller.style.opacity = '.7';
+    
+    // 重新激活信纸红色滑动指示器
+    if (scroller) {
+        scroller.style.display = 'flex';
+        scroller.style.visibility = 'visible';
+        scroller.style.pointerEvents = 'none';
+        scroller.style.opacity = '0.8';
+    }
+
+    // 重置最终大厅页面下滑箭头状态
+    const downArrowIndicator = document.getElementById('down-arrow-indicator');
+    if (downArrowIndicator) {
+        downArrowIndicator.style.opacity = '0.6';
+        downArrowIndicator.style.visibility = 'visible';
+        downArrowIndicator.style.pointerEvents = 'auto';
+    }
 
     document.body.style.overflow = 'auto';
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -1225,6 +2070,386 @@ restartButton.addEventListener('click', () => {
         section.classList.remove('revealed');
     });
 });
+
+/* ==================== 🆕 拆礼物及页面控制 ==================== */
+const hotspots = document.querySelectorAll('.hotspot');
+const lightUps = document.querySelectorAll('.light-up');
+const unwrapOverlay = document.getElementById('unwrap-transition-overlay');
+const animGiftBox = document.getElementById('anim-gift-box');
+
+hotspots.forEach(hotspot => {
+    const idx = parseInt(hotspot.getAttribute('data-index'), 10) - 1;
+
+    hotspot.addEventListener('mouseenter', () => {
+        lightUps[idx].style.opacity = '1';
+        startAudio();
+        playTone(523.25 + idx * 100, 0.3, 'sine', 0.045);
+    });
+
+    hotspot.addEventListener('mouseleave', () => {
+        lightUps[idx].style.opacity = '0';
+    });
+
+    hotspot.addEventListener('touchstart', (e) => {
+        lightUps.forEach((img, i) => {
+            img.style.opacity = i === idx ? '1' : '0';
+        });
+        startAudio();
+        playTone(523.25 + idx * 100, 0.3, 'sine', 0.045);
+    });
+
+    hotspot.addEventListener('click', () => {
+        triggerGiftRevealAnimation(idx + 1);
+    });
+});
+
+imageScreen.addEventListener('touchend', () => {
+    lightUps.forEach(img => {
+        img.style.opacity = '0';
+    });
+});
+
+document.getElementById('down-arrow-indicator').addEventListener('click', () => {
+    imageScreen.scrollIntoView({ behavior: 'smooth' });
+});
+
+/* 🆕 盒盖弹飞 + 星光爆落动效实现 */
+function triggerGiftRevealAnimation(giftId) {
+    startAudio();
+    playUnwrapSound();
+
+    unwrapOverlay.style.display = 'flex';
+    unwrapOverlay.offsetHeight; 
+    unwrapOverlay.classList.add('active'); 
+    unwrapOverlay.style.opacity = '1';
+    animGiftBox.classList.remove('open');
+
+    createSparkles(unwrapOverlay);
+
+    setTimeout(() => {
+        animGiftBox.classList.add('open');
+    }, 250);
+
+    setTimeout(() => {
+        openDetailScreen(giftId);
+        unwrapOverlay.classList.remove('active');
+        unwrapOverlay.style.display = 'none';
+        unwrapOverlay.style.opacity = '0';
+    }, 1100); 
+}
+
+function createSparkles(parent) {
+    const total = 20;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const colors = ['#722f35', '#b9965a', '#ffffff', '#3b2a22'];
+
+    for (let i = 0; i < total; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'sparkle-particle';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        parent.appendChild(particle);
+
+        const angle = (i / total) * Math.PI * 2 + Math.random() * 0.4;
+        const velocity = 90 + Math.random() * 110;
+        const dx = Math.cos(angle) * velocity;
+        const dy = Math.sin(angle) * velocity;
+
+        particle.style.left = `${centerX}px`;
+        particle.style.top = `${centerY}px`;
+
+        particle.animate([
+            { transform: 'translate(0, 0) scale(1.2) rotate(0deg)', opacity: 1 },
+            { transform: `translate(${dx}px, ${dy}px) scale(0) rotate(360deg)`, opacity: 0 }
+        ], {
+            duration: 800 + Math.random() * 400,
+            easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+            fill: 'forwards'
+        });
+
+        setTimeout(() => {
+            particle.remove();
+        }, 1200);
+    }
+}
+
+/* ==================== 🆕 互动内容页管理及子组件驱动 ==================== */
+function openDetailScreen(id) {
+    document.body.style.overflow = 'hidden'; 
+    const targetScreen = document.getElementById(`detail-screen-${id}`);
+    targetScreen.style.display = 'flex';
+    targetScreen.offsetHeight;
+    targetScreen.classList.add('active');
+
+    if (id === 1) {
+        initVinylScrollReveal();
+        setTimeout(() => {
+            triggerAutoVinylPlay();
+        }, 400);
+    } else if (id === 2) {
+        initAdventCalendar();
+    } else if (id === 3) {
+        initGlobePhysicsSnow();
+    }
+}
+
+document.querySelectorAll('.back-to-hall-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const openedScreen = e.target.closest('.gift-detail-screen');
+        openedScreen.classList.remove('active');
+        
+        if (isPlayingVinylMelody) {
+            toggleVinylPlayback();
+        }
+
+        if (globeAnimId) {
+            cancelAnimationFrame(globeAnimId);
+            globeAnimId = null;
+        }
+
+        setTimeout(() => {
+            openedScreen.style.display = 'none';
+            document.body.style.overflowY = 'auto'; 
+        }, 500);
+
+        startAudio();
+        playTone(300, 0.25, 'sine', 0.03); 
+    });
+});
+
+/* === 🆕 唱片滚动视差及五线谱深度流淌 === */
+function initVinylScrollReveal() {
+    const detailScreen1 = document.getElementById('detail-screen-1');
+    const revealItems = detailScreen1.querySelectorAll('.reveal-item');
+    
+    triggerItemReveal(detailScreen1, revealItems);
+
+    detailScreen1.onscroll = () => {
+        triggerItemReveal(detailScreen1, revealItems);
+    };
+}
+
+function triggerItemReveal(container, items) {
+    const containerHeight = container.clientHeight;
+    items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < containerHeight * 0.88) {
+            item.classList.add('revealed-active');
+        }
+    });
+}
+
+/* === 礼物 1: 黑胶唱片八音盒及唱针偏转落针联动 === */
+const vinylDisc = document.getElementById('vinyl-disc-interactive');
+const tonearmInteractive = document.getElementById('tonearm-interactive');
+let isPlayingVinylMelody = false;
+let melodyTimer = null;
+let currentNoteIndex = 0;
+
+const silentNightMelody = [
+    392, 440, 392, 329.63,
+    392, 440, 392, 329.63,
+    587.33, 587.33, 493.88,
+    523.25, 523.25, 392,
+    440, 440, 523.25, 493.88, 440,
+    392, 440, 392, 329.63,
+    440, 440, 523.25, 493.88, 440,
+    392, 440, 392, 329.63,
+    587.33, 587.33, 698.46, 587.33, 493.88,
+    523.25, 659.25,
+    523.25, 392, 329.63, 392,
+    349.23, 293.66, 261.63
+];
+const noteDurations = [
+    0.6, 0.2, 0.6, 0.8,
+    0.6, 0.2, 0.6, 0.8,
+    0.8, 0.4, 1.2,
+    0.8, 0.4, 1.2,
+    0.8, 0.4, 0.8, 0.4, 0.4,
+    0.6, 0.2, 0.6, 0.8,
+    0.8, 0.4, 0.8, 0.4, 0.4,
+    0.6, 0.2, 0.6, 0.8,
+    0.8, 0.4, 0.8, 0.4, 0.8,
+    1.2, 1.2,
+    0.8, 0.4, 0.8, 0.8,
+    0.8, 0.4, 1.6
+];
+
+vinylDisc.addEventListener('click', toggleVinylPlayback);
+
+// 入场自动落盘播放函数（从闲置的-26deg向右倾斜状态，顺时针向左前方摆回，顺时针大幅摆角升为 15deg，实现超大运动幅度靠左下沉降）
+function triggerAutoVinylPlay() {
+    if (isPlayingVinylMelody) return;
+    isPlayingVinylMelody = true;
+
+    // 1. 唱臂滑摆旋转，落至黑胶轨道上 (顺时针向左大跨度偏角)
+    tonearmInteractive.classList.add('active');
+
+    // 2. 针落下平贴至音乐纹理后开始转动并播放美妙音调
+    setTimeout(() => {
+        if (isPlayingVinylMelody) {
+            vinylDisc.classList.add('spin');
+            currentNoteIndex = 0;
+            playNextVinylNote();
+        }
+    }, 1200);
+}
+
+function toggleVinylPlayback() {
+    isPlayingVinylMelody = !isPlayingVinylMelody;
+    
+    if (isPlayingVinylMelody) {
+        tonearmInteractive.classList.add('active');
+        setTimeout(() => {
+            if (isPlayingVinylMelody) { 
+                vinylDisc.classList.add('spin');
+                currentNoteIndex = 0;
+                playNextVinylNote();
+            }
+        }, 1200);
+
+    } else {
+        vinylDisc.classList.remove('spin');
+        tonearmInteractive.classList.remove('active');
+        clearTimeout(melodyTimer);
+    }
+}
+
+function playNextVinylNote() {
+    if (!isPlayingVinylMelody) return;
+    
+    const freq = silentNightMelody[currentNoteIndex];
+    const duration = noteDurations[currentNoteIndex] * 0.9;
+    
+    playTone(freq, duration, 'sine', 0.05); 
+    
+    currentNoteIndex = (currentNoteIndex + 1) % silentNightMelody.length;
+    melodyTimer = setTimeout(playNextVinylNote, noteDurations[currentNoteIndex] * 900);
+}
+
+/* === 礼物 2: 冬季倒数日历格子 ==================== */
+const calendarWords = [
+    "平安", "温暖", "喜乐", "追梦", "璀璨", "温柔",
+    "诚挚", "漫旅", "星辰", "初心", "前行", "歌咏",
+    "冬阳", "宁谧", "真纯", "坚韧", "煦风", "笃定",
+    "伴随", "闪亮", "无忧", "晴空", "安信", "快乐"
+];
+
+function initAdventCalendar() {
+    const grid = document.getElementById('advent-calendar-grid');
+    grid.innerHTML = '';
+    
+    for (let i = 1; i <= 24; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+        cell.innerText = i;
+        
+        cell.addEventListener('click', () => {
+            if (cell.classList.contains('flipped')) return;
+            cell.classList.add('flipped');
+            cell.innerText = calendarWords[i - 1];
+            
+            startAudio();
+            playTone(400 + i * 20, 0.4, 'triangle', 0.035);
+        });
+        grid.appendChild(cell);
+    }
+}
+
+/* === 礼物 3: 物理飘雪水晶球 ==================== */
+let globeAnimId = null;
+let flakes = [];
+
+class Snowflake {
+    constructor(canvasWidth, canvasHeight) {
+        this.w = canvasWidth;
+        this.h = canvasHeight;
+        this.reset();
+    }
+    reset() {
+        this.x = Math.random() * this.w;
+        this.y = Math.random() * -30;
+        this.radius = Math.random() * 2 + 1;
+        this.density = Math.random() * 1.5 + 0.5;
+        this.opacity = Math.random() * 0.7 + 0.3;
+    }
+    update(wind) {
+        this.y += this.density;
+        this.x += wind * 0.5;
+        if (this.y > this.h) {
+            this.reset();
+        }
+    }
+    draw(g) {
+        g.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        g.beginPath();
+        g.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        g.fill();
+    }
+}
+
+function initGlobePhysicsSnow() {
+    const gCanvas = document.getElementById('globe-canvas');
+    const gCtx = gCanvas.getContext('2d');
+    
+    const rect = gCanvas.parentElement.getBoundingClientRect();
+    gCanvas.width = rect.width;
+    gCanvas.height = rect.height;
+
+    flakes = [];
+    for (let i = 0; i < 75; i++) {
+        flakes.push(new Snowflake(gCanvas.width, gCanvas.height));
+    }
+
+    let wind = 0;
+    let targetWind = 1;
+
+    gCanvas.addEventListener('mousemove', (e) => {
+        const mouseX = e.offsetX;
+        const norm = (mouseX / gCanvas.width) * 2 - 1;
+        targetWind = norm * 4;
+        
+        if (Math.random() < 0.25) {
+            playTone(880 + Math.random()*200, 0.15, 'sine', 0.01);
+        }
+    });
+
+    function drawFrame() {
+        gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+        wind += (targetWind - wind) * 0.05;
+
+        gCtx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+        gCtx.fillRect(gCanvas.width/2 - 40, gCanvas.height - 40, 80, 40);
+
+        flakes.forEach(flake => {
+            flake.update(wind);
+            flake.draw(gCtx);
+        });
+
+        globeAnimId = requestAnimationFrame(drawFrame);
+    }
+    
+    if (globeAnimId) cancelAnimationFrame(globeAnimId);
+    drawFrame();
+}
+
+/* === 礼物 4: 阅信克隆复写器 === */
+function initializeLetterReview() {
+    const replicaContainer = document.getElementById('replica-letter-view');
+    replicaContainer.innerHTML = '';
+
+    const clonePaper = paperElement.cloneNode(true);
+
+    const foldBtn = clonePaper.querySelector('.page-fold-btn');
+    if (foldBtn) foldBtn.remove();
+    const foldHint = clonePaper.querySelector('.fold-hint');
+    if (foldHint) foldHint.remove();
+
+    const sections = clonePaper.querySelectorAll('.story-section');
+    sections.forEach(sec => sec.classList.add('revealed'));
+
+    replicaContainer.appendChild(clonePaper);
+}
 </script>
 
 </body>
