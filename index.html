@@ -538,18 +538,48 @@ p.eng-text + p.eng-text {
     display: none;
     margin: 0;
     padding: 0;
-    background: #000;
-    overflow: hidden;
+    background: #050a07; /* 墨绿色填充背景 */
+    overflow-y: auto;    /* 允许纵向溢出滚动，阅起底部不全的内容 */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* 移动端平滑滚动支持 */
+}
+
+/* 隐藏大厅的滚动条以保证视觉的整体性 */
+#image-screen::-webkit-scrollbar {
+    display: none;
+}
+
+/* 包装内容容器：锁定原始宽度，由内部图片自动展开真实物理高度 */
+.image-screen-inner {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 🆕 复古金色无饰细相框装饰（bottom修改为0，完美贴紧图片的最底层，彻底消除黑灰边空隙） */
+.retro-gold-frame {
+    position: absolute;
+    inset: 12px 12px 0 12px;
+    z-index: 10;
+    pointer-events: none;
+    border: 3px solid transparent;
+    border-image: linear-gradient(
+        135deg, 
+        #a67c46 0%, 
+        #ffd984 25%, 
+        #b9965a 50%, 
+        #ffd984 75%, 
+        #a67c46 100%
+    ) 3;
+    box-shadow: 
+        0 0 0 1px #1a1105, 
+        inset 0 0 0 1px #1a1105, 
+        inset 0 0 18px rgba(0, 0, 0, 0.45);
 }
 
 .screen-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
     margin: 0;
     padding: 0;
     will-change: transform;
@@ -557,11 +587,23 @@ p.eng-text + p.eng-text {
     image-rendering: crisp-edges;
 }
 
+/* shadows-bg 底图做普通文档流相对排列，按长宽比例高度自适应排列 */
 .screen-img.shadows-bg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
     z-index: 1;
 }
 
+/* 发光层绝对定位覆盖，保证比例尺寸始终跟随 .shadows-bg 缩放 */
 .screen-img.light-up {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
     z-index: 2;
     opacity: 0;
     pointer-events: none;
@@ -578,12 +620,12 @@ p.eng-text + p.eng-text {
 .hotspot {
     flex: 1;
     height: 70%;
-    margin-top: 30vh;
+    margin-top: 30%; /* 原有的 30vh 换成 30%，使其精确锁定随图伸缩 */
     cursor: pointer;
     background: transparent;
 }
 
-/* ==================== 🆕 拆礼物动效遮罩 ==================== */
+/* ==================== 🎬 拆礼物动效遮罩 ==================== */
 #unwrap-transition-overlay {
     position: fixed;
     inset: 0;
@@ -689,7 +731,7 @@ p.eng-text + p.eng-text {
     100% { opacity: 0; transform: scaleY(0); }
 }
 
-/* ==================== 🆕 拆开后的全屏内容互动卡 ==================== */
+/* ==================== 🎬 拆开后的全屏内容互动卡 ==================== */
 .gift-detail-screen {
     position: fixed;
     inset: 0;
@@ -711,24 +753,20 @@ p.eng-text + p.eng-text {
     opacity: 1 !important;
 }
 
-/* 界面一：保持原本的绿色渐变底色 */
 #detail-screen-1 {
     background: radial-gradient(circle at center, #1b3528 20%, #0d1e15 100%) !important;
 }
 
-/* 界面二：改为复古酒红 */
 #detail-screen-2 {
     background: radial-gradient(circle at center, #722f35 20%, #3d161a 100%) !important;
     justify-content: center;
 }
 
-/* 界面三：改为静谧深蓝 */
 #detail-screen-3 {
     background: radial-gradient(circle at center, #0b2145 20%, #051024 100%) !important;
     justify-content: center;
 }
 
-/* 界面四：改为经典紫色 */
 #detail-screen-4 {
     background: radial-gradient(circle at center, #4a215d 20%, #230d2d 100%) !important;
     justify-content: center;
@@ -792,7 +830,6 @@ p.eng-text + p.eng-text {
     overflow: visible;
 }
 
-/* 完美复刻图1的金色弯曲五线谱（作为唱机底部底图衬台） */
 .top-stave-classic {
     position: absolute;
     inset: 0;
@@ -802,7 +839,6 @@ p.eng-text + p.eng-text {
     z-index: 1; 
 }
 
-/* 密纹唱片盘 */
 .turntable-platter {
     position: absolute;
     left: 10px;
@@ -854,7 +890,6 @@ p.eng-text + p.eng-text {
     transform: translate(-50%, -50%);
 }
 
-/* 唱针臂组件：固定定位在右上角 */
 .tonearm-assembly {
     position: absolute;
     right: 25px;
@@ -864,7 +899,6 @@ p.eng-text + p.eng-text {
     z-index: 10;
 }
 
-/* 顶固支座 */
 .tonearm-base-hub {
     position: absolute;
     left: 0;
@@ -877,7 +911,6 @@ p.eng-text + p.eng-text {
     z-index: 2;
 }
 
-/* 💥 摆动旋轴中枢：左上端（支座）固定，右下端与长方体唱头捆绑 */
 .tonearm-arm-movable {
     position: absolute;
     left: 20px; 
@@ -887,15 +920,13 @@ p.eng-text + p.eng-text {
     transform-origin: 0px 0px; 
     transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: 1;
-    transform: rotate(-28deg); /* 💥 闲置状态（默认为右倾）：向右偏摆 -28deg */
+    transform: rotate(-28deg); 
 }
 
-/* 💥 播放落盘状态（从右至左顺时针偏摆移动）：向左前方大角度偏转，角度升为 -2deg，落点大幅度左摆，精准落入黑胶偏左侧的主声轨区域 */
 .tonearm-arm-movable.active {
-    transform: rotate(-2deg); /* 💥 摆动落针范围拓宽 */
+    transform: rotate(-2deg); 
 }
 
-/* 复古圆形唱臂长棍 */
 .tonearm-shaft-wood {
     position: absolute;
     left: -4px;
@@ -907,7 +938,6 @@ p.eng-text + p.eng-text {
     box-shadow: 2px 4px 6px rgba(0,0,0,0.3);
 }
 
-/* 塑料转接关节 */
 .tonearm-joint-crimson {
     position: absolute;
     left: -7px;
@@ -918,7 +948,6 @@ p.eng-text + p.eng-text {
     border-radius: 2px;
 }
 
-/* 金黄色播放长方体（唱头） */
 .tonearm-cartridge-head {
     position: absolute;
     left: -15px;
@@ -960,7 +989,6 @@ p.eng-text + p.eng-text {
     z-index: 5;
 }
 
-/* 顺滑流淌如河流不规则蜿蜒流下的金色五线谱（大弧度三阶贝塞尔曲线算法） */
 .stave-lines-flowing {
     position: absolute;
     top: 0;
@@ -971,7 +999,6 @@ p.eng-text + p.eng-text {
     pointer-events: none;
 }
 
-/* 视差故事段落与拍立得 */
 .reveal-item {
     position: relative;
     z-index: 2;
@@ -1040,7 +1067,40 @@ p.eng-text + p.eng-text {
     margin-bottom: 0;
 }
 
-/* 倒数日历翻页配置 */
+/* 倒数日历专属排版样式 */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    max-width: 100%;
+    margin: 0 auto 25px;
+    perspective: 1000px;
+}
+
+.calendar-cell {
+    aspect-ratio: 1;
+    background: rgba(248, 243, 232, 0.08);
+    border: 1px solid rgba(248, 243, 232, 0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8f3e8;
+    font: 600 0.95rem 'Playfair Display', serif;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media(max-width: 480px){
+    .calendar-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+    .calendar-cell {
+        font-size: 0.8rem;
+    }
+}
+
 .calendar-cell.flipped {
     background: #e8d8bc;
     color: #722f35;
@@ -1097,7 +1157,6 @@ p.eng-text + p.eng-text {
 }
 
 /* ==================== 移动端适配 ==================== */
-
 @media (max-width: 520px) {
     .warm-quote .eng-text {
         font-size: .82rem;
@@ -1285,22 +1344,28 @@ p.eng-text + p.eng-text {
 
 <!-- 最终全屏大图展示第二屏 -->
 <div id="image-screen">
-    <img class="screen-img shadows-bg" src="https://free.boltp.com/2026/07/18/6a5b4d55ea64e.webp" alt="Backdrop with Shadows">
+    <!-- 包裹画布容器：自适应 16:9 无变形比例渲染 -->
+    <div class="image-screen-inner" id="image-scroll-content">
+        <!-- 复古金色无饰细相框装饰（底部间隙已完全移除） -->
+        <div class="retro-gold-frame"></div>
 
-    <img class="screen-img light-up" id="light-1" src="https://free.boltp.com/2026/07/18/6a5b4d5404923.webp" alt="Illuminated 1">
-    <img class="screen-img light-up" id="light-2" src="https://free.boltp.com/2026/07/18/6a5b4d5648b82.webp" alt="Illuminated 2">
-    <img class="screen-img light-up" id="light-3" src="https://free.boltp.com/2026/07/18/6a5b4d5691821.webp" alt="Illuminated 3">
-    <img class="screen-img light-up" id="light-4" src="https://free.boltp.com/2026/07/18/6a5b4d50042c1.webp" alt="Illuminated 4">
+        <img class="screen-img shadows-bg" src="https://free.boltp.com/2026/07/18/6a5b4d55ea64e.webp" alt="Backdrop with Shadows">
 
-    <div class="hotspots-overlay">
-        <div class="hotspot" data-index="1" title="打开黑胶唱片"></div>
-        <div class="hotspot" data-index="2" title="查看倒数日历"></div>
-        <div class="hotspot" data-index="3" title="翻转水晶球"></div>
-        <div class="hotspot" data-index="4" title="展信阅读"></div>
+        <img class="screen-img light-up" id="light-1" src="https://free.boltp.com/2026/07/18/6a5b4d5404923.webp" alt="Illuminated 1">
+        <img class="screen-img light-up" id="light-2" src="https://free.boltp.com/2026/07/18/6a5b4d5648b82.webp" alt="Illuminated 2">
+        <img class="screen-img light-up" id="light-3" src="https://free.boltp.com/2026/07/18/6a5b4d5691821.webp" alt="Illuminated 3">
+        <img class="screen-img light-up" id="light-4" src="https://free.boltp.com/2026/07/18/6a5b4d50042c1.webp" alt="Illuminated 4">
+
+        <div class="hotspots-overlay">
+            <div class="hotspot" data-index="1" title="打开黑胶唱片"></div>
+            <div class="hotspot" data-index="2" title="查看倒数日历"></div>
+            <div class="hotspot" data-index="3" title="翻转水晶球"></div>
+            <div class="hotspot" data-index="4" title="展信阅读"></div>
+        </div>
     </div>
 </div>
 
-<!-- 🆕 拆礼物过渡遮罩 -->
+<!-- 拆礼物过渡遮罩 -->
 <div id="unwrap-transition-overlay">
     <div class="gift-box-anim" id="anim-gift-box">
         <div class="box-bow"></div>
@@ -1310,7 +1375,7 @@ p.eng-text + p.eng-text {
     </div>
 </div>
 
-<!-- 🆕 独立的独立礼品互动页面（共4页） -->
+<!-- 独立的独立礼品互动页面（共4页） -->
 <!-- 界面一：黑胶播放器 -->
 <div class="gift-detail-screen" id="detail-screen-1">
     <button class="back-to-hall-btn">← 返回大厅 / Back</button>
@@ -1335,7 +1400,7 @@ p.eng-text + p.eng-text {
                 </div>
             </div>
         </div>
-        <!-- 💥 手卷拟物唱针臂（右上轴，左下针，顺时针投落式结构） -->
+        <!-- 手卷拟物唱针臂（右上轴，左下针，顺时针投落式结构） -->
         <div class="tonearm-assembly">
             <div class="tonearm-base-hub"></div>
             <!-- 可转动唱臂主轴容器 -->
@@ -1493,7 +1558,7 @@ window.addEventListener('scroll', () => {
         scroller.style.opacity = window.scrollY > 100 ? '0' : '0.8';
     }
     
-    // 2. 🆕 主标题下滑提示箭头在检测到下滑（大于10px）的同时就立刻消失不见，体验更自然
+    // 2. 主标题下滑提示箭头在检测到下滑（大于10px）的同时就立刻消失不见，体验更自然
     const downArrowIndicator = document.getElementById('down-arrow-indicator');
     if (downArrowIndicator) {
         if (window.scrollY > 10) {
@@ -2005,6 +2070,13 @@ function animate() {
             imageScreen.style.display = 'block'; 
             document.body.style.overflowY = 'auto'; 
 
+            // 当进入大厅时，若图片高度超出 viewport，自动定位到页面底部，使用户优先看到礼物桌。
+            setTimeout(() => {
+                if (imageScreen.scrollHeight > imageScreen.clientHeight) {
+                    imageScreen.scrollTop = imageScreen.scrollHeight - imageScreen.clientHeight;
+                }
+            }, 80);
+
             initializeLetterReview();
 
             if (!finalSoundPlayed) {
@@ -2071,7 +2143,7 @@ restartButton.addEventListener('click', () => {
     });
 });
 
-/* ==================== 🆕 拆礼物及页面控制 ==================== */
+/* ==================== 🎬 拆礼物及页面控制 ==================== */
 const hotspots = document.querySelectorAll('.hotspot');
 const lightUps = document.querySelectorAll('.light-up');
 const unwrapOverlay = document.getElementById('unwrap-transition-overlay');
@@ -2113,7 +2185,7 @@ document.getElementById('down-arrow-indicator').addEventListener('click', () => 
     imageScreen.scrollIntoView({ behavior: 'smooth' });
 });
 
-/* 🆕 盒盖弹飞 + 星光爆落动效实现 */
+/* 🎬 盒盖弹飞 + 星光爆落动效实现 */
 function triggerGiftRevealAnimation(giftId) {
     startAudio();
     playUnwrapSound();
@@ -2173,7 +2245,7 @@ function createSparkles(parent) {
     }
 }
 
-/* ==================== 🆕 互动内容页管理及子组件驱动 ==================== */
+/* ==================== 🎬 互动内容页管理及子组件驱动 ==================== */
 function openDetailScreen(id) {
     document.body.style.overflow = 'hidden'; 
     const targetScreen = document.getElementById(`detail-screen-${id}`);
@@ -2217,7 +2289,7 @@ document.querySelectorAll('.back-to-hall-btn').forEach(btn => {
     });
 });
 
-/* === 🆕 唱片滚动视差及五线谱深度流淌 === */
+/* === 🎬 唱片滚动视差及五线谱深度流淌 === */
 function initVinylScrollReveal() {
     const detailScreen1 = document.getElementById('detail-screen-1');
     const revealItems = detailScreen1.querySelectorAll('.reveal-item');
